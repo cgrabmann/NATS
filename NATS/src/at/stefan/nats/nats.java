@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
-import android.widget.TextView;
 import at.stefan.nats.R;
 
 public class nats extends Activity {
@@ -105,5 +104,6 @@ public class nats extends Activity {
 		pause = (Button)findViewById(R.id.pause);
 		ml = new MenuListener(pause, this);
 		pause.setOnClickListener(ml);
+		Log.i("NATS", "CHANGE");
 	}
 }
