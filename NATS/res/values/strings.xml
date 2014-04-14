@@ -9,5 +9,14 @@
     <string name="pause">Pause</string>
     <string name="con">Continue</string>
     <string name="quit">Quit</string>
+    <string name="move_speed">Move Speed</string>
+    <string name="gunner">Gunner</string>
+    <string name="shield">Shield</string>
+    <string name="shot_frequence">Shot Frequence</string>
+    <string name="shot_spreading">Shot Spreading</string>
+    <string name="stasis_field">Stasis Field</string>
+    <string name="turbo">Turbo</string>
+    <string name="deadly_trail">Deadly Trail</string>
+    <string name="bomb">Bomb</string>
 
 </resources>

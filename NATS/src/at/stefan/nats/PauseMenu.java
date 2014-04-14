@@ -4,18 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 public class PauseMenu extends Activity {
-
+ 
 	PopupWindow popup;
 	FrameLayout frame, fpopup;
 	RelativeLayout rel;
