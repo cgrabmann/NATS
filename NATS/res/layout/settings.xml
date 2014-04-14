@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@dimen/h1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/set" >
+
+    <EditText
+        android:id="@+id/settingsUeberschrift"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:ems="10"
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="text"
+        android:text="@string/settings"
+        android:textAlignment="center"
+        android:textSize="@dimen/h1"
+        android:textStyle="bold" >
+        
+  
+    </EditText>
+
+</RelativeLayout>
