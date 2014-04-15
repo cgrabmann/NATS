@@ -6,7 +6,7 @@
     android:id="@+id/game" >
 
     <Button
-        android:id="@+id/pause"
+        android:id="@+id/pause_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,5 +15,14 @@
         android:layout_marginTop="20dp"
         android:text="@string/pause" />
 
+    <Button
+        android:id="@+id/upgrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/pause_background"
+        android:layout_alignBottom="@+id/pause_background"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="33dp"
+        android:text="@string/upgrade" />
     
 </RelativeLayout>

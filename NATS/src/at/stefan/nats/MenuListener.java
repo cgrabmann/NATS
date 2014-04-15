@@ -9,7 +9,7 @@ import android.widget.PopupWindow;
 public class MenuListener implements OnClickListener {
 	
 	nats nats;
-	Button new_game, highscores, settings, exit, pause, con, quit;
+	Button new_game, highscores, settings, exit, pause, upgrade, con, quit;
 	PopupWindow popup;
 	
 	public MenuListener(Button new_game, Button highscores, Button settings, Button exit, nats nats) {
@@ -21,8 +21,9 @@ public class MenuListener implements OnClickListener {
 		this.nats = nats;
 	}
 	
-	public MenuListener(Button pause, nats nats) {
+	public MenuListener(Button pause, Button upgrade, nats nats) {
 		this.pause = pause;
+		this.upgrade = upgrade;
 		this.nats = nats;
 	}
 	
@@ -38,6 +39,8 @@ public class MenuListener implements OnClickListener {
 		if(v == pause) {
 			Log.i("NATS", "Spiel pausieren");
 			nats.actualizeSite("pause");
+		}else if(v == upgrade) {
+			nats.actualizeSite("upgrade");
 		}else if(v == new_game) {
 			// Verweise auf Spielfläche
 			Log.i("NATS", "new_game_listener");
