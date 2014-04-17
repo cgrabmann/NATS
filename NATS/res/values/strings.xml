@@ -19,5 +19,9 @@
     <string name="deadly_trail">Deadly Trail</string>
     <string name="bomb">Bomb</string>
     <string name="upgrade">Upgrade</string>
+    <string name="linkerJoystickAußen">Linker Joystick Außen</string>
+    <string name="linkerJoystickInnen">Linker Joystick Innen</string>
+    <string name="rechterJoystickAußen">Rechter Joystick Außen</string>
+    <string name="rechterJoystickInnen">Rechter Joystick Innen</string>
 
 </resources>

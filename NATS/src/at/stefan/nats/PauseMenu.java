@@ -1,7 +1,6 @@
 package at.stefan.nats;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
@@ -14,7 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-public class PauseMenu extends Activity {
+public class PauseMenu {
  
 	PopupWindow popup;
 	FrameLayout frame;

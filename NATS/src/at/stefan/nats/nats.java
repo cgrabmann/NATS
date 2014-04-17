@@ -9,11 +9,66 @@ import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.widget.Button;
-import at.stefan.nats.R;
+
+
 
 public class nats extends Activity {
 	
-	private String actualSite = "main_menu";
+	protected static final int CAMERA_WIDTH = 1280;
+	protected static final int CAMERA_HEIGHT = 720;
+	
+	Camera mCamera;
+
+	@Override
+	public EngineOptions onCreateEngineOptions() {
+		// TODO Auto-generated method stub
+		mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		EngineOptions options = new EngineOptions(true,
+				ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(
+						CAMERA_WIDTH, CAMERA_HEIGHT), mCamera);
+		return options;
+	}
+
+	@Override
+	public void onCreateResources(
+			OnCreateResourcesCallback pOnCreateResourcesCallback)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onPopulateScene(Scene pScene,
+			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*private String actualSite = "main_menu";
 	private boolean pauseActivated = false;
 	private boolean upgradeActivated = false;
 	private static final int HEIGHT = 0;
@@ -265,7 +320,7 @@ public class nats extends Activity {
 	
 	public String getVersion() {
 		return version;
-	}
+	}*/
 	
 	
 }
