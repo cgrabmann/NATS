@@ -1,6 +1,7 @@
 package at.clemens.nats;
 
 import org.andengine.entity.scene.Scene;
+import org.andengine.opengl.texture.region.ITextureRegion;
 
 import at.alex.nats.Player;
 
@@ -8,14 +9,16 @@ public class EnemyTypeOne extends PEnemy{
 	
 	private final int maxMoveSpeed = 10;
 	private final float maxHeight, maxWidth;
+	private ITextureRegion textur;
 
-	public EnemyTypeOne(Scene pf) {
+	public EnemyTypeOne(Scene pf, ITextureRegion[] textur) {
 		super(pf);
+		this.textur = textur[1];
 		super.size = 100;
 		super.movex = 0;
 		super.movey = 0;
-		this.maxHeight = pf.getX();
-		this.maxWidth = pf.getY();
+		this.maxHeight = pf.getScaleX();
+		this.maxWidth = pf.getScaleY();
 	}
 
 	@Override
