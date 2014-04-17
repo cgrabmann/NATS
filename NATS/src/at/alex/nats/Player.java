@@ -8,7 +8,7 @@ public class Player {
 	private int permanents[] = new int[5];
 	private int usables[] = new int[4];
 	private int posX, posY;
-	private int speedX, speedY = 0;
+	private int speedX, speedY;
 	BaseGameActivity baseGame;
 	
 	public Player(BaseGameActivity baseGame) {
@@ -61,8 +61,6 @@ public class Player {
 	public int getRessources() {
 		return this.ressources;
 	}
-	
-
 	
 	public void setSpeedX() {
 		speedX = 4;
