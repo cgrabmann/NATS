@@ -2,6 +2,8 @@ package at.clemens.nats;
 
 import org.andengine.entity.scene.Scene;
 
+import at.alex.nats.Player;
+
 public class EnemyTypeOne extends PEnemy{
 	
 	private final int maxMoveSpeed = 10;
@@ -30,8 +32,8 @@ public class EnemyTypeOne extends PEnemy{
 		float pPosx, pPosy;
 		boolean hit = false;
 		
-		pPosx = player.getposy();
-		pPosy = player.getposx();
+		pPosx = player.getPosX();
+		pPosy = player.getPosY();
 		offsetX = pPosx - super.posx;
 		offsetY = pPosy - super.posy;
 		

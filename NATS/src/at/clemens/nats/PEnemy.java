@@ -5,6 +5,7 @@ import java.util.Random;
 import org.andengine.entity.scene.Scene;
 
 import android.graphics.Canvas;
+import at.alex.nats.Player;
 
 public abstract class PEnemy {
 
@@ -41,7 +42,7 @@ public abstract class PEnemy {
 		}
 	}
 	
-	public abstract void update(Player player, Scene pf);
-	protected abstract void move(Player player);
+	public abstract boolean update(Player player, Scene pf);
+	protected abstract boolean move(Player player);
 
 }
