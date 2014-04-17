@@ -2,11 +2,13 @@ package at.clemens.nats;
 
 import java.util.Random;
 
+import org.andengine.entity.scene.Scene;
+
 import android.graphics.Canvas;
 
 public abstract class PEnemy {
 
-	int posx, posy;
+	float posx, posy;
 	int movex, movey;
 	int size;
 	int speed;
@@ -14,32 +16,32 @@ public abstract class PEnemy {
 	
 	private final int splices = 5;
 
-	public PEnemy(Canvas pf) {
+	public PEnemy(Scene pf) {
 		Random rg = new Random();
 		int spawnControll = rg.nextInt(4);
 		switch (spawnControll){
 		case (0):
-			this.posx = pf.getHeight()/splices;
-			this.posy = pf.getWidth()/splices;
+			this.posx = pf.getX()/splices;
+			this.posy = pf.getY()/splices;
 			break;
 		case (1):
-			this.posx = pf.getHeight()/splices;
-			this.posy = (pf.getWidth()/splices)*(splices-1);
+			this.posx = pf.getX()/splices;
+			this.posy = (pf.getY()/splices)*(splices-1);
 			break;
 		case (2):
-			this.posx = (pf.getHeight()/splices)*(splices-1);
-			this.posy = pf.getWidth()/splices;
+			this.posx = (pf.getX()/splices)*(splices-1);
+			this.posy = pf.getY()/splices;
 			break;
 		case (3):
-			this.posx = (pf.getHeight()/splices)*(splices-1);
-			this.posy = (pf.getWidth()/splices)*(splices-1);
+			this.posx = (pf.getX()/splices)*(splices-1);
+			this.posy = (pf.getY()/splices)*(splices-1);
 			break;
 		default:
 			break;
 		}
 	}
 	
-	public abstract void update(Player player, Canvas pf);
+	public abstract void update(Player player, Scene pf);
 	protected abstract void move(Player player);
 
 }

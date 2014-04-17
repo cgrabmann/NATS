@@ -1,29 +1,35 @@
 package at.clemens.nats;
 
-import android.graphics.Canvas;
-import android.util.Log;
+import org.andengine.entity.scene.Scene;
 
 public class EnemyTypeOne extends PEnemy{
 	
 	private final int maxMoveSpeed = 10;
-	private final int maxHeight, maxWidth;
+	private final float maxHeight, maxWidth;
 
-	public EnemyTypeOne(Canvas pf) {
+	public EnemyTypeOne(Scene pf) {
 		super(pf);
-		super.size = 3;
-		this.maxHeight = pf.getHeight();
-		this.maxWidth = pf.getWidth();
+		super.size = 100;
+		super.movex = 0;
+		super.movey = 0;
+		this.maxHeight = pf.getX();
+		this.maxWidth = pf.getY();
 	}
 
 	@Override
-	public void update(Player player, Canvas pf) {
-		move(player);
+	public boolean update(Player player, Scene pf) {
+		boolean hit = false;
+		hit = move(player);
+		
+		return hit;
 	}
 
 	@Override
-	protected void move(Player player) {
-		int offsetX, offsetY;
-		int pPosx, pPosy;
+	protected boolean move(Player player) {
+		float offsetX, offsetY;
+		float pPosx, pPosy;
+		boolean hit = false;
+		
 		pPosx = player.getposy();
 		pPosy = player.getposx();
 		offsetX = pPosx - super.posx;
@@ -56,14 +62,16 @@ public class EnemyTypeOne extends PEnemy{
 			}
 		}
 		
-		//calculate new X position
+		//calculate new Y position
 		int tempMoveY = (super.movey < 0)?-super.movey:super.movey;
 		for(int i = 0; i > tempMoveY; i++){
 			super.posy += super.movey/tempMoveY;
 			if((super.posy-super.size) == 0 || (super.posy+super.size) == this.maxHeight){
 				super.movey *= -1;
 			}
-		}	
+		}
+		
+		return hit;
 	}
 
 }
