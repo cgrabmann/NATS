@@ -1,6 +1,6 @@
 package at.stefan.nats;
 
-import android.annotation.SuppressLint;
+/*import android.annotation.SuppressLint;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
@@ -103,4 +103,4 @@ public class PauseMenu {
 		return view;
 	}
 	
-}
+}*/

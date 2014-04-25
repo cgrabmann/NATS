@@ -1,6 +1,6 @@
 package at.stefan.nats;
 
-import android.annotation.SuppressLint;
+/*import android.annotation.SuppressLint;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.Gravity;
@@ -91,4 +91,4 @@ public class UpgradeMenu {
 		
 		return view;
 	}
-}
+}*/
