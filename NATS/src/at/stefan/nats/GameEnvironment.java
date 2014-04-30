@@ -3,7 +3,6 @@ package at.stefan.nats;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.TextureOptions;
@@ -21,6 +20,7 @@ public class GameEnvironment {
 
 	nats nats;
 	Camera mainCamera;
+	PauseMenu pauseMenu;
 	SceneManager sceneManager;
 
 	Finals finals;
@@ -38,17 +38,10 @@ public class GameEnvironment {
 	ITextureRegion updateITextureRegion;
 	Sprite updateSprite;
 
-	BitmapTextureAtlas continueBitmapTextureAtlas;
-	ITextureRegion continueITextureRegion;
-	Sprite continueSprite;
-
-	BitmapTextureAtlas quitBitmapTextureAtlas;
-	ITextureRegion quitITextureRegion;
-	Sprite quitSprite;
+	Sprite pause[] = new Sprite[2];
+	Sprite upgrade[] = new Sprite[9];
 
 	Scene game;
-	Scene pause;
-	Scene upgrade;
 
 	public GameEnvironment(nats nats, Camera cam, SceneManager s) {
 		this.nats = nats;
@@ -82,28 +75,13 @@ public class GameEnvironment {
 						nats.getApplicationContext(), "Update.png", 0, 0);
 		updateBitmapTextureAtlas.load();
 
-		continueBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 100, 70, TextureOptions.DEFAULT);
-		continueITextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(continueBitmapTextureAtlas,
-						nats.getApplicationContext(), "Continue.png", 0, 0);
-		continueBitmapTextureAtlas.load();
-
-		quitBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 100, 70, TextureOptions.DEFAULT);
-		quitITextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(quitBitmapTextureAtlas,
-						nats.getApplicationContext(), "Quit.png", 0, 0);
-		quitBitmapTextureAtlas.load();
-		
-		
 	}
 
 	public void loadGameScene() {
 		game = new Scene();
-		
-		pause = new Scene();
-		upgrade = new Scene();
+
+		// pause = new Scene();
+		// upgrade = new Scene();
 
 		game.attachChild(new Entity()); // First Layer
 		game.attachChild(new Entity()); // Second Layer
@@ -124,7 +102,7 @@ public class GameEnvironment {
 				if (pSceneTouchEvent.isActionUp()) {
 					// execute action
 					Log.i("NATS", "Pause");
-					
+					GameEnvironment.this.registerPauseTouch();
 					sceneManager.switchScene(AllScenes.PAUSE);
 				}
 				return true;
@@ -139,41 +117,8 @@ public class GameEnvironment {
 				if (pSceneTouchEvent.isActionUp()) {
 					// execute action
 					Log.i("NATS", "Update");
-					
+					GameEnvironment.this.registerUpgradeTouch();
 					sceneManager.switchScene(AllScenes.UPGRADE);
-				}
-				return true;
-			};
-		};
-
-		continueSprite = new Sprite(nats.getCameraWidth() / 2,
-				nats.getCameraHeight() / 2 - 20, continueITextureRegion,
-				nats.getVertexBufferObjectManager()) {
-			@Override
-			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
-					float Y) {
-				if (pSceneTouchEvent.isActionUp()) {
-					// execute action
-					Log.i("NATS", "Update");
-					hidePauseMenu();
-					hideUpgradeMenu();
-				}
-				return true;
-			};
-		};
-		
-		quitSprite = new Sprite(nats.getCameraWidth() / 2,
-				nats.getCameraHeight() / 2 - 130, quitITextureRegion,
-				nats.getVertexBufferObjectManager()) {
-			@Override
-			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
-					float Y) {
-				if (pSceneTouchEvent.isActionUp()) {
-					// execute action
-					Log.i("NATS", "Update");
-					hidePauseMenu();
-					hideUpgradeMenu();
-					sceneManager.switchScene(AllScenes.MAIN_MENU);
 				}
 				return true;
 			};
@@ -184,10 +129,10 @@ public class GameEnvironment {
 
 		game.getChildByIndex(GAME_LAYER).attachChild(pauseSprite);
 		game.getChildByIndex(GAME_LAYER).attachChild(updateSprite);
-		
-		loadPauseLayer();
-		loadUpgradeLayer();
-		
+
+		// loadPauseLayer();
+		// loadUpgradeLayer();
+
 		game.getChildByIndex(PAUSE_LAYER).setVisible(false);
 		game.getChildByIndex(UPGRADE_LAYER).setVisible(false);
 	}
@@ -199,56 +144,129 @@ public class GameEnvironment {
 	public Scene getGameScene() {
 		return game;
 	}
-	
-	public void hidePauseMenu() {
-		game.getChildByIndex(PAUSE_LAYER).setVisible(false);
-		game.registerTouchArea(continueSprite);
-		game.registerTouchArea(quitSprite);
-	}
-	
-	public void hideUpgradeMenu() {
-		game.getChildByIndex(UPGRADE_LAYER).setVisible(false);
-		game.unregisterTouchArea(continueSprite);
-		game.unregisterTouchArea(quitSprite);
-	}
-	
+
 	public void showPauseMenu() {
+		Log.i("NATS", "showPauseMenu");
 		game.getChildByIndex(PAUSE_LAYER).setVisible(true);
-		game.registerTouchArea(continueSprite);
-		game.registerTouchArea(quitSprite);
+		// game.registerTouchArea(pTouchArea)
 	}
-	
+
+	public void hidePauseMenu() {
+		Log.i("NATS", "hidePauseMenu");
+		game.getChildByIndex(PAUSE_LAYER).setVisible(false);
+		this.unregisterPauseTouch();
+	}
+
 	public void showUpgradeMenu() {
+		Log.i("NATS", "showUpgradeMenu");
 		game.getChildByIndex(UPGRADE_LAYER).setVisible(true);
-		game.registerTouchArea(continueSprite);
-		game.registerTouchArea(quitSprite);
 	}
-	
-	private void loadPauseLayer() {
-		pause.setBackground(new Background(255, 0, 0, 0));
-		
-		pause.attachChild(continueSprite);
-		pause.attachChild(quitSprite);
-		
-		//pause.setBackgroundEnabled(true);
-		pause.setAlpha(0.5f);
-		
-		//pause.registerTouchArea(continueSprite);
-		//pause.registerTouchArea(quitSprite);
-		
-		game.getChildByIndex(PAUSE_LAYER).attachChild(pause);
+
+	public void hideUpgradeMenu() {
+		Log.i("NATS", "hideUpgradeMenu");
+		game.getChildByIndex(UPGRADE_LAYER).setVisible(false);
+		this.unregisterUpgradeTouch();
 	}
-	
-	private void loadUpgradeLayer() {
-		upgrade.setBackground(new Background(0, 255, 0, 255));
-		//upgrade.setBackgroundEnabled(true);
-		upgrade.setAlpha(0.5f);
-		/*upgrade.attachChild(continueSprite);
-		upgrade.attachChild(quitSprite);
-		
-		upgrade.registerTouchArea(continueSprite);
-		upgrade.registerTouchArea(quitSprite);*/
-		
-		game.getChildByIndex(UPGRADE_LAYER).attachChild(upgrade);
+
+	public void registerPauseTouch() {
+		game.registerTouchArea(pause[0]);
+		game.registerTouchArea(pause[1]);
 	}
+
+	public void unregisterPauseTouch() {
+		game.unregisterTouchArea(pause[0]);
+		game.unregisterTouchArea(pause[1]);
+	}
+
+	public void registerUpgradeTouch() {
+		game.registerTouchArea(upgrade[0]);
+		game.registerTouchArea(upgrade[1]);
+		game.registerTouchArea(upgrade[2]);
+		game.registerTouchArea(upgrade[3]);
+		game.registerTouchArea(upgrade[4]);
+		game.registerTouchArea(upgrade[5]);
+		game.registerTouchArea(upgrade[6]);
+		game.registerTouchArea(upgrade[7]);
+		game.registerTouchArea(upgrade[8]);
+	}
+
+	public void unregisterUpgradeTouch() {
+		game.unregisterTouchArea(upgrade[0]);
+		game.unregisterTouchArea(upgrade[1]);
+		game.unregisterTouchArea(upgrade[2]);
+		game.unregisterTouchArea(upgrade[3]);
+		game.unregisterTouchArea(upgrade[4]);
+		game.unregisterTouchArea(upgrade[5]);
+		game.unregisterTouchArea(upgrade[6]);
+		game.unregisterTouchArea(upgrade[7]);
+		game.unregisterTouchArea(upgrade[8]);
+	}
+
+	public void attachPauseMenu(Scene pauseMenu) {
+		game.getChildByIndex(PAUSE_LAYER).attachChild(pauseMenu);
+	}
+
+	public void attachUpgradeMenu(Scene upgradeMenu) {
+		game.getChildByIndex(UPGRADE_LAYER).attachChild(upgradeMenu);
+	}
+
+	public void setPauseReference(Sprite con, Sprite quit) {
+		this.pause[0] = con;
+		this.pause[1] = quit;
+	}
+
+	public void setUpgradeReference(Sprite a, Sprite b, Sprite c, Sprite d,
+			Sprite e, Sprite f, Sprite g, Sprite h, Sprite i) {
+		this.upgrade[0] = a;
+		this.upgrade[1] = b;
+		this.upgrade[2] = c;
+		this.upgrade[3] = d;
+		this.upgrade[4] = e;
+		this.upgrade[5] = f;
+		this.upgrade[6] = g;
+		this.upgrade[7] = h;
+		this.upgrade[8] = i;
+	}
+
+	/*
+	 * public void hideUpgradeMenu() {
+	 * game.getChildByIndex(UPGRADE_LAYER).setVisible(false);
+	 * game.unregisterTouchArea(continueSprite);
+	 * game.unregisterTouchArea(quitSprite); }
+	 * 
+	 * 
+	 * 
+	 * public void showUpgradeMenu() {
+	 * game.getChildByIndex(UPGRADE_LAYER).setVisible(true);
+	 * game.registerTouchArea(continueSprite);
+	 * game.registerTouchArea(quitSprite); }
+	 */
+
+	/*
+	 * private void loadPauseLayer() { pause.setBackground(new Background(255,
+	 * 0, 0, 0));
+	 * 
+	 * pause.attachChild(continueSprite); pause.attachChild(quitSprite);
+	 * 
+	 * //pause.setBackgroundEnabled(true); pause.setAlpha(0.5f);
+	 * 
+	 * //pause.registerTouchArea(continueSprite);
+	 * //pause.registerTouchArea(quitSprite);
+	 * 
+	 * game.getChildByIndex(PAUSE_LAYER).attachChild(pause); }
+	 */
+
+	/*
+	 * private void loadUpgradeLayer() { upgrade.setBackground(new Background(0,
+	 * 255, 0, 255)); //upgrade.setBackgroundEnabled(true);
+	 * upgrade.setAlpha(0.5f); /*upgrade.attachChild(continueSprite);
+	 * upgrade.attachChild(quitSprite);
+	 * 
+	 * upgrade.registerTouchArea(continueSprite);
+	 * upgrade.registerTouchArea(quitSprite);
+	 */
+
+	/*
+	 * game.getChildByIndex(UPGRADE_LAYER).attachChild(upgrade); }
+	 */
 }

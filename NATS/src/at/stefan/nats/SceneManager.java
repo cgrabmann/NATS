@@ -19,6 +19,8 @@ public class SceneManager {
 	Highscores highscores;
 	Settings settings;
 	GameEnvironment gameEnvironment;
+	PauseMenu pauseMenu;
+	UpgradeMenu upgradeMenu;
 	
 	Scene splashScene;
 	
@@ -72,6 +74,7 @@ public class SceneManager {
 	public void switchScene(AllScenes scenes) {
 		if(scenes == AllScenes.MAIN_MENU) {
 			mEngine.setScene(mainMenu.getMainMenuScene());
+			//pauseMenu.unregisterTouch();
 			currentScene = AllScenes.MAIN_MENU;
 		}else if(scenes == AllScenes.NEW_GAME) {
 			mEngine.setScene(gameEnvironment.getGameScene());
@@ -84,6 +87,7 @@ public class SceneManager {
 			currentScene = AllScenes.SETTINGS;
 		}else if(scenes == AllScenes.PAUSE) {
 			gameEnvironment.showPauseMenu();
+			//pauseMenu.registerTouch();
 			currentScene = AllScenes.PAUSE;
 		}else if(scenes == AllScenes.UPGRADE) {
 			gameEnvironment.showUpgradeMenu();
@@ -96,15 +100,21 @@ public class SceneManager {
 		highscores = new Highscores(nats, mainCamera);
 		settings = new Settings(nats, mainCamera);
 		gameEnvironment = new GameEnvironment(nats, mainCamera, this);
+		pauseMenu = new PauseMenu(nats, mainCamera, gameEnvironment, this);
+		upgradeMenu = new UpgradeMenu(nats, mainCamera, gameEnvironment, this);
 		
 		mainMenu.loadMainMenuResources();
 		highscores.loadHighscoreResources();
 		settings.loadSettingsResources();
 		gameEnvironment.loadGameResources();
+		pauseMenu.loadPauseResources();
+		upgradeMenu.loadUpgradeResources();
 		
 		mainMenu.loadMainMenuScene();
 		highscores.loadHighscoreScene();
 		settings.loadSettingsScene();
 		gameEnvironment.loadGameScene();
+		pauseMenu.loadPauseScene();
+		upgradeMenu.loadUpgradeScene();
 	}
 }
