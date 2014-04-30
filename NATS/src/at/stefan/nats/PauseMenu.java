@@ -1,6 +1,129 @@
 package at.stefan.nats;
 
-import android.annotation.SuppressLint;
+import org.andengine.engine.camera.Camera;
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
+
+import at.stefan.nats.SceneManager.AllScenes;
+
+public class PauseMenu extends Scene {
+	
+	boolean touch = false;
+	
+	nats nats;
+	Camera mainCamera;
+	GameEnvironment gameEnvironment;
+	SceneManager sceneManager;
+	
+	BitmapTextureAtlas continueBitmapTextureAtlas;
+	ITextureRegion continueITextureRegion;
+	Sprite continueSprite;
+
+	BitmapTextureAtlas quitBitmapTextureAtlas;
+	ITextureRegion quitITextureRegion;
+	Sprite quitSprite;
+	
+	public PauseMenu(nats nats, Camera cam, GameEnvironment ge, SceneManager s) {
+		this.nats = nats;
+		this.mainCamera = cam;
+		this.gameEnvironment = ge;
+		this.sceneManager = s;
+		
+		this.setBackground(new Background(0, 0, 255));
+	}
+	
+	public void loadPauseResources() {
+		continueBitmapTextureAtlas = new BitmapTextureAtlas(
+				nats.getTextureManager(), 100, 70, TextureOptions.DEFAULT);
+		continueITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(continueBitmapTextureAtlas,
+						nats.getApplicationContext(), "Continue.png", 0, 0);
+		continueBitmapTextureAtlas.load();
+
+		quitBitmapTextureAtlas = new BitmapTextureAtlas(
+				nats.getTextureManager(), 100, 70, TextureOptions.DEFAULT);
+		quitITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(quitBitmapTextureAtlas,
+						nats.getApplicationContext(), "Quit.png", 0, 0);
+		quitBitmapTextureAtlas.load();
+	}
+	
+	public void loadPauseScene() {
+		continueSprite = new Sprite(nats.getCameraWidth() / 2,
+				nats.getCameraHeight() / 2 - 20, continueITextureRegion,
+				nats.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
+					float Y) {
+				if (pSceneTouchEvent.isActionUp()) {
+					// execute action
+					//Log.i("NATS", "Update");
+					//hidePauseMenu();
+					//hideUpgradeMenu();
+					gameEnvironment.hidePauseMenu();
+				}
+				return true;
+			};
+		};
+		
+		quitSprite = new Sprite(nats.getCameraWidth() / 2,
+				nats.getCameraHeight() / 2 - 130, quitITextureRegion,
+				nats.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
+					float Y) {
+				if (pSceneTouchEvent.isActionUp()) {
+					// execute action
+					//Log.i("NATS", "Update");
+					//hidePauseMenu();
+					//hideUpgradeMenu();
+					gameEnvironment.hidePauseMenu();
+					sceneManager.switchScene(AllScenes.MAIN_MENU);
+				}
+				return true;
+			};
+		};
+		
+		this.attachChild(continueSprite);
+		this.attachChild(quitSprite);
+		
+		//gameEnvironment.registerTouchArea(continueSprite);
+		//this.registerTouchArea(quitSprite);
+		gameEnvironment.attachPauseMenu(this);
+		gameEnvironment.setPauseReference(continueSprite, quitSprite);
+		
+		
+	}
+	
+	/*public void registerTouch() {
+		gameEnvironment.registerPauseTouch();
+		this.touch = true;
+	}
+	
+	public void unregisterTouch() {
+		if(this.touch == true) {
+			gameEnvironment.unregisterPauseTouch();
+			this.touch = false;
+		}
+	}*/
+	
+	/*public boolean getTouch() {
+		return touch;
+	}
+	
+	public void setTouch(boolean t) {
+		this.touch = t;
+	}*/
+	
+}
+
+/*import android.annotation.SuppressLint;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
@@ -103,4 +226,4 @@ public class PauseMenu {
 		return view;
 	}
 	
-}
+}*/

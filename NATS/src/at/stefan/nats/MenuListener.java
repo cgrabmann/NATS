@@ -1,14 +1,82 @@
 package at.stefan.nats;
 
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.PopupWindow;
+import org.andengine.entity.scene.menu.MenuScene;
+import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
+import org.andengine.entity.scene.menu.item.IMenuItem;
 
-public class MenuListener implements OnClickListener {
+import android.util.Log;
+import at.stefan.nats.SceneManager.AllScenes;
+
+
+public class MenuListener implements IOnMenuItemClickListener {
 	
+	Finals finals;
 	nats nats;
+	SceneManager sceneManager;
+	
+	public MenuListener(nats nats, SceneManager s) {
+		finals = new Finals();
+		this.nats = nats;
+		this.sceneManager = s;
+	}
+
+	@Override
+	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
+			float pMenuItemLocalX, float pMenuItemLocalY) {
+		
+		if(pMenuItem.getID() == finals.new_game()) {
+			Log.i("NATS", "new game");
+			sceneManager.switchScene(AllScenes.NEW_GAME);
+			//return true;
+		}else if(pMenuItem.getID() == finals.highscores()) {
+			Log.i("NATS", "highscores");
+			sceneManager.switchScene(AllScenes.HIGHSCORES);
+			//return true;
+		}else if(pMenuItem.getID() == finals.settings()) {
+			Log.i("NATS", "settings");
+			sceneManager.switchScene(AllScenes.SETTINGS);
+			//return true;
+		}else if(pMenuItem.getID() == finals.exit_game()) {
+			Log.i("NATS", "exit game");
+			//nats.onDestroy();
+			nats.finish();
+			//return true;
+		}
+		
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*@Override
+	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY)
+	{
+	    handleButtonActions();
+	    
+	    switch(pMenuItem.getID())
+	    {
+	        case 0:
+	            //action
+	            return true;
+	        case 1:
+	            //action
+	            return true;
+	        default:
+	            return false;
+	    }
+	}*/
+	
+	/*nats nats;
 	Button new_game, highscores, settings, exit, pause, upgrade, con, quit;
 	PopupWindow popup;
 	
@@ -63,6 +131,6 @@ public class MenuListener implements OnClickListener {
 			popup.dismiss();
 		}
 		
-	}
+	}*/
 
 }
