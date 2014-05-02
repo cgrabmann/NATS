@@ -39,7 +39,7 @@ public class Highscores {
 				nats.getTextureManager(), 800, 480, TextureOptions.DEFAULT);
 		highscoresITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(highscoresBitmapTextureAtlas,
-						nats.getApplicationContext(), "Weltraum.png", 0, 0);
+						nats.getApplicationContext(), "MainMenu.jpg", 0, 0);
 		highscoresBitmapTextureAtlas.load();
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("titles/");
