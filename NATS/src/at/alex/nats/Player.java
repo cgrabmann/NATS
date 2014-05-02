@@ -1,56 +1,58 @@
 package at.alex.nats;
 
-import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
 
 public class Player {
-	private long time;
 	private int ressources;
 	private int permanents[] = new int[5];
 	private int usables[] = new int[4];
-	private int posX, posY;
-	private int speedX, speedY = 0;
-	BaseGameActivity baseGame;
+	private float posX, posY;
+	private float speed = 0;
+	private float velX, velY;
 	
-	public Player(BaseGameActivity baseGame) {
-		this.baseGame = baseGame;
+	public Player(Scene scene, Sprite playerSprite) {
+		this.ressources = 0;
 		for (int i = 0; i <= 3; i++) {
-			usables[i] = 0;
-			permanents[i] = 0;
+			this.usables[i] = 0;
+			this.permanents[i] = 0;
 		}
-		permanents[4] = 0;
-		usables[0] = 2;
-		usables[1] = 1;
+		this.permanents[4] = 0;
+		this.usables[0] = 2;
+		this.usables[1] = 1;
+		this.posX = scene.getHeight()/2 - (playerSprite.getHeight()/2);
+		this.posY = scene.getWidth()/2 - (playerSprite.getWidth()/2);
 	}
 	
-	public int[] getPermanents() {
-		return this.permanents;
+	public int getPermanents(int pos) {
+		return this.permanents[pos];
 	}
 
-	public void setPermanents(int[] permanents) {
-		this.permanents = permanents;
+	public void setPermanents(int value, int pos) {
+		this.permanents[pos] = value;
 	}
 
-	public int[] getUsables() {
-		return this.usables;
+	public int getUsables(int pos) {
+		return this.usables[pos];
 	}
 
-	public void setUsables(int[] usables) {
-		this.usables = usables;
+	public void setUsables(int value, int pos) {
+		this.usables[pos] = value;
 	}
 
-	public int getPosX() {
+	public float getPosX() {
 		return this.posX;
 	}
 
-	public void setPosX(int posX) {
+	public void setPosX(float posX) {
 		this.posX = posX;
 	}
 
-	public int getPosY() {
+	public float getPosY() {
 		return this.posY;
 	}
 
-	public void setPosY(int posY) {
+	public void setPosY(float posY) {
 		this.posY = posY;
 	}
 
@@ -62,16 +64,11 @@ public class Player {
 		return this.ressources;
 	}
 	
-
-	
-	public void setSpeedX() {
-		speedX = 4;
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}
 	
-	public void setSpeedY() {
-		speedY = 4;
+	public float getSpeed(){
+		return this.speed;
 	}
-	
-	
-	
 }
