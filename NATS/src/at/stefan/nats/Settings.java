@@ -39,7 +39,7 @@ public class Settings {
 				nats.getTextureManager(), 800, 480, TextureOptions.DEFAULT);
 		settingsITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(settingsBitmapTextureAtlas,
-						nats.getApplicationContext(), "Weltraum.png", 0, 0);
+						nats.getApplicationContext(), "MainMenu.jpg", 0, 0);
 		settingsBitmapTextureAtlas.load();
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("titles/");

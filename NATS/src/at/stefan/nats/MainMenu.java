@@ -16,13 +16,13 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.region.ITextureRegion;
 
 public class MainMenu {
-	
+
 	nats nats;
 	Camera mainCamera;
-	
+
 	Finals finals;
 	MenuListener menuListener;
-	
+
 	BuildableBitmapTextureAtlas newGameBuildableBitmapTextureAtlas;
 	ITextureRegion newGameITextureRegion;
 	ITextureRegion highscoresITextureRegion;
@@ -32,17 +32,17 @@ public class MainMenu {
 	BitmapTextureAtlas mainMenuBitmapTextureAtlas;
 	ITextureRegion mainMenuITextureRegion;
 	Sprite mainMenuSprite;
-	
+
 	MenuScene mainScene;
-	
+
 	public MainMenu(nats nats, Camera mainCamera, SceneManager sceneManager) {
 		this.nats = nats;
 		this.mainCamera = mainCamera;
-		
+
 		finals = new Finals();
 		menuListener = new MenuListener(nats, sceneManager);
 	}
-	
+
 	public void loadMainMenuResources() {
 		// TODO Auto-generated method stub
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("backgrounds/");
@@ -50,7 +50,7 @@ public class MainMenu {
 				nats.getTextureManager(), 800, 480, TextureOptions.DEFAULT);
 		mainMenuITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(mainMenuBitmapTextureAtlas,
-						nats.getApplicationContext(), "Weltraum.png", 0, 0);
+						nats.getApplicationContext(), "MainMenu.jpg", 0, 0);
 		mainMenuBitmapTextureAtlas.load();
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("buttons/");
@@ -58,7 +58,7 @@ public class MainMenu {
 				nats.getTextureManager(), 400, 400, TextureOptions.DEFAULT);
 		newGameITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(newGameBuildableBitmapTextureAtlas,
-						nats.getApplicationContext(), "New_Game.png");
+						nats.getApplicationContext(), "NewGame.png");
 		highscoresITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(newGameBuildableBitmapTextureAtlas,
 						nats.getApplicationContext(), "Highscores.png");
@@ -67,7 +67,7 @@ public class MainMenu {
 						nats.getApplicationContext(), "Settings.png");
 		exitGameITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(newGameBuildableBitmapTextureAtlas,
-						nats.getApplicationContext(), "Exit_Game.png");
+						nats.getApplicationContext(), "ExitGame.png");
 
 		try {
 			this.newGameBuildableBitmapTextureAtlas
@@ -79,22 +79,24 @@ public class MainMenu {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void loadMainMenuScene() {
 		// TODO Auto-generated method stub
 
 		mainScene = new MenuScene(mainCamera);
-		mainMenuSprite = new Sprite(nats.getCameraWidth() / 2, nats.getCameraHeight() / 2,
-				mainMenuITextureRegion, nats.getVertexBufferObjectManager());
+		mainMenuSprite = new Sprite(nats.getCameraWidth() / 2,
+				nats.getCameraHeight() / 2, mainMenuITextureRegion,
+				nats.getVertexBufferObjectManager());
 		mainScene.attachChild(mainMenuSprite);
-		//mainScene.setBackground(new Background(0, 255, 0));
-		//mainScene.setPosition(0, 0);
+		// mainScene.setBackground(new Background(0, 255, 0));
+		// mainScene.setPosition(0, 0);
 
 		final IMenuItem new_game = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(finals.new_game(), newGameITextureRegion,
 						nats.getVertexBufferObjectManager()), 1.2f, 1);
 		final IMenuItem highscores = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(finals.highscores(), highscoresITextureRegion,
+				new SpriteMenuItem(finals.highscores(),
+						highscoresITextureRegion,
 						nats.getVertexBufferObjectManager()), 1.2f, 1);
 		final IMenuItem settings = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(finals.settings(), settingsITextureRegion,
@@ -111,21 +113,21 @@ public class MainMenu {
 		mainScene.buildAnimations();
 		mainScene.setBackgroundEnabled(true);
 
-		new_game.setPosition(400, 400);
-		highscores.setPosition(400, 300);
-		settings.setPosition(400, 200);
-		exit_game.setPosition(400, 100);
+		new_game.setPosition(600, 400);
+		highscores.setPosition(600, 300);
+		settings.setPosition(600, 200);
+		exit_game.setPosition(600, 100);
 
 		mainScene.setOnMenuItemClickListener(menuListener);
 
-		//mainScene.setChildScene(mainScene);
+		// mainScene.setChildScene(mainScene);
 	}
-	
+
 	public void removeMainScene() {
-		//mainScene.detachChild(pEntity)
+		// mainScene.detachChild(pEntity)
 		mainScene.detachChild(mainMenuSprite);
 	}
-	
+
 	public MenuScene getMainMenuScene() {
 		return mainScene;
 	}

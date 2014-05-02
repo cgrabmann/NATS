@@ -73,6 +73,9 @@ public class ProgressBar extends Entity {
 					(this.y - this.height / 2), 3,
 					(VertexBufferObjectManager) null);
 		}
+		
+		bgRectangle.setColor(new Color(255, 0, 0));
+		fgRectangle.setColor(new Color(0, 255, 0));
 
 	}
 
@@ -118,7 +121,9 @@ public class ProgressBar extends Entity {
 	}
 
 	public void setProgress(int progress) {
-		this.progress = progress;
+		if(progress < this.intervall) {
+			this.progress = progress;
+		}
 		fgRectangle.setWidth(this.width / this.intervall * this.progress);
 		if (this.version == AndEngine.GLES2_AnchorCenter) {
 			fgRectangle.setPosition((this.x - this.width / 2 + (this.width
@@ -128,7 +133,9 @@ public class ProgressBar extends Entity {
 	}
 
 	public void increaseProgress() {
-		this.progress++;
+		if(this.progress < this.intervall) {
+			this.progress++;
+		}
 		fgRectangle.setWidth(this.width / this.intervall * this.progress);
 		if (this.version == AndEngine.GLES2_AnchorCenter) {
 			fgRectangle.setPosition((this.x - this.width / 2 + (this.width

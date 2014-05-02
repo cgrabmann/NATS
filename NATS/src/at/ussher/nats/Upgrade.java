@@ -4,6 +4,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import at.alex.nats.Player;
+import at.stefan.nats.nats;
 
 public class Upgrade implements OnClickListener{
 	//User user; //User object
@@ -34,7 +36,7 @@ public class Upgrade implements OnClickListener{
 	public Upgrade(nats nats,Player player){
 		this.nats = nats;
 		this.player = player;
-		bombR = (Button) nats.findViewById(R.id.bomb);
+		/*bombR = (Button) nats.findViewById(R.id.bomb);
 		turboR = (Button) nats.findViewById(R.id.turbo);
 		gunnerR = (Button) nats.findViewById(R.id.gunner);
 		move_speedR = (Button) nats.findViewById(R.id.move_speed);
@@ -52,7 +54,7 @@ public class Upgrade implements OnClickListener{
 		stasis_fieldR.setOnClickListener(this);
 		shot_frequenceR.setOnClickListener(this);
 		shot_spreadingR.setOnClickListener(this);
-		deadly_trailR.setOnClickListener(this);
+		deadly_trailR.setOnClickListener(this);*/
 		setValues();
 	}
 	

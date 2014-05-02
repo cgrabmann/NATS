@@ -2,15 +2,20 @@ package at.stefan.nats;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 
+import android.graphics.Typeface;
 import at.stefan.nats.ProgressBar.AndEngine;
 import at.stefan.nats.SceneManager.AllScenes;
 
@@ -23,10 +28,11 @@ public class UpgradeMenu extends Scene {
 	GameEnvironment gameEnvironment;
 	SceneManager sceneManager;
 
-	/*
-	 * BitmapTextureAtlas infoBitmapTextureAtlas; ITextureRegion
-	 * infoITextureRegion; Sprite infoSprite;
-	 */
+	Font myFont;
+
+	BitmapTextureAtlas backgroundBitmapTextureAtlas;
+	ITextureRegion backgroundITextureRegion;
+	Sprite backgroundSprite;
 
 	BitmapTextureAtlas movespeedBitmapTextureAtlas;
 	ITextureRegion movespeedITextureRegion;
@@ -56,22 +62,24 @@ public class UpgradeMenu extends Scene {
 	BitmapTextureAtlas stasisfieldBitmapTextureAtlas;
 	ITextureRegion stasisfieldITextureRegion;
 	Sprite stasisfieldSprite;
-	ProgressBar stasisfieldProgressBar;
+	BitmapTextureAtlas stasisfieldCounterBitmapTextureAtlas;
+	ITextureRegion stasisfieldCounterITextureRegion;
+	Text stasisfieldText;
 
 	BitmapTextureAtlas turboBitmapTextureAtlas;
 	ITextureRegion turboITextureRegion;
 	Sprite turboSprite;
-	ProgressBar turboProgressBar;
+	Text turboText;
 
 	BitmapTextureAtlas deadlytrailBitmapTextureAtlas;
 	ITextureRegion deadlytrailITextureRegion;
 	Sprite deadlytrailSprite;
-	ProgressBar deadlytrailProgressBar;
+	Text deadlytrailText;
 
 	BitmapTextureAtlas bombBitmapTextureAtlas;
 	ITextureRegion bombITextureRegion;
 	Sprite bombSprite;
-	ProgressBar bombProgressBar;
+	Text bombText;
 
 	public UpgradeMenu(nats nats, Camera cam, GameEnvironment ge, SceneManager s) {
 		this.nats = nats;
@@ -79,10 +87,19 @@ public class UpgradeMenu extends Scene {
 		this.gameEnvironment = ge;
 		this.sceneManager = s;
 
-		this.setBackground(new Background(255, 0, 0));
+		// this.setBackground(new Background(255, 0, 0));
+		this.setBackgroundEnabled(false);
 	}
 
 	public void loadUpgradeResources() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+
+		backgroundBitmapTextureAtlas = new BitmapTextureAtlas(
+				nats.getTextureManager(), 800, 480, TextureOptions.DEFAULT);
+		backgroundITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(backgroundBitmapTextureAtlas,
+						nats.getApplicationContext(), "Grau.png", 0, 0);
+		backgroundBitmapTextureAtlas.load();
 
 		movespeedBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
@@ -93,9 +110,9 @@ public class UpgradeMenu extends Scene {
 		movespeedProgressBar = new ProgressBar(250,
 				nats.getCameraHeight() - 70, 200, 20,
 				AndEngine.GLES2_AnchorCenter);
-		movespeedProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
-		movespeedProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
-		movespeedProgressBar.setIntervall(4);
+		// movespeedProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
+		// movespeedProgressBar.setForeGroundColor(new Color(0.0f, 0.0f, 1.0f));
+		movespeedProgressBar.setIntervall(5);
 		// movespeedProgressBar.show();
 
 		gunnerBitmapTextureAtlas = new BitmapTextureAtlas(
@@ -104,11 +121,10 @@ public class UpgradeMenu extends Scene {
 				.createFromAsset(gunnerBitmapTextureAtlas,
 						nats.getApplicationContext(), "100.png", 0, 0);
 		gunnerBitmapTextureAtlas.load();
-		gunnerProgressBar = new ProgressBar(250,
-				nats.getCameraHeight() - 190, 200, 20,
-				AndEngine.GLES2_AnchorCenter);
-		gunnerProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
-		gunnerProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
+		gunnerProgressBar = new ProgressBar(250, nats.getCameraHeight() - 190,
+				200, 20, AndEngine.GLES2_AnchorCenter);
+		// gunnerProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
+		// gunnerProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 1.0f));
 		gunnerProgressBar.setIntervall(5);
 
 		shieldBitmapTextureAtlas = new BitmapTextureAtlas(
@@ -117,12 +133,11 @@ public class UpgradeMenu extends Scene {
 				.createFromAsset(shieldBitmapTextureAtlas,
 						nats.getApplicationContext(), "100.png", 0, 0);
 		shieldBitmapTextureAtlas.load();
-		shieldProgressBar = new ProgressBar(250,
-				170, 200, 20,
+		shieldProgressBar = new ProgressBar(250, 170, 200, 20,
 				AndEngine.GLES2_AnchorCenter);
-		shieldProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
-		shieldProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
-		shieldProgressBar.setIntervall(6);
+		// shieldProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
+		// shieldProgressBar.setForeGroundColor(new Color(1.0f, 1.0f, 1.0f));
+		shieldProgressBar.setIntervall(5);
 
 		shotfrequenceBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
@@ -130,12 +145,14 @@ public class UpgradeMenu extends Scene {
 				.createFromAsset(shotfrequenceBitmapTextureAtlas,
 						nats.getApplicationContext(), "100.png", 0, 0);
 		shotfrequenceBitmapTextureAtlas.load();
-		shotfrequenceProgressBar = new ProgressBar(nats.getCameraWidth()-150,
+		shotfrequenceProgressBar = new ProgressBar(nats.getCameraWidth() - 150,
 				nats.getCameraHeight() - 70, 200, 20,
 				AndEngine.GLES2_AnchorCenter);
-		shotfrequenceProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
-		shotfrequenceProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
-		shotfrequenceProgressBar.setIntervall(7);
+		// shotfrequenceProgressBar.setBackGroundColor(new Color(0.0f, 1.0f,
+		// 0.0f));
+		// shotfrequenceProgressBar.setForeGroundColor(new Color(0.0f, 1.0f,
+		// 1.0f));
+		shotfrequenceProgressBar.setIntervall(5);
 
 		shotspreadingBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
@@ -143,12 +160,19 @@ public class UpgradeMenu extends Scene {
 				.createFromAsset(shotspreadingBitmapTextureAtlas,
 						nats.getApplicationContext(), "100.png", 0, 0);
 		shotspreadingBitmapTextureAtlas.load();
-		shotspreadingProgressBar = new ProgressBar(nats.getCameraWidth()-150,
+		shotspreadingProgressBar = new ProgressBar(nats.getCameraWidth() - 150,
 				nats.getCameraHeight() - 190, 200, 20,
 				AndEngine.GLES2_AnchorCenter);
-		shotspreadingProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
-		shotspreadingProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
-		shotspreadingProgressBar.setIntervall(8);
+		// shotspreadingProgressBar.setBackGroundColor(new Color(0.0f, 1.0f,
+		// 0.0f));
+		// shotspreadingProgressBar.setForeGroundColor(new Color(0.5f, 0.5f,
+		// 0.5f));
+		shotspreadingProgressBar.setIntervall(5);
+
+		myFont = FontFactory.create(nats.getFontManager(),
+				nats.getTextureManager(), 256, 256,
+				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32);
+		myFont.load();
 
 		stasisfieldBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
@@ -156,6 +180,8 @@ public class UpgradeMenu extends Scene {
 				.createFromAsset(stasisfieldBitmapTextureAtlas,
 						nats.getApplicationContext(), "100.png", 0, 0);
 		stasisfieldBitmapTextureAtlas.load();
+		stasisfieldText = new Text(100, 100, myFont, "2", new TextOptions(
+				HorizontalAlign.CENTER), nats.getVertexBufferObjectManager());
 
 		turboBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
@@ -163,6 +189,8 @@ public class UpgradeMenu extends Scene {
 				.createFromAsset(turboBitmapTextureAtlas,
 						nats.getApplicationContext(), "100.png", 0, 0);
 		turboBitmapTextureAtlas.load();
+		turboText = new Text(200, 200, myFont, "1", new TextOptions(
+				HorizontalAlign.CENTER), nats.getVertexBufferObjectManager());
 
 		deadlytrailBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
@@ -170,17 +198,26 @@ public class UpgradeMenu extends Scene {
 				.createFromAsset(deadlytrailBitmapTextureAtlas,
 						nats.getApplicationContext(), "100.png", 0, 0);
 		deadlytrailBitmapTextureAtlas.load();
-		
+		deadlytrailText = new Text(300, 300, myFont, "0", new TextOptions(
+				HorizontalAlign.CENTER), nats.getVertexBufferObjectManager());
+
 		bombBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		bombITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(bombBitmapTextureAtlas,
 						nats.getApplicationContext(), "100.png", 0, 0);
 		bombBitmapTextureAtlas.load();
-		
+		bombText = new Text(400, 400, myFont, "2", new TextOptions(
+				HorizontalAlign.CENTER), nats.getVertexBufferObjectManager());
+
 	}
 
 	public void loadUpgradeScene() {
+
+		backgroundSprite = new Sprite(nats.getCameraWidth() / 2,
+				nats.getCameraHeight() / 2, backgroundITextureRegion,
+				nats.getVertexBufferObjectManager());
+		backgroundSprite.setAlpha(0.4f);
 
 		movespeedSprite = new Sprite(100, nats.getCameraHeight() - 70,
 				movespeedITextureRegion, nats.getVertexBufferObjectManager()) {
@@ -189,7 +226,7 @@ public class UpgradeMenu extends Scene {
 					float Y) {
 				if (pSceneTouchEvent.isActionUp()) {
 					movespeedProgressBar.increaseProgress();
-					//gameEnvironment.hideUpgradeMenu();
+					// gameEnvironment.hideUpgradeMenu();
 				}
 				return true;
 			};
@@ -202,8 +239,8 @@ public class UpgradeMenu extends Scene {
 					float Y) {
 				if (pSceneTouchEvent.isActionUp()) {
 					gunnerProgressBar.increaseProgress();
-					//gameEnvironment.hideUpgradeMenu();
-					//sceneManager.switchScene(AllScenes.MAIN_MENU);
+					// gameEnvironment.hideUpgradeMenu();
+					// sceneManager.switchScene(AllScenes.MAIN_MENU);
 				}
 				return true;
 			};
@@ -216,7 +253,7 @@ public class UpgradeMenu extends Scene {
 					float Y) {
 				if (pSceneTouchEvent.isActionUp()) {
 					shieldProgressBar.increaseProgress();
-					//gameEnvironment.hideUpgradeMenu();
+					// gameEnvironment.hideUpgradeMenu();
 				}
 				return true;
 			};
@@ -230,8 +267,8 @@ public class UpgradeMenu extends Scene {
 					float Y) {
 				if (pSceneTouchEvent.isActionUp()) {
 					shotfrequenceProgressBar.increaseProgress();
-					//gameEnvironment.hideUpgradeMenu();
-					//sceneManager.switchScene(AllScenes.MAIN_MENU);
+					// gameEnvironment.hideUpgradeMenu();
+					// sceneManager.switchScene(AllScenes.MAIN_MENU);
 				}
 				return true;
 			};
@@ -245,7 +282,7 @@ public class UpgradeMenu extends Scene {
 					float Y) {
 				if (pSceneTouchEvent.isActionUp()) {
 					shotspreadingProgressBar.increaseProgress();
-					//gameEnvironment.hideUpgradeMenu();
+					// gameEnvironment.hideUpgradeMenu();
 				}
 				return true;
 			};
@@ -301,6 +338,7 @@ public class UpgradeMenu extends Scene {
 			};
 		};
 
+		this.attachChild(backgroundSprite);
 		this.attachChild(movespeedSprite);
 		movespeedProgressBar.attach(this);
 		this.attachChild(gunnerSprite);
@@ -312,6 +350,7 @@ public class UpgradeMenu extends Scene {
 		this.attachChild(shotspreadingSprite);
 		shotspreadingProgressBar.attach(this);
 		this.attachChild(stasisfieldSprite);
+		this.attachChild(stasisfieldText);
 		this.attachChild(turboSprite);
 		this.attachChild(deadlytrailSprite);
 		this.attachChild(bombSprite);
