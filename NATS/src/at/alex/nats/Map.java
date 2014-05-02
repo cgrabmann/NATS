@@ -24,7 +24,7 @@ import at.stefan.nats.SceneManager;
 import at.stefan.nats.SceneManager.AllScenes;
 import at.stefan.nats.nats;
 
-public class map extends Scene implements IAnalogOnScreenControlListener {
+public class Map extends Scene implements IAnalogOnScreenControlListener {
 	//3 verschiedene Layer
 	private final int GAME_LAYER = 0;
 	private final int PAUSE_LAYER = 1;
@@ -76,7 +76,7 @@ public class map extends Scene implements IAnalogOnScreenControlListener {
 	Sprite pause[] = new Sprite[2];
 	Sprite upgrade[] = new Sprite[9];
 
-	public map(nats nats, Camera cam, SceneManager s) {
+	public Map(nats nats, Camera cam, SceneManager s) {
 		this.nats = nats;
 		this.mainCamera = cam;
 		this.sceneManager = s;
@@ -161,7 +161,7 @@ public class map extends Scene implements IAnalogOnScreenControlListener {
 				if (pSceneTouchEvent.isActionUp()) {
 					// execute action
 					Log.i("NATS", "Pause");
-					map.this.registerPauseTouch();
+					Map.this.registerPauseTouch();
 					sceneManager.switchScene(AllScenes.PAUSE);
 				}
 				return true;
@@ -178,7 +178,7 @@ public class map extends Scene implements IAnalogOnScreenControlListener {
 				if (pSceneTouchEvent.isActionUp()) {
 					// execute action
 					Log.i("NATS", "Update");
-					map.this.registerUpgradeTouch();
+					Map.this.registerUpgradeTouch();
 					sceneManager.switchScene(AllScenes.UPGRADE);
 				}
 				return true;
