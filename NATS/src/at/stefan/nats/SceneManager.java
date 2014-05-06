@@ -9,6 +9,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
+import at.alex.nats.Player;
+
 public class SceneManager {
 	
 	nats nats;
@@ -18,6 +20,7 @@ public class SceneManager {
 	MainMenu mainMenu;
 	Highscores highscores;
 	Settings settings;
+	Player player;
 	GameEnvironment gameEnvironment;
 	PauseMenu pauseMenu;
 	UpgradeMenu upgradeMenu;
@@ -99,9 +102,10 @@ public class SceneManager {
 		mainMenu = new MainMenu(nats, mainCamera, this);
 		highscores = new Highscores(nats, mainCamera);
 		settings = new Settings(nats, mainCamera);
+		player = new Player();
 		gameEnvironment = new GameEnvironment(nats, mainCamera, this);
 		pauseMenu = new PauseMenu(nats, mainCamera, gameEnvironment, this);
-		upgradeMenu = new UpgradeMenu(nats, mainCamera, gameEnvironment, this);
+		upgradeMenu = new UpgradeMenu(nats, mainCamera, gameEnvironment, this, player);
 		
 		mainMenu.loadMainMenuResources();
 		highscores.loadHighscoreResources();

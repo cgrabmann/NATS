@@ -27,6 +27,8 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 	Camera mainCamera;
 	PauseMenu pauseMenu;
 	SceneManager sceneManager;
+	
+	UpgradeMenu upgradeMenu;
 
 	Finals finals;
 	MenuListener menuListener;
@@ -54,7 +56,7 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 	ITextureRegion rightAnalogITextureRegion;
 
 	Sprite pause[] = new Sprite[2];
-	Sprite upgrade[] = new Sprite[9];
+	Sprite upgrade[] = new Sprite[11];
 
 	public GameEnvironment(nats nats, Camera cam, SceneManager s) {
 		this.nats = nats;
@@ -152,6 +154,7 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 					Log.i("NATS", "Update");
 					GameEnvironment.this.registerUpgradeTouch();
 					sceneManager.switchScene(AllScenes.UPGRADE);
+					upgradeMenu.actualizeResources();
 				}
 				return true;
 			};
@@ -240,6 +243,8 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 		this.registerTouchArea(upgrade[6]);
 		this.registerTouchArea(upgrade[7]);
 		this.registerTouchArea(upgrade[8]);
+		this.registerTouchArea(upgrade[9]);
+		this.registerTouchArea(upgrade[10]);
 	}
 
 	public void unregisterUpgradeTouch() {
@@ -252,6 +257,8 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 		this.unregisterTouchArea(upgrade[6]);
 		this.unregisterTouchArea(upgrade[7]);
 		this.unregisterTouchArea(upgrade[8]);
+		this.unregisterTouchArea(upgrade[9]);
+		this.unregisterTouchArea(upgrade[10]);
 	}
 
 	public void attachPauseMenu(Scene pauseMenu) {
@@ -268,7 +275,7 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 	}
 
 	public void setUpgradeReference(Sprite a, Sprite b, Sprite c, Sprite d,
-			Sprite e, Sprite f, Sprite g, Sprite h, Sprite i) {
+			Sprite e, Sprite f, Sprite g, Sprite h, Sprite i, Sprite j, Sprite k, UpgradeMenu um) {
 		this.upgrade[0] = a;
 		this.upgrade[1] = b;
 		this.upgrade[2] = c;
@@ -278,6 +285,10 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 		this.upgrade[6] = g;
 		this.upgrade[7] = h;
 		this.upgrade[8] = i;
+		this.upgrade[9] = j;
+		this.upgrade[10] = k;
+		
+		this.upgradeMenu = um;
 	}
 
 	@Override

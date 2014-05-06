@@ -1,18 +1,17 @@
 package at.alex.nats;
 
-import org.andengine.ui.activity.BaseGameActivity;
+import android.util.Log;
+
 
 public class Player {
 	private long time;
-	private int ressources;
+	private int ressources = 50000;
 	private int permanents[] = new int[5];
 	private int usables[] = new int[4];
 	private int posX, posY;
 	private int speedX, speedY = 0;
-	BaseGameActivity baseGame;
 	
-	public Player(BaseGameActivity baseGame) {
-		this.baseGame = baseGame;
+	public Player() {
 		for (int i = 0; i <= 3; i++) {
 			usables[i] = 0;
 			permanents[i] = 0;
@@ -22,20 +21,24 @@ public class Player {
 		usables[1] = 1;
 	}
 	
-	public int[] getPermanents() {
-		return this.permanents;
+	public int getPermanents(int pos) {
+		Log.i("NATS", "getPermanents an Stelle " + pos);
+		return this.permanents[pos];
 	}
 
-	public void setPermanents(int[] permanents) {
-		this.permanents = permanents;
+	public void setPermanents(int value, int pos) {
+		Log.i("NATS", "setPermanents an Stelle " + pos + " zu " + value);
+		this.permanents[pos] = value;
 	}
 
-	public int[] getUsables() {
-		return this.usables;
+	public int getUsables(int pos) {
+		Log.i("NATS", "getUsables an Stelle " + pos);
+		return this.usables[pos];
 	}
 
-	public void setUsables(int[] usables) {
-		this.usables = usables;
+	public void setUsables(int value, int pos) {
+		Log.i("NATS", "setUsables an Stelle " + pos + " zu " + value);
+		this.usables[pos] = value;
 	}
 
 	public int getPosX() {
@@ -55,10 +58,12 @@ public class Player {
 	}
 
 	public void setRessources(int ressources) {
+		Log.i("NATS", "setRessources to " + ressources);
 		this.ressources = ressources;
 	}
 	
 	public int getRessources() {
+		Log.i("NATS", "getRessources: " + this.ressources);
 		return this.ressources;
 	}
 	
