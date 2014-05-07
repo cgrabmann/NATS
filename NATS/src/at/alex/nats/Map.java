@@ -1,8 +1,9 @@
-package at.stefan.nats;
+package at.alex.nats;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
@@ -14,51 +15,68 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
+
 import android.util.Log;
+import at.stefan.nats.Finals;
+import at.stefan.nats.MenuListener;
+import at.stefan.nats.PauseMenu;
+import at.stefan.nats.SceneManager;
 import at.stefan.nats.SceneManager.AllScenes;
+import at.stefan.nats.nats;
 
-public class GameEnvironment extends Scene implements IAnalogOnScreenControlListener {
-
+public class Map extends Scene implements IAnalogOnScreenControlListener {
+	//3 verschiedene Layer
 	private final int GAME_LAYER = 0;
 	private final int PAUSE_LAYER = 1;
 	private final int UPGRADE_LAYER = 2;
-
+	
+	//Übergabe
 	nats nats;
 	Camera mainCamera;
-	PauseMenu pauseMenu;
 	SceneManager sceneManager;
 	
-	UpgradeMenu upgradeMenu;
+	Player player;
+	Sprite playerSprite;
+	Runnable gameLoop;
+	
+	PauseMenu pauseMenu;
 
-	Finals finals;
+	Finals finals;				//Scenekonstanten
 	MenuListener menuListener;
 
-	BitmapTextureAtlas gameBitmapTextureAtlas;
-	ITextureRegion gameITextureRegion;
-	Sprite gameSprite;
+	//Hintergrund
+	BitmapTextureAtlas gameBitmapTextureAtlas;	//Speicherallocieren
+	ITextureRegion gameITextureRegion;			//Bild laden
+	Sprite gameSprite;							//Bild anzeigen
 
+	//Pausebutton
 	BitmapTextureAtlas pauseBitmapTextureAtlas;
 	ITextureRegion pauseITextureRegion;
 	Sprite pauseSprite;
-
+	
+	//Updatebutton
 	BitmapTextureAtlas updateBitmapTextureAtlas;
 	ITextureRegion updateITextureRegion;
 	Sprite updateSprite;
 
+	//linke Analogstick
 	AnalogOnScreenControl leftAnalogOnScreenControl;
 	BitmapTextureAtlas leftAnalogAußenBitmapTextureAtlas;
 	ITextureRegion leftAnalogAußenITextureRegion;
 	BitmapTextureAtlas leftAnalogInnenBitmapTextureAtlas;
 	ITextureRegion leftAnalogInnenITextureRegion;
 
+	//rechte Analogstick
 	AnalogOnScreenControl rightAnalogOnScreenControl;
 	BitmapTextureAtlas rightAnalogBitmapTextureAtlas;
 	ITextureRegion rightAnalogITextureRegion;
+	
+	HUD hud;
 
 	Sprite pause[] = new Sprite[2];
-	Sprite upgrade[] = new Sprite[11];
+	Sprite upgrade[] = new Sprite[9];
 
-	public GameEnvironment(nats nats, Camera cam, SceneManager s) {
+	public Map(nats nats, Camera cam, SceneManager s) {
 		this.nats = nats;
 		this.mainCamera = cam;
 		this.sceneManager = s;
@@ -66,6 +84,7 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 		finals = new Finals();
 	}
 
+	//load Resources at launche of game
 	public void loadGameResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("backgrounds/");
 		gameBitmapTextureAtlas = new BitmapTextureAtlas(
@@ -117,18 +136,23 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 
 		// pause = new Scene();
 		// upgrade = new Scene();
+		hud = new HUD();
+		player = new Player();
 
 		this.attachChild(new Entity()); // First Layer
 		this.attachChild(new Entity()); // Second Layer
 		this.attachChild(new Entity()); // Third Layer
-
+		
+		//erstellen von Background
 		gameSprite = new Sprite(nats.getCameraWidth() / 2,
 				nats.getCameraHeight() / 2, gameITextureRegion,
 				nats.getVertexBufferObjectManager());
 
+		//add to Gamelayer
 		this.getChildByIndex(GAME_LAYER).attachChild(gameSprite);
 		// game.setBackground(new Background(0, 0, 255));
-
+		
+		//erstellen von PauseSprite
 		pauseSprite = new Sprite(50, nats.getCameraHeight() - 35,
 				pauseITextureRegion, nats.getVertexBufferObjectManager()) {
 			@Override
@@ -137,12 +161,14 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 				if (pSceneTouchEvent.isActionUp()) {
 					// execute action
 					Log.i("NATS", "Pause");
-					GameEnvironment.this.registerPauseTouch();
+					Map.this.registerPauseTouch();
 					sceneManager.switchScene(AllScenes.PAUSE);
 				}
 				return true;
 			};
 		};
+		
+		//erstellen von UpgradeSprite
 		updateSprite = new Sprite(nats.getCameraWidth() - 50,
 				nats.getCameraHeight() - 35, updateITextureRegion,
 				nats.getVertexBufferObjectManager()) {
@@ -152,13 +178,13 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 				if (pSceneTouchEvent.isActionUp()) {
 					// execute action
 					Log.i("NATS", "Update");
-					GameEnvironment.this.registerUpgradeTouch();
+					Map.this.registerUpgradeTouch();
 					sceneManager.switchScene(AllScenes.UPGRADE);
-					upgradeMenu.actualizeResources();
 				}
 				return true;
 			};
 		};
+		
 		
 		leftAnalogOnScreenControl.getControlBase().setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         leftAnalogOnScreenControl.getControlBase().setAlpha(0.5f);
@@ -167,21 +193,38 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
         leftAnalogOnScreenControl.getControlKnob().setScale(1.25f);
         leftAnalogOnScreenControl.refreshControlKnobPosition();
 
+        //register TouchArea für Pause und Upgrades
 		this.registerTouchArea(pauseSprite);
 		this.registerTouchArea(updateSprite);
 
+		//dem Game_Layer hinzufügen
 		this.getChildByIndex(GAME_LAYER).attachChild(pauseSprite);
 		this.getChildByIndex(GAME_LAYER).attachChild(updateSprite);
 		
 		//((Scene) this.getChildByIndex(GAME_LAYER)).setChildScene(leftAnalogOnScreenControl);
-		mainCamera.setHUD(leftAnalogOnScreenControl);
+		hud.attachChild(leftAnalogOnScreenControl);
+		mainCamera.setHUD(hud);
 
 		// loadPauseLayer();
 		// loadUpgradeLayer();
 
 		this.getChildByIndex(PAUSE_LAYER).setVisible(false);
 		this.getChildByIndex(UPGRADE_LAYER).setVisible(false);
-		this.getChildByIndex(PAUSE_LAYER).setAlpha(0.5f);
+	}
+	
+	public void startGame(){
+		
+		gameLoop = new Runnable(){
+
+			@Override
+			public void run() {
+				//Gameloop
+				while(true){
+					
+				}
+			}
+			
+		};
 	}
 
 	public void removeGameScene() {
@@ -243,8 +286,6 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 		this.registerTouchArea(upgrade[6]);
 		this.registerTouchArea(upgrade[7]);
 		this.registerTouchArea(upgrade[8]);
-		this.registerTouchArea(upgrade[9]);
-		this.registerTouchArea(upgrade[10]);
 	}
 
 	public void unregisterUpgradeTouch() {
@@ -257,8 +298,6 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 		this.unregisterTouchArea(upgrade[6]);
 		this.unregisterTouchArea(upgrade[7]);
 		this.unregisterTouchArea(upgrade[8]);
-		this.unregisterTouchArea(upgrade[9]);
-		this.unregisterTouchArea(upgrade[10]);
 	}
 
 	public void attachPauseMenu(Scene pauseMenu) {
@@ -275,7 +314,7 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 	}
 
 	public void setUpgradeReference(Sprite a, Sprite b, Sprite c, Sprite d,
-			Sprite e, Sprite f, Sprite g, Sprite h, Sprite i, Sprite j, Sprite k, UpgradeMenu um) {
+			Sprite e, Sprite f, Sprite g, Sprite h, Sprite i) {
 		this.upgrade[0] = a;
 		this.upgrade[1] = b;
 		this.upgrade[2] = c;
@@ -285,10 +324,6 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 		this.upgrade[6] = g;
 		this.upgrade[7] = h;
 		this.upgrade[8] = i;
-		this.upgrade[9] = j;
-		this.upgrade[10] = k;
-		
-		this.upgradeMenu = um;
 	}
 
 	@Override
@@ -303,46 +338,5 @@ public class GameEnvironment extends Scene implements IAnalogOnScreenControlList
 		// TODO Auto-generated method stub
 		
 	}
-
-	/*
-	 * public void hideUpgradeMenu() {
-	 * game.getChildByIndex(UPGRADE_LAYER).setVisible(false);
-	 * game.unregisterTouchArea(continueSprite);
-	 * game.unregisterTouchArea(quitSprite); }
-	 * 
-	 * 
-	 * 
-	 * public void showUpgradeMenu() {
-	 * game.getChildByIndex(UPGRADE_LAYER).setVisible(true);
-	 * game.registerTouchArea(continueSprite);
-	 * game.registerTouchArea(quitSprite); }
-	 */
-
-	/*
-	 * private void loadPauseLayer() { pause.setBackground(new Background(255,
-	 * 0, 0, 0));
-	 * 
-	 * pause.attachChild(continueSprite); pause.attachChild(quitSprite);
-	 * 
-	 * //pause.setBackgroundEnabled(true); pause.setAlpha(0.5f);
-	 * 
-	 * //pause.registerTouchArea(continueSprite);
-	 * //pause.registerTouchArea(quitSprite);
-	 * 
-	 * game.getChildByIndex(PAUSE_LAYER).attachChild(pause); }
-	 */
-
-	/*
-	 * private void loadUpgradeLayer() { upgrade.setBackground(new Background(0,
-	 * 255, 0, 255)); //upgrade.setBackgroundEnabled(true);
-	 * upgrade.setAlpha(0.5f); /*upgrade.attachChild(continueSprite);
-	 * upgrade.attachChild(quitSprite);
-	 * 
-	 * upgrade.registerTouchArea(continueSprite);
-	 * upgrade.registerTouchArea(quitSprite);
-	 */
-
-	/*
-	 * game.getChildByIndex(UPGRADE_LAYER).attachChild(upgrade); }
-	 */
 }
+
