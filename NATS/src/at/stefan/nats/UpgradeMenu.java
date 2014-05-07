@@ -1,5 +1,6 @@
 package at.stefan.nats;
 
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -19,6 +20,7 @@ import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 
 import android.graphics.Typeface;
+import at.alex.nats.Map;
 import at.alex.nats.Player;
 import at.stefan.nats.ProgressBar.AndEngine;
 
@@ -27,8 +29,8 @@ public class UpgradeMenu extends Scene {
 	boolean touch = false;
 
 	nats nats;
-	Camera mainCamera;
-	GameEnvironment gameEnvironment;
+	BoundCamera mainCamera;
+	Map gameEnvironment;
 	SceneManager sceneManager;
 	Player player;
 
@@ -116,7 +118,7 @@ public class UpgradeMenu extends Scene {
 	Text price;
 	Text resources;
 
-	public UpgradeMenu(nats nats, Camera cam, GameEnvironment ge,
+	public UpgradeMenu(nats nats, BoundCamera cam, Map ge,
 			SceneManager s, Player player) {
 		this.nats = nats;
 		this.mainCamera = cam;

@@ -1,5 +1,6 @@
 package at.stefan.nats;
 
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -9,6 +10,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
+import at.alex.nats.Map;
 import at.stefan.nats.SceneManager.AllScenes;
 
 public class PauseMenu extends Scene {
@@ -17,7 +19,7 @@ public class PauseMenu extends Scene {
 
 	nats nats;
 	Camera mainCamera;
-	GameEnvironment gameEnvironment;
+	Map map;
 	SceneManager sceneManager;
 
 	BitmapTextureAtlas backgroundBitmapTextureAtlas;
@@ -32,10 +34,10 @@ public class PauseMenu extends Scene {
 	ITextureRegion quitITextureRegion;
 	Sprite quitSprite;
 
-	public PauseMenu(nats nats, Camera cam, GameEnvironment ge, SceneManager s) {
+	public PauseMenu(nats nats, BoundCamera cam, Map ge, SceneManager s) {
 		this.nats = nats;
 		this.mainCamera = cam;
-		this.gameEnvironment = ge;
+		this.map = ge;
 		this.sceneManager = s;
 
 		// this.setBackground(new Background(0.5f, 0.5f, 0.5f, 0.5f));
@@ -83,7 +85,7 @@ public class PauseMenu extends Scene {
 					// Log.i("NATS", "Update");
 					// hidePauseMenu();
 					// hideUpgradeMenu();
-					gameEnvironment.hidePauseMenu();
+					map.hidePauseMenu();
 				}
 				return true;
 			};
@@ -99,7 +101,7 @@ public class PauseMenu extends Scene {
 					// Log.i("NATS", "Update");
 					// hidePauseMenu();
 					// hideUpgradeMenu();
-					gameEnvironment.hidePauseMenu();
+					map.hidePauseMenu();
 					sceneManager.switchScene(AllScenes.MAIN_MENU);
 				}
 				return true;
@@ -110,19 +112,19 @@ public class PauseMenu extends Scene {
 		this.attachChild(continueSprite);
 		this.attachChild(quitSprite);
 
-		// gameEnvironment.registerTouchArea(continueSprite);
+		// map.registerTouchArea(continueSprite);
 		// this.registerTouchArea(quitSprite);
-		gameEnvironment.attachPauseMenu(this);
-		gameEnvironment.setPauseReference(continueSprite, quitSprite);
+		map.attachPauseMenu(this);
+		map.setPauseReference(continueSprite, quitSprite);
 
 	}
 
 	/*
-	 * public void registerTouch() { gameEnvironment.registerPauseTouch();
+	 * public void registerTouch() { map.registerPauseTouch();
 	 * this.touch = true; }
 	 * 
 	 * public void unregisterTouch() { if(this.touch == true) {
-	 * gameEnvironment.unregisterPauseTouch(); this.touch = false; } }
+	 * map.unregisterPauseTouch(); this.touch = false; } }
 	 */
 
 	/*

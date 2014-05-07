@@ -1,6 +1,7 @@
 package at.stefan.nats;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -9,19 +10,21 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
+import at.alex.nats.Map;
 import at.alex.nats.Player;
 
 public class SceneManager {
 	
 	nats nats;
 	Engine mEngine;
-	Camera mainCamera;
+	BoundCamera mainCamera;
 	
 	MainMenu mainMenu;
 	Highscores highscores;
 	Settings settings;
 	Player player;
 	GameEnvironment gameEnvironment;
+	Map map;
 	PauseMenu pauseMenu;
 	UpgradeMenu upgradeMenu;
 	
@@ -39,7 +42,7 @@ public class SceneManager {
 		MAIN_MENU, NEW_GAME, HIGHSCORES, SETTINGS, EXIT_GAME, PAUSE, UPGRADE
 	}
 
-	public SceneManager(nats nats, Engine mEngine, Camera cam) {
+	public SceneManager(nats nats, Engine mEngine, BoundCamera cam) {
 		this.nats = nats;
 		this.mEngine = mEngine;
 		this.mainCamera = cam;
@@ -80,7 +83,7 @@ public class SceneManager {
 			//pauseMenu.unregisterTouch();
 			currentScene = AllScenes.MAIN_MENU;
 		}else if(scenes == AllScenes.NEW_GAME) {
-			mEngine.setScene(gameEnvironment.getGameScene());
+			mEngine.setScene(map.getGameScene());
 			currentScene = AllScenes.NEW_GAME;
 		}else if(scenes == AllScenes.HIGHSCORES) {
 			mEngine.setScene(highscores.getHighscoreScene());
@@ -89,11 +92,11 @@ public class SceneManager {
 			mEngine.setScene(settings.getSettingsScene());
 			currentScene = AllScenes.SETTINGS;
 		}else if(scenes == AllScenes.PAUSE) {
-			gameEnvironment.showPauseMenu();
+			map.showPauseMenu();
 			//pauseMenu.registerTouch();
 			currentScene = AllScenes.PAUSE;
 		}else if(scenes == AllScenes.UPGRADE) {
-			gameEnvironment.showUpgradeMenu();
+			map.showUpgradeMenu();
 			currentScene = AllScenes.UPGRADE;
 		}
 	}
@@ -103,21 +106,21 @@ public class SceneManager {
 		highscores = new Highscores(nats, mainCamera);
 		settings = new Settings(nats, mainCamera);
 		player = new Player();
-		gameEnvironment = new GameEnvironment(nats, mainCamera, this);
-		pauseMenu = new PauseMenu(nats, mainCamera, gameEnvironment, this);
-		upgradeMenu = new UpgradeMenu(nats, mainCamera, gameEnvironment, this, player);
+		map = new Map(nats, mainCamera, this);
+		pauseMenu = new PauseMenu(nats, mainCamera, map, this);
+		upgradeMenu = new UpgradeMenu(nats, mainCamera, map, this, player);
 		
 		mainMenu.loadMainMenuResources();
 		highscores.loadHighscoreResources();
 		settings.loadSettingsResources();
-		gameEnvironment.loadGameResources();
+		map.loadGameResources();
 		pauseMenu.loadPauseResources();
 		upgradeMenu.loadUpgradeResources();
 		
 		mainMenu.loadMainMenuScene();
 		highscores.loadHighscoreScene();
 		settings.loadSettingsScene();
-		gameEnvironment.loadGameScene();
+		map.loadGameScene();
 		pauseMenu.loadPauseScene();
 		upgradeMenu.loadUpgradeScene();
 	}
