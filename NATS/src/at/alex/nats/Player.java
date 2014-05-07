@@ -1,18 +1,19 @@
 package at.alex.nats;
 
-import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.Sprite;
+import android.util.Log;
 
 public class Player {
-	private int ressources;
+
+	private long time;
+	private int ressources = 50000;
 	private int permanents[] = new int[5];
 	private int usables[] = new int[4];
+
 	private float posX, posY;
 	private float speed = 0;
 	private float velX, velY;
 	
-	public Player(Scene scene, Sprite playerSprite) {
-		this.ressources = 0;
+	public Player() {
 		for (int i = 0; i <= 3; i++) {
 			this.usables[i] = 0;
 			this.permanents[i] = 0;
@@ -20,23 +21,27 @@ public class Player {
 		this.permanents[4] = 0;
 		this.usables[0] = 2;
 		this.usables[1] = 1;
-		this.posX = scene.getHeight()/2 - (playerSprite.getHeight()/2);
-		this.posY = scene.getWidth()/2 - (playerSprite.getWidth()/2);
+		this.posX = 0;
+		this.posY = 0;
 	}
 	
 	public int getPermanents(int pos) {
+		Log.i("NATS", "getPermanents an Stelle " + pos);
 		return this.permanents[pos];
 	}
 
 	public void setPermanents(int value, int pos) {
+		Log.i("NATS", "setPermanents an Stelle " + pos + " zu " + value);
 		this.permanents[pos] = value;
 	}
 
 	public int getUsables(int pos) {
+		Log.i("NATS", "getUsables an Stelle " + pos);
 		return this.usables[pos];
 	}
 
 	public void setUsables(int value, int pos) {
+		Log.i("NATS", "setUsables an Stelle " + pos + " zu " + value);
 		this.usables[pos] = value;
 	}
 
@@ -57,10 +62,12 @@ public class Player {
 	}
 
 	public void setRessources(int ressources) {
+		Log.i("NATS", "setRessources to " + ressources);
 		this.ressources = ressources;
 	}
 	
 	public int getRessources() {
+		Log.i("NATS", "getRessources: " + this.ressources);
 		return this.ressources;
 	}
 	

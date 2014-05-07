@@ -17,6 +17,12 @@ public class Upgrade implements OnClickListener{
 	private int resources;
 	
 	private int bombP, turboP, stasis_fieldP, deadly_trailP, gunnerP, shot_spreadingP, shot_frequenceP, move_speedP, shieldP;
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	/*
 	 *Usable
@@ -33,7 +39,7 @@ public class Upgrade implements OnClickListener{
 	 * shot spreading => 4 
 	 * */
 	
-	public Upgrade(nats nats,Player player){
+	/*public Upgrade(nats nats,Player player){
 		this.nats = nats;
 		this.player = player;
 		/*bombR = (Button) nats.findViewById(R.id.bomb);
@@ -55,7 +61,7 @@ public class Upgrade implements OnClickListener{
 		shot_frequenceR.setOnClickListener(this);
 		shot_spreadingR.setOnClickListener(this);
 		deadly_trailR.setOnClickListener(this);*/
-		setValues();
+		/*setValues();
 	}
 	
 	public void onClick(View v){
@@ -97,7 +103,7 @@ public class Upgrade implements OnClickListener{
 		}
 	}
 	
-	public void setUpgrade(int upgradePrice,int upgrade[], int index, int max, int flag){
+	/*public void setUpgrade(int upgradePrice,int upgrade[], int index, int max, int flag){
 		if(this.resources >= upgradePrice){
 			if(upgrade[index] < max && upgrade[index] > 0){
 				upgrade[index] ++;
@@ -121,7 +127,7 @@ public class Upgrade implements OnClickListener{
 		this.resources = this.player.getRessources();
 		this.usable = this.player.getUsables();
 		this.permanent = this.player.getPermanents();
-	}
+	}*/
 }
 
 

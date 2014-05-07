@@ -137,7 +137,7 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 		// pause = new Scene();
 		// upgrade = new Scene();
 		hud = new HUD();
-		player = new Player(this, playerSprite);
+		player = new Player();
 
 		this.attachChild(new Entity()); // First Layer
 		this.attachChild(new Entity()); // Second Layer
