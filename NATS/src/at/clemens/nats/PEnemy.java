@@ -42,6 +42,6 @@ public abstract class PEnemy {
 	}
 	
 	public abstract boolean update(Player player, Scene pf);
-	protected abstract boolean move(Player player);
+	protected abstract void move(Player player);
 
 }
