@@ -1,6 +1,7 @@
 package at.stefan.nats;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -15,7 +16,7 @@ public class SceneManager {
 	
 	nats nats;
 	Engine mEngine;
-	Camera mainCamera;
+	BoundCamera mainCamera;
 	
 	MainMenu mainMenu;
 	Highscores highscores;
@@ -39,7 +40,7 @@ public class SceneManager {
 		MAIN_MENU, NEW_GAME, HIGHSCORES, SETTINGS, EXIT_GAME, PAUSE, UPGRADE
 	}
 
-	public SceneManager(nats nats, Engine mEngine, Camera cam) {
+	public SceneManager(nats nats, Engine mEngine, BoundCamera cam) {
 		this.nats = nats;
 		this.mEngine = mEngine;
 		this.mainCamera = cam;
@@ -81,6 +82,8 @@ public class SceneManager {
 			currentScene = AllScenes.MAIN_MENU;
 		}else if(scenes == AllScenes.NEW_GAME) {
 			mEngine.setScene(gameEnvironment.getGameScene());
+			gameEnvironment.startTimer();
+			gameEnvironment.showGameHUD();
 			currentScene = AllScenes.NEW_GAME;
 		}else if(scenes == AllScenes.HIGHSCORES) {
 			mEngine.setScene(highscores.getHighscoreScene());
@@ -90,6 +93,7 @@ public class SceneManager {
 			currentScene = AllScenes.SETTINGS;
 		}else if(scenes == AllScenes.PAUSE) {
 			gameEnvironment.showPauseMenu();
+			gameEnvironment.pauseTimer();
 			//pauseMenu.registerTouch();
 			currentScene = AllScenes.PAUSE;
 		}else if(scenes == AllScenes.UPGRADE) {
@@ -102,8 +106,8 @@ public class SceneManager {
 		mainMenu = new MainMenu(nats, mainCamera, this);
 		highscores = new Highscores(nats, mainCamera);
 		settings = new Settings(nats, mainCamera);
-		player = new Player();
-		gameEnvironment = new GameEnvironment(nats, mainCamera, this);
+		player = new Player(nats);
+		gameEnvironment = new GameEnvironment(nats, mainCamera, this, player);
 		pauseMenu = new PauseMenu(nats, mainCamera, gameEnvironment, this);
 		upgradeMenu = new UpgradeMenu(nats, mainCamera, gameEnvironment, this, player);
 		

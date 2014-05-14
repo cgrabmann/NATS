@@ -1,5 +1,12 @@
 package at.alex.nats;
 
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import at.stefan.nats.nats;
+
 import android.util.Log;
 
 public class Player {
@@ -12,8 +19,19 @@ public class Player {
 	private float posX, posY;
 	private float speed = 0;
 	private float velX, velY;
-	
-	public Player() {
+
+	nats nats;
+
+	BitmapTextureAtlas playerBitmapTextureAtlas;
+	ITextureRegion playerITextureRegion;
+	Sprite playerSprite;
+
+	public Player(nats nats) {
+		this.nats = nats;
+
+		this.posX = 400;
+		this.posY = 240;
+
 		for (int i = 0; i <= 3; i++) {
 			this.usables[i] = 0;
 			this.permanents[i] = 0;
@@ -21,27 +39,35 @@ public class Player {
 		this.permanents[4] = 0;
 		this.usables[0] = 2;
 		this.usables[1] = 1;
-		this.posX = 0;
-		this.posY = 0;
+
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		playerBitmapTextureAtlas = new BitmapTextureAtlas(
+				nats.getTextureManager(), 80, 120, TextureOptions.DEFAULT);
+		playerITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(playerBitmapTextureAtlas,
+						nats.getApplicationContext(), "Spaceshuttle.png", 0, 0);
+		playerBitmapTextureAtlas.load();
+		playerSprite = new Sprite(posX, posY, playerITextureRegion,
+				nats.getVertexBufferObjectManager());
 	}
-	
+
 	public int getPermanents(int pos) {
-		Log.i("NATS", "getPermanents an Stelle " + pos);
+		//Log.i("NATS", "getPermanents an Stelle " + pos);
 		return this.permanents[pos];
 	}
 
 	public void setPermanents(int value, int pos) {
-		Log.i("NATS", "setPermanents an Stelle " + pos + " zu " + value);
+		//Log.i("NATS", "setPermanents an Stelle " + pos + " zu " + value);
 		this.permanents[pos] = value;
 	}
 
 	public int getUsables(int pos) {
-		Log.i("NATS", "getUsables an Stelle " + pos);
+		//Log.i("NATS", "getUsables an Stelle " + pos);
 		return this.usables[pos];
 	}
 
 	public void setUsables(int value, int pos) {
-		Log.i("NATS", "setUsables an Stelle " + pos + " zu " + value);
+		//Log.i("NATS", "setUsables an Stelle " + pos + " zu " + value);
 		this.usables[pos] = value;
 	}
 
@@ -62,20 +88,44 @@ public class Player {
 	}
 
 	public void setRessources(int ressources) {
-		Log.i("NATS", "setRessources to " + ressources);
+		//Log.i("NATS", "setRessources to " + ressources);
 		this.ressources = ressources;
 	}
-	
+
 	public int getRessources() {
-		Log.i("NATS", "getRessources: " + this.ressources);
+		//Log.i("NATS", "getRessources: " + this.ressources);
 		return this.ressources;
 	}
 	
+	public String getRessourcesForDisplay() {
+		if(this.ressources > 9999999) {
+			return ""+this.ressources;
+		}else if(this.ressources > 999999) {
+			return "0"+this.ressources;
+		}else if(this.ressources > 99999) {
+			return "00"+this.ressources;
+		}else if(this.ressources > 9999) {
+			return "000"+this.ressources;
+		}else if(this.ressources > 999) {
+			return "0000"+this.ressources;
+		}else if(this.ressources > 99) {
+			return "00000"+this.ressources;
+		}else if(this.ressources > 9) {
+			return "000000"+this.ressources;
+		}else {
+			return "0000000"+this.ressources;
+		}
+	}
+
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	
-	public float getSpeed(){
+
+	public float getSpeed() {
 		return this.speed;
+	}
+	
+	public Sprite getPlayer() { 
+		return playerSprite;
 	}
 }

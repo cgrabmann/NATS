@@ -3,6 +3,7 @@ package at.stefan.nats;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.Entity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -150,13 +151,13 @@ public class UpgradeMenu extends Scene {
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		movespeedITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(movespeedBitmapTextureAtlas,
-						nats.getApplicationContext(), "100.png", 0, 0);
+						nats.getApplicationContext(), "movespeed.png", 0, 0);
 		movespeedBitmapTextureAtlas.load();
 		movespeedProgressBar = new ProgressBar(100,
-				nats.getCameraHeight() - 105, 100, 10,
+				nats.getCameraHeight() - 105, 90, 10,
 				AndEngine.GLES2_AnchorCenter);
-		// movespeedProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
-		// movespeedProgressBar.setForeGroundColor(new Color(0.0f, 0.0f, 1.0f));
+		movespeedProgressBar.setBackGroundColor(new Color(1.0f, 1.0f, 1.0f));
+		movespeedProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
 		movespeedProgressBar.setIntervall(5);
 		// movespeedProgressBar.show();
 
@@ -164,96 +165,103 @@ public class UpgradeMenu extends Scene {
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		gunnerITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gunnerBitmapTextureAtlas,
-						nats.getApplicationContext(), "100.png", 0, 0);
+						nats.getApplicationContext(), "gunner.png", 0, 0);
 		gunnerBitmapTextureAtlas.load();
 		gunnerProgressBar = new ProgressBar(100, nats.getCameraHeight() - 225,
-				100, 10, AndEngine.GLES2_AnchorCenter);
-		// gunnerProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
-		// gunnerProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 1.0f));
+				90, 10, AndEngine.GLES2_AnchorCenter);
+		gunnerProgressBar.setBackGroundColor(new Color(1.0f, 1.0f, 1.0f));
+		gunnerProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
 		gunnerProgressBar.setIntervall(5);
 
 		shieldBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		shieldITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(shieldBitmapTextureAtlas,
-						nats.getApplicationContext(), "100.png", 0, 0);
+						nats.getApplicationContext(), "shield.png", 0, 0);
 		shieldBitmapTextureAtlas.load();
-		shieldProgressBar = new ProgressBar(100, 135, 100, 10,
+		shieldProgressBar = new ProgressBar(100, 135, 90, 10,
 				AndEngine.GLES2_AnchorCenter);
-		// shieldProgressBar.setBackGroundColor(new Color(0.0f, 1.0f, 0.0f));
-		// shieldProgressBar.setForeGroundColor(new Color(1.0f, 1.0f, 1.0f));
+		shieldProgressBar.setBackGroundColor(new Color(1.0f, 1.0f, 1.0f));
+		shieldProgressBar.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
 		shieldProgressBar.setIntervall(5);
 
 		shotfrequenceBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		shotfrequenceITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(shotfrequenceBitmapTextureAtlas,
-						nats.getApplicationContext(), "100.png", 0, 0);
+						nats.getApplicationContext(), "shot_frequence.png", 0,
+						0);
 		shotfrequenceBitmapTextureAtlas.load();
 		shotfrequenceProgressBar = new ProgressBar(250,
-				nats.getCameraHeight() - 105, 100, 10,
+				nats.getCameraHeight() - 105, 90, 10,
 				AndEngine.GLES2_AnchorCenter);
-		// shotfrequenceProgressBar.setBackGroundColor(new Color(0.0f, 1.0f,
-		// 0.0f));
-		// shotfrequenceProgressBar.setForeGroundColor(new Color(0.0f, 1.0f,
-		// 1.0f));
+		shotfrequenceProgressBar
+				.setBackGroundColor(new Color(1.0f, 1.0f, 1.0f));
+		shotfrequenceProgressBar
+				.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
 		shotfrequenceProgressBar.setIntervall(5);
 
 		shotspreadingBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		shotspreadingITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(shotspreadingBitmapTextureAtlas,
-						nats.getApplicationContext(), "100.png", 0, 0);
+						nats.getApplicationContext(), "shot_spreading.png", 0,
+						0);
 		shotspreadingBitmapTextureAtlas.load();
 		shotspreadingProgressBar = new ProgressBar(250,
-				nats.getCameraHeight() - 225, 100, 10,
+				nats.getCameraHeight() - 225, 90, 10,
 				AndEngine.GLES2_AnchorCenter);
-		// shotspreadingProgressBar.setBackGroundColor(new Color(0.0f, 1.0f,
-		// 0.0f));
-		// shotspreadingProgressBar.setForeGroundColor(new Color(0.5f, 0.5f,
-		// 0.5f));
+		shotspreadingProgressBar
+				.setBackGroundColor(new Color(1.0f, 1.0f, 1.0f));
+		shotspreadingProgressBar
+				.setForeGroundColor(new Color(1.0f, 0.0f, 0.0f));
 		shotspreadingProgressBar.setIntervall(5);
 
 		myFont = FontFactory.create(nats.getFontManager(),
 				nats.getTextureManager(), 256, 256,
-				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 50);
+				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 50,
+				Color.WHITE.hashCode());
 		myFont.load();
 
 		stasisfieldBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		stasisfieldITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(stasisfieldBitmapTextureAtlas,
-						nats.getApplicationContext(), "100.png", 0, 0);
+						nats.getApplicationContext(), "stasis_field.png", 0, 0);
 		stasisfieldBitmapTextureAtlas.load();
 		stasisfieldText = new Text(90, 30, myFont, "x2", new TextOptions(
 				HorizontalAlign.CENTER), nats.getVertexBufferObjectManager());
+		stasisfieldText.setColor(new Color(1, 0, 0));
 
 		turboBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		turboITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(turboBitmapTextureAtlas,
-						nats.getApplicationContext(), "100.png", 0, 0);
+						nats.getApplicationContext(), "turbo.png", 0, 0);
 		turboBitmapTextureAtlas.load();
 		turboText = new Text(290, 30, myFont, "x1", new TextOptions(
 				HorizontalAlign.CENTER), nats.getVertexBufferObjectManager());
+		turboText.setColor(new Color(1, 0, 0));
 
 		deadlytrailBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		deadlytrailITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(deadlytrailBitmapTextureAtlas,
-						nats.getApplicationContext(), "100.png", 0, 0);
+						nats.getApplicationContext(), "deadly_trail.png", 0, 0);
 		deadlytrailBitmapTextureAtlas.load();
 		deadlytrailText = new Text(490, 30, myFont, "x0", new TextOptions(
 				HorizontalAlign.CENTER), nats.getVertexBufferObjectManager());
+		deadlytrailText.setColor(new Color(1, 0, 0));
 
 		bombBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
 		bombITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(bombBitmapTextureAtlas,
-						nats.getApplicationContext(), "100.png", 0, 0);
+						nats.getApplicationContext(), "bomb.png", 0, 0);
 		bombBitmapTextureAtlas.load();
 		bombText = new Text(690, 30, myFont, "x0", new TextOptions(
 				HorizontalAlign.CENTER), nats.getVertexBufferObjectManager());
+		bombText.setColor(new Color(1, 0, 0));
 
 		infoBuyBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 150, 50, TextureOptions.DEFAULT);
@@ -318,6 +326,7 @@ public class UpgradeMenu extends Scene {
 						.getVertexBufferObjectManager());
 
 		header.setText("Speed");
+		header.setColor(new Color(0.0f, 0.0f, 0.0f));
 		level.setText("Level: " + player.getPermanents(finals.movespeed()));
 		description.setText("Increases Movespeed \nof the spaceship.");
 		price.setText("Upgrade: 100");
@@ -541,49 +550,48 @@ public class UpgradeMenu extends Scene {
 				return true;
 			};
 		};
+		
+		gameEnvironment.attachToHUDUpgrade(backgroundSprite);
+		gameEnvironment.attachToHUDUpgrade(movespeedSelect);
+		gameEnvironment.attachToHUDUpgrade(movespeedSprite);
+		movespeedProgressBar.attach(gameEnvironment.getHUDUpgrade());
+		gameEnvironment.attachToHUDUpgrade(gunnerSelect);
+		gameEnvironment.attachToHUDUpgrade(gunnerSprite);
+		gunnerProgressBar.attach(gameEnvironment.getHUDUpgrade());
+		gameEnvironment.attachToHUDUpgrade(shieldSelect);
+		gameEnvironment.attachToHUDUpgrade(shieldSprite);
+		shieldProgressBar.attach(gameEnvironment.getHUDUpgrade());
+		gameEnvironment.attachToHUDUpgrade(shotfrequenceSelect);
+		gameEnvironment.attachToHUDUpgrade(shotfrequenceSprite);
+		shotfrequenceProgressBar.attach(gameEnvironment.getHUDUpgrade());
+		gameEnvironment.attachToHUDUpgrade(shotspreadingSelect);
+		gameEnvironment.attachToHUDUpgrade(shotspreadingSprite);
+		shotspreadingProgressBar.attach(gameEnvironment.getHUDUpgrade());
+		gameEnvironment.attachToHUDUpgrade(stasisfieldSelect);
+		gameEnvironment.attachToHUDUpgrade(stasisfieldSprite);
+		gameEnvironment.attachToHUDUpgrade(stasisfieldText);
+		gameEnvironment.attachToHUDUpgrade(turboSelect);
+		gameEnvironment.attachToHUDUpgrade(turboSprite);
+		gameEnvironment.attachToHUDUpgrade(turboText);
+		gameEnvironment.attachToHUDUpgrade(deadlytrailSelect);
+		gameEnvironment.attachToHUDUpgrade(deadlytrailSprite);
+		gameEnvironment.attachToHUDUpgrade(deadlytrailText);
+		gameEnvironment.attachToHUDUpgrade(bombSelect);
+		gameEnvironment.attachToHUDUpgrade(bombSprite);
+		gameEnvironment.attachToHUDUpgrade(bombText);
+		
+		gameEnvironment.attachToHUDUpgrade(rand);
+		gameEnvironment.attachToHUDUpgrade(info);
+		gameEnvironment.attachToHUDUpgrade(infoBuyBackgroundSprite);
+		gameEnvironment.attachToHUDUpgrade(infoBuySprite);
+		gameEnvironment.attachToHUDUpgrade(header);
+		gameEnvironment.attachToHUDUpgrade(level);
+		gameEnvironment.attachToHUDUpgrade(description);
+		gameEnvironment.attachToHUDUpgrade(price);
+		gameEnvironment.attachToHUDUpgrade(resources);
+		
+		gameEnvironment.attachToHUDUpgrade(backSprite);
 
-		this.attachChild(backgroundSprite);
-		this.attachChild(movespeedSelect);
-		this.attachChild(movespeedSprite);
-		movespeedProgressBar.attach(this);
-		this.attachChild(gunnerSelect);
-		this.attachChild(gunnerSprite);
-		gunnerProgressBar.attach(this);
-		this.attachChild(shieldSelect);
-		this.attachChild(shieldSprite);
-		shieldProgressBar.attach(this);
-		this.attachChild(shotfrequenceSelect);
-		this.attachChild(shotfrequenceSprite);
-		shotfrequenceProgressBar.attach(this);
-		this.attachChild(shotspreadingSelect);
-		this.attachChild(shotspreadingSprite);
-		shotspreadingProgressBar.attach(this);
-		this.attachChild(stasisfieldSelect);
-		this.attachChild(stasisfieldSprite);
-		this.attachChild(stasisfieldText);
-		this.attachChild(turboSelect);
-		this.attachChild(turboSprite);
-		this.attachChild(turboText);
-		this.attachChild(deadlytrailSelect);
-		this.attachChild(deadlytrailSprite);
-		this.attachChild(deadlytrailText);
-		this.attachChild(bombSelect);
-		this.attachChild(bombSprite);
-		this.attachChild(bombText);
-
-		this.attachChild(rand);
-		this.attachChild(info);
-		this.attachChild(infoBuyBackgroundSprite);
-		this.attachChild(infoBuySprite);
-		this.attachChild(header);
-		this.attachChild(level);
-		this.attachChild(description);
-		this.attachChild(price);
-		this.attachChild(resources);
-
-		this.attachChild(backSprite);
-
-		gameEnvironment.attachUpgradeMenu(this);
 		gameEnvironment.setUpgradeReference(movespeedSprite, gunnerSprite,
 				shieldSprite, shotfrequenceSprite, shotspreadingSprite,
 				stasisfieldSprite, turboSprite, deadlytrailSprite, bombSprite,

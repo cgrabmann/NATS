@@ -2,6 +2,8 @@ package at.stefan.nats;
 
 import java.io.IOException;
 
+import org.andengine.engine.Engine;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -16,7 +18,7 @@ import at.stefan.nats.SceneManager.AllScenes;
 
 public class nats extends BaseGameActivity {
 
-	Camera mainCamera;
+	BoundCamera mainCamera;
 	public static final int CAMERA_WIDTH = 800;
 	public static final int CAMERA_HEIGHT = 480;
 
@@ -27,7 +29,7 @@ public class nats extends BaseGameActivity {
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		// TODO Auto-generated method stub
-		mainCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		mainCamera = new BoundCamera(0, 0, 800, 480);
 		EngineOptions options = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(),
 				mainCamera);
@@ -116,6 +118,10 @@ public class nats extends BaseGameActivity {
 
 	public int getCameraHeight() {
 		return CAMERA_HEIGHT;
+	}
+	
+	public Engine getEngine() {
+		return this.mEngine;
 	}
 }
 

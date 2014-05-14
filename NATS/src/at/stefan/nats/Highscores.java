@@ -1,6 +1,11 @@
 package at.stefan.nats;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
+import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
+import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureOptions;
@@ -8,7 +13,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
-public class Highscores {
+public class Highscores extends Scene {
 
 	nats nats;
 	Camera mainCamera;
@@ -23,8 +28,12 @@ public class Highscores {
 	BitmapTextureAtlas titleBitmapTextureAtlas;
 	ITextureRegion titleITextureRegion;
 	Sprite titleSprite;
-
-	Scene highscores;
+	
+	AnalogOnScreenControl leftAnalogOnScreenControl;
+	BitmapTextureAtlas leftAnalogAuﬂenBitmapTextureAtlas;
+	ITextureRegion leftAnalogAuﬂenITextureRegion;
+	BitmapTextureAtlas leftAnalogInnenBitmapTextureAtlas;
+	ITextureRegion leftAnalogInnenITextureRegion;
 
 	public Highscores(nats nats, Camera cam) {
 		this.nats = nats;
@@ -50,21 +59,23 @@ public class Highscores {
 						nats.getApplicationContext(), "HighscoresTitle.png", 0,
 						0);
 		titleBitmapTextureAtlas.load();
+		
+		
 	}
 
 	public void loadHighscoreScene() {
-		highscores = new Scene();
 		highscoresSprite = new Sprite(nats.getCameraWidth() / 2,
 				nats.getCameraHeight() / 2, highscoresITextureRegion,
 				nats.getVertexBufferObjectManager());
-		highscores.attachChild(highscoresSprite);
+		this.attachChild(highscoresSprite);
 		//highscores.setBackground(new Background(0, 0, 255));
 
 		titleSprite = new Sprite(nats.getCameraWidth() / 2,
 				nats.getCameraHeight() - titleBitmapTextureAtlas.getHeight()
 						/ 2, titleITextureRegion,
 				nats.getVertexBufferObjectManager());
-		highscores.attachChild(titleSprite);
+		this.attachChild(titleSprite);
+		
 	}
 
 	public void removeHighscoreScene() {
@@ -72,6 +83,6 @@ public class Highscores {
 	}
 
 	public Scene getHighscoreScene() {
-		return highscores;
+		return this;
 	}
 }

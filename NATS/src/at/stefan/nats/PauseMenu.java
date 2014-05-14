@@ -11,7 +11,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
 import at.stefan.nats.SceneManager.AllScenes;
 
-public class PauseMenu extends Scene {
+public class PauseMenu {
 
 	boolean touch = false;
 
@@ -39,7 +39,7 @@ public class PauseMenu extends Scene {
 		this.sceneManager = s;
 
 		// this.setBackground(new Background(0.5f, 0.5f, 0.5f, 0.5f));
-		this.setBackgroundEnabled(false);
+		//this.setBackgroundEnabled(false);
 	}
 
 	public void loadPauseResources() {
@@ -68,8 +68,8 @@ public class PauseMenu extends Scene {
 	}
 
 	public void loadPauseScene() {
-		backgroundSprite = new Sprite(nats.getCameraWidth() / 2,
-				nats.getCameraHeight() / 2, backgroundITextureRegion,
+		backgroundSprite = new Sprite(400,
+				240, backgroundITextureRegion,
 				nats.getVertexBufferObjectManager());
 		backgroundSprite.setAlpha(0.4f);
 
@@ -99,20 +99,22 @@ public class PauseMenu extends Scene {
 					// Log.i("NATS", "Update");
 					// hidePauseMenu();
 					// hideUpgradeMenu();
-					gameEnvironment.hidePauseMenu();
+					gameEnvironment.leaveGame();
 					sceneManager.switchScene(AllScenes.MAIN_MENU);
 				}
 				return true;
 			};
 		};
 
-		this.attachChild(backgroundSprite);
-		this.attachChild(continueSprite);
-		this.attachChild(quitSprite);
+		//this.attachChild(backgroundSprite);
+		//this.attachChild(continueSprite);
+		//this.attachChild(quitSprite);
 
 		// gameEnvironment.registerTouchArea(continueSprite);
 		// this.registerTouchArea(quitSprite);
-		gameEnvironment.attachPauseMenu(this);
+		gameEnvironment.attachToHUDPause(backgroundSprite);
+		gameEnvironment.attachToHUDPause(continueSprite);
+		gameEnvironment.attachToHUDPause(quitSprite);
 		gameEnvironment.setPauseReference(continueSprite, quitSprite);
 
 	}

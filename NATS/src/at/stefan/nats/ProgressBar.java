@@ -1,5 +1,6 @@
 package at.stefan.nats;
 
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.Entity;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.primitive.Rectangle;
@@ -143,7 +144,7 @@ public class ProgressBar extends Entity {
 		}
 	}
 
-	public void attach(Scene s) {
+	public void attach(HUD s) {
 		this.attached = true;
 		this.target = s;
 		s.attachChild(bgRectangle);
