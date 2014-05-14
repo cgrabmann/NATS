@@ -17,8 +17,8 @@ public abstract class PEnemy {
 	private final int splices = 5;
 
 	public PEnemy(Scene pf) {
-		Random rg = new Random();
-		int spawnControll = rg.nextInt(4);
+		Random r = new Random();
+		int spawnControll = r.nextInt(4);
 		switch (spawnControll){
 		case (0):
 			this.posx = pf.getScaleX()/splices;

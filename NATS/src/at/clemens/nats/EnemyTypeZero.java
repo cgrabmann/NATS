@@ -35,8 +35,6 @@ public class EnemyTypeZero extends PEnemy{
 
 	@Override
 	protected void move(Player player) {
-		float offsetX, offsetY;
-		float pPosx, pPosy;
 		
 		//calculate new X position
 		int tempMoveX = (super.movex < 0)?-super.movex:super.movex;
