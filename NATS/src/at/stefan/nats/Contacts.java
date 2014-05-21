@@ -2,7 +2,6 @@ package at.stefan.nats;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.shape.Shape;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 
@@ -27,18 +26,6 @@ public class Contacts implements ContactListener {
 		this.mEngine = e;
 	}
 
-	/*
-	 * final PhysicsConnector physicsConnector =
-	 * physicsWorld.getPhysicsConnectorManager
-	 * ().findPhysicsConnectorByShape(shape);
-	 * 
-	 * mEngine.runOnUpdateThread(new Runnable() {
-	 * 
-	 * @Override public void run() { if (physicsConnector != null) {
-	 * physicsWorld.unregisterPhysicsConnector(physicsConnector);
-	 * body.setActive(false); physicsWorld.destroyBody(bbody);
-	 * scene.detachChild(shape); } } });
-	 */
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -53,43 +40,13 @@ public class Contacts implements ContactListener {
 		if (a.getUserString().equals("bullet")
 				&& b.getUserString().equals("wall")) {
 			Log.i("Contact", "bullet-wall");
+			((Bullet) a.getUserObject()).sendBulletToPool();
 			
-			final Shape shape = a.getUserShape();
-			physicsConnector = a.getUserConnector();
-			//physicsConnector.getBody().setTransform(400/32, 240/32, 0f);
-			/*mEngine.runOnUpdateThread(new Runnable() {
-
-				@Override
-				public void run() {
-					if (physicsConnector != null) {
-						physicsWorld
-								.unregisterPhysicsConnector(physicsConnector);
-						BodyA.setActive(false);
-						physicsWorld.destroyBody(BodyA);
-						scene.detachChild(shape);
-					}
-				}
-			});*/
 		} else if (a.getUserString().equals("wall")
 				&& b.getUserString().equals("bullet")) {
 			Log.i("Contact", "wall-bullet");
+			((Bullet) b.getUserObject()).sendBulletToPool();
 			
-			final Shape shape = b.getUserShape();
-			physicsConnector = b.getUserConnector();
-			//physicsConnector.getBody().setTransform(400/32, 240/32, 0f);
-			/*mEngine.runOnUpdateThread(new Runnable() {
-
-				@Override
-				public void run() {
-					if (physicsConnector != null) {
-						physicsWorld
-								.unregisterPhysicsConnector(physicsConnector);
-						BodyB.setActive(false);
-						physicsWorld.destroyBody(BodyB);
-						scene.detachChild(shape);
-					}
-				}
-			});*/
 		}
 
 	}

@@ -3,7 +3,6 @@ package at.stefan.nats;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.Entity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -20,6 +19,7 @@ import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 
 import android.graphics.Typeface;
+import android.util.Log;
 import at.alex.nats.Player;
 import at.stefan.nats.ProgressBar.AndEngine;
 
@@ -116,6 +116,14 @@ public class UpgradeMenu extends Scene {
 	Text description;
 	Text price;
 	Text resources;
+
+	BitmapTextureAtlas equipBitmapTextureAtlas;
+	ITextureRegion equipITextureRegion;
+	Sprite equipSprite;
+
+	BitmapTextureAtlas discardBitmapTextureAtlas;
+	ITextureRegion discardITextureRegion;
+	Sprite discardSprite;
 
 	public UpgradeMenu(nats nats, Camera cam, GameEnvironment ge,
 			SceneManager s, Player player) {
@@ -333,7 +341,19 @@ public class UpgradeMenu extends Scene {
 		resources.setText("Resources: \n" + player.getRessources());
 		resources.setColor(new Color(1, 0, 0));
 
-		// new Te
+		equipBitmapTextureAtlas = new BitmapTextureAtlas(
+				nats.getTextureManager(), 80, 80, TextureOptions.DEFAULT);
+		equipITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(equipBitmapTextureAtlas,
+						nats.getApplicationContext(), "Equip.png", 0, 0);
+		equipBitmapTextureAtlas.load();
+
+		discardBitmapTextureAtlas = new BitmapTextureAtlas(
+				nats.getTextureManager(), 80, 80, TextureOptions.DEFAULT);
+		discardITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(discardBitmapTextureAtlas,
+						nats.getApplicationContext(), "Discard.png", 0, 0);
+		discardBitmapTextureAtlas.load();
 	}
 
 	public void loadUpgradeScene() {
@@ -550,7 +570,32 @@ public class UpgradeMenu extends Scene {
 				return true;
 			};
 		};
-		
+
+		equipSprite = new Sprite(0, 0, equipITextureRegion,
+				nats.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
+					float Y) {
+				if (pSceneTouchEvent.isActionUp()) {
+					upgrade.equip();
+				}
+				return true;
+			};
+		};
+		equipSprite.setVisible(false);
+		discardSprite = new Sprite(0, 0, discardITextureRegion,
+				nats.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
+					float Y) {
+				if (pSceneTouchEvent.isActionUp()) {
+					upgrade.discard();
+				}
+				return true;
+			};
+		};
+		discardSprite.setVisible(false);
+
 		gameEnvironment.attachToHUDUpgrade(backgroundSprite);
 		gameEnvironment.attachToHUDUpgrade(movespeedSelect);
 		gameEnvironment.attachToHUDUpgrade(movespeedSprite);
@@ -579,7 +624,7 @@ public class UpgradeMenu extends Scene {
 		gameEnvironment.attachToHUDUpgrade(bombSelect);
 		gameEnvironment.attachToHUDUpgrade(bombSprite);
 		gameEnvironment.attachToHUDUpgrade(bombText);
-		
+
 		gameEnvironment.attachToHUDUpgrade(rand);
 		gameEnvironment.attachToHUDUpgrade(info);
 		gameEnvironment.attachToHUDUpgrade(infoBuyBackgroundSprite);
@@ -589,7 +634,9 @@ public class UpgradeMenu extends Scene {
 		gameEnvironment.attachToHUDUpgrade(description);
 		gameEnvironment.attachToHUDUpgrade(price);
 		gameEnvironment.attachToHUDUpgrade(resources);
-		
+
+		gameEnvironment.attachToHUDUpgrade(equipSprite);
+		gameEnvironment.attachToHUDUpgrade(discardSprite);
 		gameEnvironment.attachToHUDUpgrade(backSprite);
 
 		gameEnvironment.setUpgradeReference(movespeedSprite, gunnerSprite,
@@ -600,16 +647,65 @@ public class UpgradeMenu extends Scene {
 		upgrade = new Upgrade(this, player, movespeedSelect, gunnerSelect,
 				shieldSelect, shotfrequenceSelect, shotspreadingSelect,
 				stasisfieldSelect, turboSelect, deadlytrailSelect, bombSelect,
-				infoBuySprite, stasisfieldText, turboText, deadlytrailText,
-				bombText, movespeedProgressBar, gunnerProgressBar,
-				shieldProgressBar, shotfrequenceProgressBar,
+				infoBuySprite, equipSprite, discardSprite, stasisfieldText,
+				turboText, deadlytrailText, bombText, movespeedProgressBar,
+				gunnerProgressBar, shieldProgressBar, shotfrequenceProgressBar,
 				shotspreadingProgressBar, header, level, description, price,
-				resources);
+				resources, nats);
 
 	}
 
 	public void actualizeResources() {
 		upgrade.actualizeResources();
+	}
+
+	public void registerSpriteInGame(Sprite s) {
+		gameEnvironment.registerUpgradeSprite(s);
+	}
+
+	public void unregisterSpriteInGame(Sprite s) {
+		gameEnvironment.unregisterUpgradeSprite(s);
+	}
+
+	public void actualizeEquipment(int e[]) {
+		Log.i("Usable", "actualizeEquip");
+		if (e[0] == finals.stasisfield()) {
+			Log.i("Usable", "e0 = stasisfield");
+			gameEnvironment.setUsable1(finals.stasisfield());
+		} else if (e[1] == finals.stasisfield()) {
+			Log.i("Usable", "e1 = stasisfield");
+			gameEnvironment.setUsable2(finals.stasisfield());
+		}
+		if (e[0] == finals.turbo()) {
+			Log.i("Usable", "e0 = turbo");
+			gameEnvironment.setUsable1(finals.turbo());
+		} else if (e[1] == finals.turbo()) {
+			Log.i("Usable", "e1 = turbo");
+			gameEnvironment.setUsable2(finals.turbo());
+		}
+		if (e[0] == finals.deadlytrail()) {
+			Log.i("Usable", "e0 = deadlytrail");
+			gameEnvironment.setUsable1(finals.deadlytrail());
+		} else if (e[1] == finals.deadlytrail()) {
+			Log.i("Usable", "e1 = deadlytrail");
+			gameEnvironment.setUsable2(finals.deadlytrail());
+		}
+		if (e[0] == finals.bomb()) {
+			Log.i("Usable", "e0 = bomb");
+			gameEnvironment.setUsable1(finals.bomb());
+		} else if (e[1] == finals.bomb()) {
+			Log.i("Usable", "e1 = bomb");
+			gameEnvironment.setUsable2(finals.bomb());
+		}
+		
+		if (e[0] == -1) {
+			Log.i("Usable", "e0 = -1");
+			gameEnvironment.setUsable1(-1);
+		}
+		if (e[1] == -1) {
+			Log.i("Usable", "e1 = -1");
+			gameEnvironment.setUsable2(-1);
+		}
 	}
 
 }

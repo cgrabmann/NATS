@@ -5,9 +5,8 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import at.stefan.nats.nats;
 
-import android.util.Log;
+import at.stefan.nats.nats;
 
 public class Player {
 
@@ -19,6 +18,8 @@ public class Player {
 	private float posX, posY;
 	private float speed = 0;
 	private float velX, velY;
+	
+	private float shotfrequence = 0.40f;
 
 	nats nats;
 
@@ -127,5 +128,13 @@ public class Player {
 	
 	public Sprite getPlayer() { 
 		return playerSprite;
+	}
+	
+	public float getShotFrequence() {
+		return shotfrequence;
+	}
+	
+	public void increaseShotFrequence() {
+		this.shotfrequence -= 0.03f;
 	}
 }

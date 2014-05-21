@@ -1,7 +1,6 @@
 package at.stefan.nats;
 
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 
@@ -11,6 +10,8 @@ import at.alex.nats.Player;
 public class Upgrade {
 
 	int prices[];
+	String usables[];
+	int equipped[] = new int[2];
 
 	private final String movespeedDescription = "Increases Movespeed \nof the spaceship.";
 	private final String gunnerDescription = "Shuttle shoots more \nenemies automatically.";
@@ -22,7 +23,7 @@ public class Upgrade {
 	private final String deadlytrailDescription = "Shuttle leaves Firetrack \nbehind it.";
 	private final String bombDescription = "Destroys all enemies.\n";
 
-	Scene upgradeMenu;
+	UpgradeMenu upgradeMenu;
 
 	Player player;
 
@@ -37,6 +38,8 @@ public class Upgrade {
 	Rectangle bombSelect;
 
 	Sprite buy;
+	Sprite equip;
+	Sprite discard;
 
 	Text stasisfieldText;
 	Text turboText;
@@ -55,6 +58,8 @@ public class Upgrade {
 	Text price;
 	Text resources;
 
+	nats nats;
+
 	Finals finals;
 
 	public enum Buy {
@@ -63,11 +68,12 @@ public class Upgrade {
 
 	Buy actual = Buy.MOVESPEED;
 
-	public Upgrade(Scene upgrade, Player pl, Rectangle a, Rectangle b,
+	public Upgrade(UpgradeMenu upgrade, Player pl, Rectangle a, Rectangle b,
 			Rectangle c, Rectangle d, Rectangle e, Rectangle f, Rectangle g,
-			Rectangle h, Rectangle i, Sprite k, Text m, Text n, Text o, Text p,
-			ProgressBar v, ProgressBar w, ProgressBar x, ProgressBar y,
-			ProgressBar z, Text header, Text level, Text description, Text price, Text resources) {
+			Rectangle h, Rectangle i, Sprite j, Sprite k, Sprite l, Text m,
+			Text n, Text o, Text p, ProgressBar v, ProgressBar w,
+			ProgressBar x, ProgressBar y, ProgressBar z, Text header,
+			Text level, Text description, Text price, Text resources, nats nats) {
 		this.upgradeMenu = upgrade;
 		this.player = pl;
 		this.movespeedSelect = a;
@@ -79,7 +85,9 @@ public class Upgrade {
 		this.turboSelect = g;
 		this.deadlytrailSelect = h;
 		this.bombSelect = i;
-		this.buy = k;
+		this.buy = j;
+		this.equip = k;
+		this.discard = l;
 		this.stasisfieldText = m;
 		this.turboText = n;
 		this.deadlytrailText = o;
@@ -94,6 +102,7 @@ public class Upgrade {
 		this.description = description;
 		this.price = price;
 		this.resources = resources;
+		this.nats = nats;
 
 		finals = new Finals();
 
@@ -102,17 +111,27 @@ public class Upgrade {
 		prices[finals.turbo()] = 750; // Factor 1.6
 		prices[finals.deadlytrail()] = 1000; // Factor 1.7
 		prices[finals.bomb()] = 1500; // Factor 1.8
+
+		usables = new String[4];
+		usables[finals.stasisfield()] = "discard";
+		usables[finals.turbo()] = "discard";
+		usables[finals.deadlytrail()] = "equip";
+		usables[finals.bomb()] = "equip";
+
+		equipped[0] = finals.stasisfield();
+		equipped[1] = finals.turbo();
 	}
 
 	public void movespeedInfo() {
 		this.deselect();
+		this.hideEquipment();
 		header.setText("Speed");
-		if(player.getPermanents(finals.movespeed()) == 5) {
+		if (player.getPermanents(finals.movespeed()) == 5) {
 			level.setText("MAX");
-		}else {
+		} else {
 			level.setText("Level: " + player.getPermanents(finals.movespeed()));
 		}
-		
+
 		description.setText(movespeedDescription);
 		price.setText("Upgrade: "
 				+ pricePermanents(finals.cheap(),
@@ -124,10 +143,11 @@ public class Upgrade {
 
 	public void gunnerInfo() {
 		this.deselect();
+		this.hideEquipment();
 		header.setText("Gunner");
-		if(player.getPermanents(finals.gunner()) == 5) {
+		if (player.getPermanents(finals.gunner()) == 5) {
 			level.setText("MAX");
-		}else {
+		} else {
 			level.setText("Level: " + player.getPermanents(finals.gunner()));
 		}
 		description.setText(gunnerDescription);
@@ -141,10 +161,11 @@ public class Upgrade {
 
 	public void shieldInfo() {
 		this.deselect();
+		this.hideEquipment();
 		header.setText("Shield");
-		if(player.getPermanents(finals.shield()) == 5) {
+		if (player.getPermanents(finals.shield()) == 5) {
 			level.setText("MAX");
-		}else {
+		} else {
 			level.setText("Level: " + player.getPermanents(finals.shield()));
 		}
 		description.setText(shieldDescription);
@@ -158,11 +179,13 @@ public class Upgrade {
 
 	public void shotfrequenceInfo() {
 		this.deselect();
+		this.hideEquipment();
 		header.setText("Shot Frequency");
-		if(player.getPermanents(finals.shotfrequence()) == 5) {
+		if (player.getPermanents(finals.shotfrequence()) == 5) {
 			level.setText("MAX");
-		}else {
-			level.setText("Level: " + player.getPermanents(finals.shotfrequence()));
+		} else {
+			level.setText("Level: "
+					+ player.getPermanents(finals.shotfrequence()));
 		}
 		description.setText(shotfrequenceDescription);
 		price.setText("Upgrade: "
@@ -175,11 +198,13 @@ public class Upgrade {
 
 	public void shotspreadingInfo() {
 		this.deselect();
+		this.hideEquipment();
 		header.setText("Shot Spreading");
-		if(player.getPermanents(finals.shotspreading()) == 5) {
+		if (player.getPermanents(finals.shotspreading()) == 5) {
 			level.setText("MAX");
-		}else {
-			level.setText("Level: " + player.getPermanents(finals.shotspreading()));
+		} else {
+			level.setText("Level: "
+					+ player.getPermanents(finals.shotspreading()));
 		}
 		description.setText(shotspreadingDescription);
 		price.setText("Upgrade: "
@@ -192,6 +217,7 @@ public class Upgrade {
 
 	public void stasisfieldInfo() {
 		this.deselect();
+		this.hideEquipment();
 		header.setText("Stasis Field");
 		level.setText("Amount: " + player.getUsables(finals.stasisfield()));
 		description.setText(stasisfieldDescription);
@@ -199,10 +225,20 @@ public class Upgrade {
 		resources.setText("Resources: \n" + player.getRessources());
 		stasisfieldSelect.setVisible(true);
 		actual = Buy.STASISFIELD;
+		if (usables[finals.stasisfield()] == "equip") {
+			equip.setPosition(150, 60);
+			equip.setVisible(true);
+			upgradeMenu.registerSpriteInGame(equip);
+		} else {
+			discard.setPosition(150, 60);
+			discard.setVisible(true);
+			upgradeMenu.registerSpriteInGame(discard);
+		}
 	}
 
 	public void turboInfo() {
 		this.deselect();
+		this.hideEquipment();
 		header.setText("Turbo");
 		level.setText("Amount: " + player.getUsables(finals.turbo()));
 		description.setText(turboDescription);
@@ -210,10 +246,20 @@ public class Upgrade {
 		resources.setText("Resources: \n" + player.getRessources());
 		turboSelect.setVisible(true);
 		actual = Buy.TURBO;
+		if (usables[finals.turbo()] == "equip") {
+			equip.setPosition(350, 60);
+			equip.setVisible(true);
+			upgradeMenu.registerSpriteInGame(equip);
+		} else {
+			discard.setPosition(350, 60);
+			discard.setVisible(true);
+			upgradeMenu.registerSpriteInGame(discard);
+		}
 	}
 
 	public void deadlytrailInfo() {
 		this.deselect();
+		this.hideEquipment();
 		header.setText("Deadly Trail");
 		level.setText("Amount: " + player.getUsables(finals.deadlytrail()));
 		description.setText(deadlytrailDescription);
@@ -221,10 +267,20 @@ public class Upgrade {
 		resources.setText("Resources: \n" + player.getRessources());
 		deadlytrailSelect.setVisible(true);
 		actual = Buy.DEADLYTRAIL;
+		if (usables[finals.deadlytrail()] == "equip") {
+			equip.setPosition(550, 60);
+			equip.setVisible(true);
+			upgradeMenu.registerSpriteInGame(equip);
+		} else {
+			discard.setPosition(550, 60);
+			discard.setVisible(true);
+			upgradeMenu.registerSpriteInGame(discard);
+		}
 	}
 
 	public void bombInfo() {
 		this.deselect();
+		this.hideEquipment();
 		header.setText("Bomb");
 		level.setText("Amount: " + player.getUsables(finals.bomb()));
 		description.setText(bombDescription);
@@ -232,6 +288,15 @@ public class Upgrade {
 		resources.setText("Resources: \n" + player.getRessources());
 		bombSelect.setVisible(true);
 		actual = Buy.BOMB;
+		if (usables[finals.bomb()] == "equip") {
+			equip.setPosition(750, 60);
+			equip.setVisible(true);
+			upgradeMenu.registerSpriteInGame(equip);
+		} else {
+			discard.setPosition(750, 60);
+			discard.setVisible(true);
+			upgradeMenu.registerSpriteInGame(discard);
+		}
 	}
 
 	private void deselect() {
@@ -297,6 +362,7 @@ public class Upgrade {
 			player.setRessources(player.getRessources()
 					- pricePermanents(finals.moderate(),
 							player.getPermanents(finals.shotfrequence()) - 1));
+			player.increaseShotFrequence();
 			resources.setText("Resources: \n" + player.getRessources());
 		}
 	}
@@ -492,9 +558,149 @@ public class Upgrade {
 		Log.i("NATS", "Usable costs " + price);
 		return price;
 	}
-	
+
 	public void actualizeResources() {
 		resources.setText("Resources: \n" + player.getRessources());
+	}
+
+	private void hideEquipment() {
+		equip.setVisible(false);
+		discard.setVisible(false);
+		upgradeMenu.unregisterSpriteInGame(equip);
+		upgradeMenu.unregisterSpriteInGame(discard);
+	}
+
+	public void equip() {
+		switch (this.actual) {
+		case STASISFIELD:
+			if (equipped[0] == -1) {
+				equipped[0] = finals.stasisfield();
+				usables[finals.stasisfield()] = "discard";
+			} else if (equipped[1] == -1) {
+				equipped[1] = finals.stasisfield();
+				usables[finals.stasisfield()] = "discard";
+			} else {
+				Log.i("Usable", "equip stasisfield, no slot");
+				//Toast.makeText(nats.getBaseContext(), "Both Slots in Use!",
+				//		Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case TURBO:
+			if (equipped[0] == -1) {
+				equipped[0] = finals.turbo();
+				usables[finals.turbo()] = "discard";
+			} else if (equipped[1] == -1) {
+				equipped[1] = finals.turbo();
+				usables[finals.turbo()] = "discard";
+			} else {
+				Log.i("Usable", "equip turbo, no slot");
+				//Toast.makeText(nats.getBaseContext(), "Both Slots in Use!",
+				//		Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case DEADLYTRAIL:
+			if (equipped[0] == -1) {
+				equipped[0] = finals.deadlytrail();
+				usables[finals.deadlytrail()] = "discard";
+			} else if (equipped[1] == -1) {
+				equipped[1] = finals.deadlytrail();
+				usables[finals.deadlytrail()] = "discard";
+			} else {
+				Log.i("Usable", "equip deadlytrail, no slot");
+				//Toast.makeText(nats.getBaseContext(), "Both Slots in Use!",
+				//		Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case BOMB:
+			if (equipped[0] == -1) {
+				equipped[0] = finals.bomb();
+				usables[finals.bomb()] = "discard";
+			} else if (equipped[1] == -1) {
+				equipped[1] = finals.bomb();
+				usables[finals.bomb()] = "discard";
+			} else {
+				Log.i("Usable", "equip bomb, no slot");
+				//Toast.makeText(nats.getBaseContext(), "Both Slots in Use!",
+				//		Toast.LENGTH_SHORT).show();
+			}
+			break;
+		default:
+
+		}
+		upgradeMenu.actualizeEquipment(equipped);
+	}
+
+	public void discard() {
+		Log.i("Usable", "actual = "+this.actual);
+		switch (this.actual) {
+		case STASISFIELD:
+			Log.i("Usable", "case stasisfield");
+			if (equipped[0] == finals.stasisfield()) {
+				Log.i("Usable", "equipped-0");
+				equipped[0] = -1;
+				usables[finals.stasisfield()] = "equip";
+			} else if (equipped[1] == finals.stasisfield()) {
+				Log.i("Usable", "equipped-1");
+				equipped[1] = -1;
+				usables[finals.stasisfield()] = "equip";
+			} else {
+				Log.i("Usable", "else");
+				Log.i("Usable", "discard stasisfield, no slot");
+				//Toast.makeText(nats.getBaseContext(), "Item isn't equipped!",
+				//		Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case TURBO:
+			Log.i("Usable", "case turbo");
+			if (equipped[0] == finals.turbo()) {
+				equipped[0] = -1;
+				usables[finals.turbo()] = "equip";
+			} else if (equipped[1] == finals.turbo()) {
+				equipped[1] = -1;
+				usables[finals.turbo()] = "equip";
+			} else {
+				Log.i("Usable", "discard turbo, no slot");
+				//Toast.makeText(nats.getBaseContext(), "Item isn't equipped!",
+				//		Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case DEADLYTRAIL:
+			Log.i("Usable", "case deadlytrail");
+			if (equipped[0] == finals.deadlytrail()) {
+				equipped[0] = -1;
+				usables[finals.deadlytrail()] = "equip";
+			} else if (equipped[1] == finals.deadlytrail()) {
+				equipped[1] = -1;
+				usables[finals.deadlytrail()] = "equip";
+			} else {
+				Log.i("Usable", "discard deadlytrail, no slot");
+				//Toast.makeText(nats.getBaseContext(), "Item isn't equipped!",
+				//		Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case BOMB:
+			Log.i("Usable", "case bomb");
+			if (equipped[0] == finals.bomb()) {
+				equipped[0] = -1;
+				usables[finals.bomb()] = "equip";
+			} else if (equipped[1] == finals.bomb()) {
+				equipped[1] = -1;
+				usables[finals.bomb()] = "equip";
+			} else {
+				Log.i("Usable", "discard bomb, no slot");
+				//Toast.makeText(nats.getBaseContext(), "Item isn't equipped!",
+				//		Toast.LENGTH_SHORT).show();
+			}
+			break;
+		default:
+
+		}
+		Log.i("Usable", "actualizeEquipment");
+		upgradeMenu.actualizeEquipment(equipped);
+	}
+
+	public int[] getEquipped() {
+		return equipped;
 	}
 
 }
