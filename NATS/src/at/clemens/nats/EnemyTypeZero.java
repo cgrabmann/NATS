@@ -27,7 +27,6 @@ public class EnemyTypeZero extends PEnemy{
 	private FixtureDef fd;
 
 	public EnemyTypeZero(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world) {
-		super();
 		this.world = world;
 		this.games = pf;
 		this.textur = textur;

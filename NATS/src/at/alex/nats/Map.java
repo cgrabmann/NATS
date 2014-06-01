@@ -2,7 +2,7 @@ package at.alex.nats;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
@@ -32,11 +32,9 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 	
 	//‹bergabe
 	nats nats;
-	Camera mainCamera;
+	BoundCamera mainCamera;
 	SceneManager sceneManager;
 	
-	Player player;
-	Sprite playerSprite;
 	Runnable gameLoop;
 	
 	PauseMenu pauseMenu;
@@ -58,6 +56,12 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 	BitmapTextureAtlas updateBitmapTextureAtlas;
 	ITextureRegion updateITextureRegion;
 	Sprite updateSprite;
+	
+	//Player
+	Player player;
+	BitmapTextureAtlas playerBitmapTextureAtlas;
+	ITextureRegion playerITextureRegion;
+	Sprite playerSprite;
 
 	//linke Analogstick
 	AnalogOnScreenControl leftAnalogOnScreenControl;
@@ -76,7 +80,7 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 	Sprite pause[] = new Sprite[2];
 	Sprite upgrade[] = new Sprite[9];
 
-	public Map(nats nats, Camera cam, SceneManager s) {
+	public Map(nats nats, BoundCamera cam, SceneManager s) {
 		this.nats = nats;
 		this.mainCamera = cam;
 		this.sceneManager = s;
@@ -108,6 +112,13 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 				.createFromAsset(updateBitmapTextureAtlas,
 						nats.getApplicationContext(), "Update.png", 0, 0);
 		updateBitmapTextureAtlas.load();
+		
+		playerBitmapTextureAtlas = new BitmapTextureAtlas(
+				nats.getTextureManager(), 70, 70, TextureOptions.DEFAULT);
+		playerITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(playerBitmapTextureAtlas,
+						nats.getApplicationContext(), "Update.png", 0, 0);
+		playerBitmapTextureAtlas.load();
 
 		leftAnalogAuﬂenBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 200, 200, TextureOptions.DEFAULT);
@@ -168,6 +179,14 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 			};
 		};
 		
+		//erstellen von PlayerSprite
+		playerSprite = new Sprite(player.getPosX(),
+				player.getPosY(), playerITextureRegion,
+				nats.getVertexBufferObjectManager());
+		
+		//add Player to Gamelayer
+		this.getChildByIndex(GAME_LAYER).attachChild(playerSprite);
+		
 		//erstellen von UpgradeSprite
 		updateSprite = new Sprite(nats.getCameraWidth() - 50,
 				nats.getCameraHeight() - 35, updateITextureRegion,
@@ -204,6 +223,9 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 		//((Scene) this.getChildByIndex(GAME_LAYER)).setChildScene(leftAnalogOnScreenControl);
 		hud.attachChild(leftAnalogOnScreenControl);
 		mainCamera.setHUD(hud);
+		mainCamera.setChaseEntity(playerSprite);
+		mainCamera.setBounds(0, 0, 800, 480);
+		mainCamera.setBoundsEnabled(true);
 
 		// loadPauseLayer();
 		// loadUpgradeLayer();

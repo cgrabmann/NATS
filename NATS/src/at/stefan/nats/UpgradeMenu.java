@@ -1,5 +1,6 @@
 package at.stefan.nats;
 
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -28,7 +29,7 @@ public class UpgradeMenu extends Scene {
 	boolean touch = false;
 
 	nats nats;
-	Camera mainCamera;
+	BoundCamera mainCamera;
 	GameEnvironment gameEnvironment;
 	SceneManager sceneManager;
 	Player player;
@@ -125,7 +126,7 @@ public class UpgradeMenu extends Scene {
 	ITextureRegion discardITextureRegion;
 	Sprite discardSprite;
 
-	public UpgradeMenu(nats nats, Camera cam, GameEnvironment ge,
+	public UpgradeMenu(nats nats, BoundCamera cam, GameEnvironment ge,
 			SceneManager s, Player player) {
 		this.nats = nats;
 		this.mainCamera = cam;

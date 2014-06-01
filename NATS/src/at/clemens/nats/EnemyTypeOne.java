@@ -1,39 +1,58 @@
 package at.clemens.nats;
 
 import org.andengine.entity.scene.Scene;
-import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.extension.physics.box2d.PhysicsConnector;
+import org.andengine.extension.physics.box2d.PhysicsFactory;
+import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.opengl.texture.region.TextureRegion;
 
 import at.alex.nats.Player;
+import at.stefan.nats.nats;
+
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class EnemyTypeOne extends PEnemy{
 	
 	private final int maxMoveSpeed = 10;
-	private final float maxHeight, maxWidth;
-	private ITextureRegion textur;
+	private TextureRegion textur;
+	private Sprite enemy;
+	private Scene games;
+	private PhysicsWorld world;
+	private Body body;
+	private FixtureDef fd;
 
-	public EnemyTypeOne(Scene pf, ITextureRegion[] textur) {
-		super(pf);
-		this.textur = textur[1];
-		super.size = 100;
-		super.movex = 0;
-		super.movey = 0;
-		this.maxHeight = pf.getScaleX();
-		this.maxWidth = pf.getScaleY();
+	public EnemyTypeOne(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world) {
+		this.world = world;
+		this.games = pf;
+		this.textur = textur;
+		enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
+		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
+		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
+	}
+	
+	public void start(){
+		games.attachChild(enemy);
+		world.registerPhysicsConnector(new PhysicsConnector(enemy, body, true, false));
+		//TODO start fly function | alle 15 msec ausführen
+		//TODO Timehandler
+		body.setLinearVelocity(movex, movey);
 	}
 
 	@Override
 	public boolean update(Player player, Scene pf) {
 		boolean hit = false;
-		hit = move(player);
+		move(player);
 		
 		return hit;
 	}
 
 	@Override
-	protected boolean move(Player player) {
+	protected void move(Player player) {
 		float offsetX, offsetY;
 		float pPosx, pPosy;
-		boolean hit = false;
 		
 		pPosx = player.getPosX();
 		pPosy = player.getPosY();
@@ -58,25 +77,7 @@ public class EnemyTypeOne extends PEnemy{
 			super.movey = (super.movey > 0)?super.movey - 1:super.movey + 1;
 		}
 		
-		//calculate new X position
-		int tempMoveX = (super.movex < 0)?-super.movex:super.movex;
-		for(int i = 0; i > tempMoveX; i++){
-			super.posx += super.movex/tempMoveX;
-			if((super.posx-super.size) == 0 || (super.posx+super.size) == this.maxWidth){
-				super.movex *= -1;
-			}
-		}
-		
-		//calculate new Y position
-		int tempMoveY = (super.movey < 0)?-super.movey:super.movey;
-		for(int i = 0; i > tempMoveY; i++){
-			super.posy += super.movey/tempMoveY;
-			if((super.posy-super.size) == 0 || (super.posy+super.size) == this.maxHeight){
-				super.movey *= -1;
-			}
-		}
-		
-		return hit;
+		return;
 	}
 
 }

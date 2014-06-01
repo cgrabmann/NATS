@@ -10,15 +10,16 @@ public abstract class PEnemy {
 
 	float posx, posy;
 	int movex, movey;
-	int size;
 	int speed;
 	boolean frozen;
 	
 	private final int splices = 5;
 
-	public PEnemy(Scene pf) {
-		Random rg = new Random();
-		int spawnControll = rg.nextInt(4);
+	public PEnemy() {}
+	
+	public void createStartPos(Scene pf){
+		Random r = new Random();
+		int spawnControll = r.nextInt(4);
 		switch (spawnControll){
 		case (0):
 			this.posx = pf.getScaleX()/splices;
@@ -39,9 +40,11 @@ public abstract class PEnemy {
 		default:
 			break;
 		}
+		this.movex = 0;
+		this.movey = 0;
 	}
 	
 	public abstract boolean update(Player player, Scene pf);
-	protected abstract boolean move(Player player);
+	protected abstract void move(Player player);
 
 }

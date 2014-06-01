@@ -9,6 +9,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
+import at.alex.nats.Map;
 import at.alex.nats.Player;
 
 public class SceneManager {
@@ -22,6 +23,7 @@ public class SceneManager {
 	Settings settings;
 	Player player;
 	GameEnvironment gameEnvironment;
+	Map map;
 	PauseMenu pauseMenu;
 	UpgradeMenu upgradeMenu;
 	
@@ -96,7 +98,7 @@ public class SceneManager {
 			//pauseMenu.registerTouch();
 			currentScene = AllScenes.PAUSE;
 		}else if(scenes == AllScenes.UPGRADE) {
-			gameEnvironment.showUpgradeMenu();
+			map.showUpgradeMenu();
 			currentScene = AllScenes.UPGRADE;
 		}
 	}
@@ -113,14 +115,14 @@ public class SceneManager {
 		mainMenu.loadMainMenuResources();
 		highscores.loadHighscoreResources();
 		settings.loadSettingsResources();
-		gameEnvironment.loadGameResources();
+		map.loadGameResources();
 		pauseMenu.loadPauseResources();
 		upgradeMenu.loadUpgradeResources();
 		
 		mainMenu.loadMainMenuScene();
 		highscores.loadHighscoreScene();
 		settings.loadSettingsScene();
-		gameEnvironment.loadGameScene();
+		map.loadGameScene();
 		pauseMenu.loadPauseScene();
 		upgradeMenu.loadUpgradeScene();
 	}
