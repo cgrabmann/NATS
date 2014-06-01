@@ -15,7 +15,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
-import org.andengine.extension.debugdraw.DebugRenderer;
+//import org.andengine.extension.debugdraw.DebugRenderer;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -63,7 +63,7 @@ public class GameEnvironment extends Scene {
 	Font HUDGameFont;
 
 	PhysicsWorld world;
-	DebugRenderer debug;
+	//DebugRenderer debug;
 
 	Rectangle leftBorder;
 	Rectangle upperBorder;
@@ -593,8 +593,8 @@ public class GameEnvironment extends Scene {
 		this.attachChild(rightBorder);
 		this.attachChild(lowerBorder);
 
-		debug = new DebugRenderer(world, nats.getVertexBufferObjectManager());
-		this.attachChild(debug);
+		//debug = new DebugRenderer(world, nats.getVertexBufferObjectManager());
+		//this.attachChild(debug);
 	}
 
 	public void removeGameScene() {
