@@ -32,10 +32,12 @@ public class EnemyTypeZero extends PEnemy{
 	private FixtureDef fd;
 	private PhysicsConnector pc;
 
-	public EnemyTypeZero(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world) {
+	public EnemyTypeZero(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
+		super(nats);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
+		super.player = p;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
 		enemy = new Rectangle(0, 0, 100, 100, nats.getVertexBufferObjectManager());
 		enemy.setVisible(false);
@@ -48,6 +50,7 @@ public class EnemyTypeZero extends PEnemy{
 		pc = new PhysicsConnector(enemy, body, true, false);
 	}
 	
+	@Override
 	public void start(){
 		this.createStartPos(game);
 		game.attachChild(enemy);
@@ -68,7 +71,7 @@ public class EnemyTypeZero extends PEnemy{
 	}
 	
 	@Override
-	public void createStartPos(Scene pf){
+	protected void createStartPos(Scene pf){
 		super.createStartPos(pf);
 		super.movex = (maxMoveSpeed/2) + (int)(Math.random() * ((maxMoveSpeed - (maxMoveSpeed/2)) + 1));
 		super.movey = (maxMoveSpeed/2) + (int)(Math.random() * ((maxMoveSpeed - (maxMoveSpeed/2)) + 1));
@@ -76,6 +79,7 @@ public class EnemyTypeZero extends PEnemy{
 		super.movey *= (getRandomBoolean())?1:-1;
 	}
 
+	@Override
 	public void stop(){
 		game.detachChild(enemy);
 		enemy.setVisible(false);
@@ -91,13 +95,6 @@ public class EnemyTypeZero extends PEnemy{
 		return r.nextBoolean();
 	}
 
-	@Override
-	public boolean update(Player player, Scene pf) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	protected void move(Player player) {
 		// TODO Auto-generated method stub
 		

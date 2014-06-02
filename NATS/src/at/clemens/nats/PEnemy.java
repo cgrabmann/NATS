@@ -5,6 +5,7 @@ import java.util.Random;
 import org.andengine.entity.scene.Scene;
 
 import at.alex.nats.Player;
+import at.stefan.nats.nats;
 
 public abstract class PEnemy {
 
@@ -12,10 +13,13 @@ public abstract class PEnemy {
 	int movex, movey;
 	int speed;
 	boolean frozen;
+	protected Player player;
+	protected nats nats;
 	
 	private final int splices = 5;
 
-	public PEnemy() {
+	public PEnemy(nats n) {
+		this.nats = n;
 		this.movex = 0;
 		this.movey = 0;
 	}
@@ -45,7 +49,15 @@ public abstract class PEnemy {
 		}
 	}
 	
-	public abstract boolean update(Player player, Scene pf);
-	protected abstract void move(Player player);
+	public int getMovex(){
+		return movex;
+	}
+	
+	public int getMovey(){
+		return movey;
+	}
+	
+	public abstract void start();
+	public abstract void stop();
 
 }
