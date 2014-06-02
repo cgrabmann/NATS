@@ -2,6 +2,9 @@ package at.clemens.nats;
 
 import java.util.Random;
 
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
@@ -10,6 +13,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TextureRegion;
 
 import at.alex.nats.Player;
+import at.stefan.nats.UserData;
 import at.stefan.nats.nats;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -20,26 +24,46 @@ public class EnemyTypeZero extends PEnemy{
 	
 	private final int maxMoveSpeed = 10;
 	private TextureRegion textur;
-	private Sprite enemy;
-	private Scene games;
+	//private Sprite enemy;
+	private Rectangle enemy;
+	private Scene game;
 	private PhysicsWorld world;
 	private Body body;
 	private FixtureDef fd;
+	private PhysicsConnector pc;
 
 	public EnemyTypeZero(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world) {
 		this.world = world;
-		this.games = pf;
+		this.game = pf;
 		this.textur = textur;
-		enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
-		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
+		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
+		enemy = new Rectangle(0, 0, 100, 100, nats.getVertexBufferObjectManager());
+		enemy.setVisible(false);
+		fd = PhysicsFactory.createFixtureDef(0f, 1f, 0f);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
+		body.setActive(false);
+		body.setAwake(false);
+		body.setUserData(new UserData("enemyzero", this));
+		
+		pc = new PhysicsConnector(enemy, body, true, false);
 	}
 	
 	public void start(){
-		games.attachChild(enemy);
-		world.registerPhysicsConnector(new PhysicsConnector(enemy, body, true, false));
+		this.createStartPos(game);
+		game.attachChild(enemy);
+		enemy.setVisible(true);
+		
 		//TODO start fly function | alle 15 msec ausführen
 		//TODO Timehandler
+		
+		body.setActive(true);
+		body.setAwake(true);
+		
+		body.setTransform(super.posx, super.posy, 0f);
+
+		world.registerPhysicsConnector(pc);
+		//nats.getEngine().registerUpdateHandler(th);
+
 		body.setLinearVelocity(movex, movey);
 	}
 	
@@ -52,23 +76,31 @@ public class EnemyTypeZero extends PEnemy{
 		super.movey *= (getRandomBoolean())?1:-1;
 	}
 
-	@Override
-	public boolean update(Player player, Scene pf) {
-		boolean hit = false;
-		move(player);
-		
-		return hit;
-	}
-
-	@Override
-	protected void move(Player player) {
-		
-		return;
+	public void stop(){
+		game.detachChild(enemy);
+		enemy.setVisible(false);
+		body.setActive(false);
+		body.setAwake(false);
+		body.setLinearVelocity(0f, 0f);
+		body.setTransform(-500, -340, 0.0f);
+		world.unregisterPhysicsConnector(pc);
 	}
 	
 	private boolean getRandomBoolean(){
 		Random r = new Random();
 		return r.nextBoolean();
+	}
+
+	@Override
+	public boolean update(Player player, Scene pf) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void move(Player player) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -15,9 +15,12 @@ public abstract class PEnemy {
 	
 	private final int splices = 5;
 
-	public PEnemy() {}
+	public PEnemy() {
+		this.movex = 0;
+		this.movey = 0;
+	}
 	
-	public void createStartPos(Scene pf){
+	protected void createStartPos(Scene pf){
 		Random r = new Random();
 		int spawnControll = r.nextInt(4);
 		switch (spawnControll){
@@ -40,8 +43,6 @@ public abstract class PEnemy {
 		default:
 			break;
 		}
-		this.movex = 0;
-		this.movey = 0;
 	}
 	
 	public abstract boolean update(Player player, Scene pf);
