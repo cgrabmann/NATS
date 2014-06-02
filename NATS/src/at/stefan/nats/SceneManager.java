@@ -1,6 +1,6 @@
 package at.stefan.nats;
 
-import org.andengine.engine.Engine;
+import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -14,7 +14,7 @@ import at.alex.nats.Player;
 public class SceneManager {
 	
 	nats nats;
-	Engine mEngine;
+	LimitedFPSEngine mEngine;
 	BoundCamera mainCamera;
 	
 	MainMenu mainMenu;
@@ -39,7 +39,7 @@ public class SceneManager {
 		MAIN_MENU, NEW_GAME, HIGHSCORES, SETTINGS, EXIT_GAME, PAUSE, UPGRADE
 	}
 
-	public SceneManager(nats nats, Engine mEngine, BoundCamera cam) {
+	public SceneManager(nats nats, LimitedFPSEngine mEngine, BoundCamera cam) {
 		this.nats = nats;
 		this.mEngine = mEngine;
 		this.mainCamera = cam;

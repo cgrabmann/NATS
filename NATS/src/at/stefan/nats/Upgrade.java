@@ -321,6 +321,7 @@ public class Upgrade {
 			player.setRessources(player.getRessources()
 					- pricePermanents(finals.cheap(),
 							player.getPermanents(finals.movespeed()) - 1));
+			player.increaseSpeed();
 		}
 	}
 
@@ -334,6 +335,7 @@ public class Upgrade {
 			player.setRessources(player.getRessources()
 					- pricePermanents(finals.cheap(),
 							player.getPermanents(finals.gunner()) - 1));
+			player.increaseGunner();
 		}
 	}
 
@@ -345,6 +347,7 @@ public class Upgrade {
 			shieldProgress.increaseProgress();
 			player.setPermanents(player.getPermanents(finals.shield()) + 1,
 					finals.shield());
+			player.increaseShield();
 			player.setRessources(player.getRessources()
 					- pricePermanents(finals.expensive(),
 							player.getPermanents(finals.shield()) - 1));
@@ -363,7 +366,7 @@ public class Upgrade {
 					- pricePermanents(finals.moderate(),
 							player.getPermanents(finals.shotfrequence()) - 1));
 			player.increaseShotFrequence();
-			resources.setText("Resources: \n" + player.getRessources());
+			//resources.setText("Resources: \n" + player.getRessources());
 		}
 	}
 
@@ -378,6 +381,7 @@ public class Upgrade {
 			player.setRessources(player.getRessources()
 					- pricePermanents(finals.moderate(),
 							player.getPermanents(finals.shotspreading()) - 1));
+			player.increaseShotSpreading();
 		}
 	}
 
