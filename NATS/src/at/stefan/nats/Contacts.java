@@ -99,13 +99,14 @@ public class Contacts implements ContactListener {
 		}
 
 		else if (a.getUserString().equals("bullet")
-				&& b.getUserString().equals("wall")) {
+				&& (b.getUserString().equals("wallNS") || b.getUserString()
+						.equals("wallEW"))) {
 			// Log.i("Contact", "bullet-wall");
 
 			contact.setEnabled(false);
 			((Bullet) a.getUserObject()).sendBulletToPool();
-		} else if (a.getUserString().equals("wall")
-				&& b.getUserString().equals("bullet")) {
+		} else if ((a.getUserString().equals("wallNS") || a.getUserString()
+				.equals("wallEW")) && b.getUserString().equals("bullet")) {
 			// Log.i("Contact", "wall-bullet");
 
 			contact.setEnabled(false);

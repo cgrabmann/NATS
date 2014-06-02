@@ -343,7 +343,7 @@ public class GameEnvironment extends Scene {
 		// 620, wall);
 		leftBorderBody = PhysicsFactory.createBoxBody(world, leftBorder,
 				BodyType.StaticBody, wall);
-		leftBorderBody.setUserData(new UserData("wall", leftBorder));
+		leftBorderBody.setUserData(new UserData("wallEW", leftBorder));
 		// leftBorderBody.setUserData("wall");
 
 		rightBorder = new Rectangle(1095, 240, 10, 760,
@@ -354,7 +354,7 @@ public class GameEnvironment extends Scene {
 		// 1090, 620, wall);
 		rightBorderBody = PhysicsFactory.createBoxBody(world, rightBorder,
 				BodyType.StaticBody, wall);
-		rightBorderBody.setUserData(new UserData("wall", rightBorder));
+		rightBorderBody.setUserData(new UserData("wallEW", rightBorder));
 		// rightBorderBody.setUserData("wall");
 
 		upperBorder = new Rectangle(400, -135, 1400, 10,
@@ -366,7 +366,7 @@ public class GameEnvironment extends Scene {
 		// -130, wall);
 		upperBorderBody = PhysicsFactory.createBoxBody(world, upperBorder,
 				BodyType.StaticBody, wall);
-		upperBorderBody.setUserData(new UserData("wall", upperBorder));
+		upperBorderBody.setUserData(new UserData("wallNS", upperBorder));
 		// upperBorderBody.setUserData("wall");
 
 		lowerBorder = new Rectangle(400, 615, 1400, 10,
@@ -378,7 +378,7 @@ public class GameEnvironment extends Scene {
 		// 610, wall);
 		lowerBorderBody = PhysicsFactory.createBoxBody(world, lowerBorder,
 				BodyType.StaticBody, wall);
-		lowerBorderBody.setUserData(new UserData("wall", lowerBorder));
+		lowerBorderBody.setUserData(new UserData("wallNS", lowerBorder));
 		// lowerBorderBody.setUserData("wall");
 
 		smallStasisfieldBitmapTextureAtlas = new BitmapTextureAtlas(
