@@ -1,12 +1,9 @@
 package at.clemens.nats;
 
-import java.util.Random;
-
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -20,7 +17,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-public class EnemyTypeZero extends PEnemy{
+public class EnemyBlackHole extends PEnemy{
 	
 	private final int maxMoveSpeed = 10;
 	private TextureRegion textur;
@@ -32,16 +29,15 @@ public class EnemyTypeZero extends PEnemy{
 	private FixtureDef fd;
 	private PhysicsConnector pc;
 	private TimerHandler th;
-	private int smovex, smovey;
+	private int size;
 
-	public EnemyTypeZero(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
+	public EnemyBlackHole(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
 		super(nats);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
 		super.player = p;
-		smovex = super.movex;
-		smovey = super.movey;
+		this.size = 0;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
 		enemy = new Rectangle(0, 0, 100, 100, nats.getVertexBufferObjectManager());
 		enemy.setVisible(false);
@@ -49,15 +45,20 @@ public class EnemyTypeZero extends PEnemy{
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
 		body.setActive(false);
 		body.setAwake(false);
-		body.setUserData(new UserData("enemyzero", this));
+		body.setUserData(new UserData("enemyblackhole", this));
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
 
 			@Override
 			public void onTimePassed(TimerHandler pTimerHandler) {
 				// TODO Auto-generated method stub
-				move();
-				body.setLinearVelocity(getMovex(), getMovey());
+				if(size == 100){
+					// TODO create enemythree
+				}else if(size <= 0){
+					// TODO destroy it self 
+				}else{
+					// TODO resize
+				}
 			}
 		});
 		
@@ -67,6 +68,7 @@ public class EnemyTypeZero extends PEnemy{
 	@Override
 	public void start(){
 		this.createStartPos(game);
+		this.size = 50;
 		game.attachChild(enemy);
 		enemy.setVisible(true);
 		
@@ -85,10 +87,6 @@ public class EnemyTypeZero extends PEnemy{
 	@Override
 	protected void createStartPos(Scene pf){
 		super.createStartPos(pf);
-		super.movex = (maxMoveSpeed/2) + (int)(Math.random() * ((maxMoveSpeed - (maxMoveSpeed/2)) + 1));
-		super.movey = (maxMoveSpeed/2) + (int)(Math.random() * ((maxMoveSpeed - (maxMoveSpeed/2)) + 1));
-		super.movex *= (getRandomBoolean())?1:-1;
-		super.movey *= (getRandomBoolean())?1:-1;
 	}
 
 	@Override
@@ -103,29 +101,12 @@ public class EnemyTypeZero extends PEnemy{
 		nats.getEngine().unregisterUpdateHandler(th);
 	}
 	
-	private boolean getRandomBoolean(){
-		Random r = new Random();
-		return r.nextBoolean();
-	}
 
-	protected void move() {
-		// TODO Auto-generated method stub
-		if(frozen){
-			super.movex = 0;
-			super.movey = 0;
-		}else{
-			super.movex = smovex;
-			super.movey = smovey;
-		}
-		
+	public void collitionB(){
+		size -= 5;
 	}
 	
-	public void colisionNS(){
-		smovey *= (-1);
+	public void collitionE(){
+		size += 2;
 	}
-	
-	public void colisionWE(){
-		smovex *= (-1);
-	}
-
 }

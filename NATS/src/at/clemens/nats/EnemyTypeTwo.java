@@ -130,4 +130,11 @@ public class EnemyTypeTwo extends PEnemy{
 		return;
 	}
 
+	public float getPosx(){
+		return super.posx;
+	}
+	
+	public float getPosy(){
+		return super.posy;
+	}
 }
