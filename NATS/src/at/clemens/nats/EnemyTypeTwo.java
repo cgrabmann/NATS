@@ -17,9 +17,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-public class EnemyTypeOne extends PEnemy{
+public class EnemyTypeTwo extends PEnemy{
 	
-	private final int maxMoveSpeed = 10;
+	private final int maxMoveSpeed = 15;
 	private TextureRegion textur;
 	//private Sprite enemy;
 	private Rectangle enemy;
@@ -30,7 +30,7 @@ public class EnemyTypeOne extends PEnemy{
 	private PhysicsConnector pc;
 	private TimerHandler th;
 
-	public EnemyTypeOne(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
+	public EnemyTypeTwo(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
 		super(nats);
 		this.world = world;
 		this.game = pf;
@@ -43,7 +43,7 @@ public class EnemyTypeOne extends PEnemy{
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
 		body.setActive(false);
 		body.setAwake(false);
-		body.setUserData(new UserData("enemyzero", this));
+		body.setUserData(new UserData("enemytwo", this));
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
 

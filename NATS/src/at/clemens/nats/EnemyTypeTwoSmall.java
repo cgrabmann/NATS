@@ -17,9 +17,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-public class EnemyTypeOne extends PEnemy{
+public class EnemyTypeTwoSmall extends PEnemy{
 	
-	private final int maxMoveSpeed = 10;
+	private final int maxMoveSpeed = 20;
 	private TextureRegion textur;
 	//private Sprite enemy;
 	private Rectangle enemy;
@@ -30,20 +30,20 @@ public class EnemyTypeOne extends PEnemy{
 	private PhysicsConnector pc;
 	private TimerHandler th;
 
-	public EnemyTypeOne(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
+	public EnemyTypeTwoSmall(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
 		super(nats);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
 		super.player = p;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
-		enemy = new Rectangle(0, 0, 100, 100, nats.getVertexBufferObjectManager());
+		enemy = new Rectangle(0, 0, 50, 50, nats.getVertexBufferObjectManager());
 		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
 		body.setActive(false);
 		body.setAwake(false);
-		body.setUserData(new UserData("enemyzero", this));
+		body.setUserData(new UserData("enemytwosmall", this));
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
 

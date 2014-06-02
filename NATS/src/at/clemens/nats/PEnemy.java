@@ -11,7 +11,6 @@ public abstract class PEnemy {
 
 	float posx, posy;
 	int movex, movey;
-	int speed;
 	boolean frozen;
 	protected Player player;
 	protected nats nats;

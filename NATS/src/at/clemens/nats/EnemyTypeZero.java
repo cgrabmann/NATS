@@ -31,6 +31,8 @@ public class EnemyTypeZero extends PEnemy{
 	private Body body;
 	private FixtureDef fd;
 	private PhysicsConnector pc;
+	private TimerHandler th;
+	private int smovex, smovey;
 
 	public EnemyTypeZero(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
 		super(nats);
@@ -38,14 +40,26 @@ public class EnemyTypeZero extends PEnemy{
 		this.game = pf;
 		this.textur = textur;
 		super.player = p;
+		smovex = super.movex;
+		smovey = super.movey;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
 		enemy = new Rectangle(0, 0, 100, 100, nats.getVertexBufferObjectManager());
 		enemy.setVisible(false);
-		fd = PhysicsFactory.createFixtureDef(0f, 1f, 0f);
+		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemyzero", this));
+		
+		th = new TimerHandler(0.050f, true, new ITimerCallback() {
+
+			@Override
+			public void onTimePassed(TimerHandler pTimerHandler) {
+				// TODO Auto-generated method stub
+				move();
+				body.setLinearVelocity(getMovex(), getMovey());
+			}
+		});
 		
 		pc = new PhysicsConnector(enemy, body, true, false);
 	}
@@ -65,9 +79,7 @@ public class EnemyTypeZero extends PEnemy{
 		body.setTransform(super.posx, super.posy, 0f);
 
 		world.registerPhysicsConnector(pc);
-		//nats.getEngine().registerUpdateHandler(th);
-
-		body.setLinearVelocity(movex, movey);
+		nats.getEngine().registerUpdateHandler(th);
 	}
 	
 	@Override
@@ -88,6 +100,7 @@ public class EnemyTypeZero extends PEnemy{
 		body.setLinearVelocity(0f, 0f);
 		body.setTransform(-500, -340, 0.0f);
 		world.unregisterPhysicsConnector(pc);
+		nats.getEngine().unregisterUpdateHandler(th);
 	}
 	
 	private boolean getRandomBoolean(){
@@ -95,9 +108,24 @@ public class EnemyTypeZero extends PEnemy{
 		return r.nextBoolean();
 	}
 
-	protected void move(Player player) {
+	protected void move() {
 		// TODO Auto-generated method stub
+		if(frozen){
+			super.movex = 0;
+			super.movey = 0;
+		}else{
+			super.movex = smovex;
+			super.movey = smovey;
+		}
 		
+	}
+	
+	public void colisionns(){
+		smovey *= (-1);
+	}
+	
+	public void colisionwe(){
+		smovex *= (-1);
 	}
 
 }
