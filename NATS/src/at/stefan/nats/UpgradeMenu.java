@@ -698,7 +698,7 @@ public class UpgradeMenu extends Scene {
 			Log.i("Usable", "e1 = bomb");
 			gameEnvironment.setUsable2(finals.bomb());
 		}
-		
+
 		if (e[0] == -1) {
 			Log.i("Usable", "e0 = -1");
 			gameEnvironment.setUsable1(-1);
@@ -706,6 +706,27 @@ public class UpgradeMenu extends Scene {
 		if (e[1] == -1) {
 			Log.i("Usable", "e1 = -1");
 			gameEnvironment.setUsable2(-1);
+		}
+	}
+
+	public void setUsableEquip(int pos) {
+		upgrade.setUsableEquip(pos);
+		// usables[pos] = "equip";
+	}
+
+	public void setUsableNumber(int pos) {
+		if (pos == finals.stasisfield()) {
+			stasisfieldText.setText("x"
+					+ player.getUsables(finals.stasisfield()));
+		} else if (pos == finals.turbo()) {
+			turboText.setText("x"
+					+ player.getUsables(finals.turbo()));
+		} else if (pos == finals.deadlytrail()) {
+			deadlytrailText.setText("x"
+					+ player.getUsables(finals.deadlytrail()));
+		} else if (pos == finals.bomb()) {
+			bombText.setText("x"
+					+ player.getUsables(finals.bomb()));
 		}
 	}
 

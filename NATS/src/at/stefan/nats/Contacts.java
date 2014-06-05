@@ -6,6 +6,8 @@ import org.andengine.extension.physics.box2d.PhysicsConnector;
 
 import android.util.Log;
 import at.alex.nats.Player;
+import at.clemens.nats.EnemyTypeTwo;
+import at.clemens.nats.EnemyTypeZero;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -27,6 +29,7 @@ public class Contacts implements ContactListener {
 		this.scene = s;
 		this.physicsWorld = pw;
 		this.mEngine = e;
+		this.player = player;
 	}
 
 	@Override
@@ -90,11 +93,16 @@ public class Contacts implements ContactListener {
 					contact.setEnabled(false);
 
 				} else {
-					// Player dies
+					//Log.i("NATS", "Player Touches Enemy");
+					//contact.setEnabled(false);
 				}
 			} else if (a.getUserString().equals("trail")
 					|| b.getUserString().equals("trail")) {
 				contact.setEnabled(false);
+			}
+			
+			else if(a.getUserString().equals("enemy") || b.getUserString().equals("enemy")) {
+				//Log.i("NATS", "Enemy Touches");
 			}
 		}
 
@@ -123,6 +131,35 @@ public class Contacts implements ContactListener {
 			contact.setEnabled(false);
 		} else if (b.getUserString().equals("bullet")
 				&& a.getUserString().equals("trail")) {
+			contact.setEnabled(false);
+		}
+		
+		else if(a.getUserString().equals("enemy") && b.getUserString().equals("bullet")) {
+			//Log.i("NATS", "Enemy Shot1");
+			((EnemyTypeTwo) a.getUserObject()).stop();
+		}else if(b.getUserString().equals("enemy") && a.getUserString().equals("bullet")) {
+			//Log.i("NATS", "Enemy Shot2");
+			((EnemyTypeTwo) b.getUserObject()).stop();
+		}
+		
+		/*else if(a.getUserString().equals("enemy") && b.getUserString().equals("wallNS")) {
+			((EnemyTypeTwo) a.getUserObject()).colisionNS();
+			//Log.i("NATS", "Collision enemey NS");
+		}else if(b.getUserString().equals("enemy") && a.getUserString().equals("wallNS")) {
+			((EnemyTypeTwo) b.getUserObject()).colisionNS();
+			//Log.i("NATS", "Collision enemey NS");
+		}
+		
+		else if(a.getUserString().equals("enemy") && b.getUserString().equals("wallEW")) {
+			((EnemyTypeZero) a.getUserObject()).colisionWE();
+			//Log.i("NATS", "Collision enemey EW");
+		}else if(b.getUserString().equals("enemy") && a.getUserString().equals("wallEW")) {
+			((EnemyTypeZero) b.getUserObject()).colisionWE();
+			//Log.i("NATS", "Collision enemey EW");
+		}*/
+		
+		else if(a.getUserString().equals("enemy") && b.getUserString().equals("enemy")){
+			//Log.i("NATS", "Enemy-Enemy");
 			contact.setEnabled(false);
 		}
 

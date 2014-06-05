@@ -159,6 +159,10 @@ public class Player {
 		// Log.i("NATS", "setRessources to " + ressources);
 		this.ressources = ressources;
 	}
+	
+	public void addRessources(int i) {
+		this.ressources += i;
+	}
 
 	public int getRessources() {
 		// Log.i("NATS", "getRessources: " + this.ressources);

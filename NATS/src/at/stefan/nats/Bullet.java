@@ -8,7 +8,6 @@ import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.util.adt.color.Color;
 
-import android.util.Log;
 import at.alex.nats.Player;
 
 import com.badlogic.gdx.math.Vector2;
@@ -146,7 +145,7 @@ public class Bullet {
 		body.setTransform(player.getPosX() / 32, player.getPosY() / 32,
 				(float) Math.PI / 2);
 		
-		Log.i("Bullet", "Activate Bullet");
+		//Log.i("Bullet", "Activate Bullet");
 		body.setActive(true);
 		body.setAwake(true);
 
@@ -154,7 +153,9 @@ public class Bullet {
 		//body.setTransform((player.getPosX() + v.x * 45) / 32,
 		//		(player.getPosY() + v.y * 45) / 32, (float) Math.PI / 2);
 		// r.setIgnoreUpdate(false);
-		scene.attachChild(r);
+		if(!r.hasParent()) {
+			scene.attachChild(r);
+		}
 		r.setVisible(true);
 
 		physicsWorld.registerPhysicsConnector(pc);
@@ -163,16 +164,22 @@ public class Bullet {
 	}
 
 	private void deactivate() {
-		Log.i("Bullet", "Deactivate Bullet");
-		r.setVisible(false);
-		scene.detachChild(r);
-		nats.getEngine().unregisterUpdateHandler(th);
-		physicsWorld.unregisterPhysicsConnector(pc);
-		// r.setIgnoreUpdate(true);
-		//body.setTransform(-500, -340, 0.0f);
-		body.setActive(false);
-		body.setAwake(false);
-		
+		nats.getEngine().runOnUpdateThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				r.setVisible(false);
+				scene.detachChild(r);
+				nats.getEngine().unregisterUpdateHandler(th);
+				physicsWorld.unregisterPhysicsConnector(pc);
+				// r.setIgnoreUpdate(true);
+				//body.setTransform(-500, -340, 0.0f);
+				body.setActive(false);
+				body.setAwake(false);
+			}
+		});
+		//Log.i("Bullet", "Deactivate Bullet");
 		
 	}
 

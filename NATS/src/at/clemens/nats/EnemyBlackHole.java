@@ -10,6 +10,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TextureRegion;
 
 import at.alex.nats.Player;
+import at.stefan.nats.EnemyPool;
 import at.stefan.nats.UserData;
 import at.stefan.nats.nats;
 
@@ -30,14 +31,16 @@ public class EnemyBlackHole extends PEnemy{
 	private PhysicsConnector pc;
 	private TimerHandler th;
 	private int size;
+	private EnemyPool enemyPool;
 
-	public EnemyBlackHole(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
+	public EnemyBlackHole(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
 		super(nats);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
 		super.player = p;
 		this.size = 0;
+		this.enemyPool = enemyPool;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
 		enemy = new Rectangle(0, 0, 100, 100, nats.getVertexBufferObjectManager());
 		enemy.setVisible(false);

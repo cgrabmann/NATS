@@ -2,9 +2,8 @@ package at.stefan.nats;
 
 import java.util.Stack;
 
-import org.andengine.entity.sprite.batch.SpriteGroup;
-import org.andengine.opengl.texture.ITexture;
 import org.andengine.util.adt.color.Color;
+
 import android.util.Log;
 import at.alex.nats.Player;
 

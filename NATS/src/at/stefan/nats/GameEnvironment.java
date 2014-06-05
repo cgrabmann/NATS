@@ -5,7 +5,6 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
-import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.Entity;
 import org.andengine.entity.primitive.Rectangle;
@@ -42,11 +41,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class GameEnvironment extends Scene {
 
-	private int secs = 0;
-	private int mins = 0;
 	private int counterShot = 0;
-	private int counterShield = 0;
-	private int counterGunner = 0;
+	
 
 	Sprite items[] = new Sprite[2];
 
@@ -68,6 +64,7 @@ public class GameEnvironment extends Scene {
 	Font HUDGameFont;
 
 	MaxStepPhysicsWorld world;
+	//DebugRenderer debug;
 
 	Rectangle leftBorder;
 	Rectangle upperBorder;
@@ -128,6 +125,7 @@ public class GameEnvironment extends Scene {
 	TimerHandler cameraTimerHandler;
 
 	BulletPool bulletPool;
+	EnemyPool enemyPool;
 	// SpriteGroup bulletSpriteGroup;
 
 	BitmapTextureAtlas smallStasisfieldBitmapTextureAtlas;
@@ -149,6 +147,8 @@ public class GameEnvironment extends Scene {
 	BuildableBitmapTextureAtlas fireBallBitmapTextureAtlas;
 	ITextureRegion fireBallITextureRegion;
 	SpriteGroup fireBallSpriteGroup;
+	
+	TimeHandler time;
 
 	public GameEnvironment(nats nats, BoundCamera cam, SceneManager s, Player p) {
 		this.nats = nats;
@@ -282,55 +282,6 @@ public class GameEnvironment extends Scene {
 		highscore.setText("00:00");
 		highscore.setColor(new Color(0, 0, 0));
 
-		th = new TimerHandler(1f, true, new ITimerCallback() {
-			String m;
-			String s;
-
-			@Override
-			public void onTimePassed(TimerHandler pTimerHandler) {
-				// TODO Auto-generated method stub
-				secs++;
-				if (secs == 60) {
-					mins++;
-					secs = 0;
-				}
-				if (secs < 10) {
-					s = "0" + secs;
-				} else {
-					s = "" + secs;
-				}
-
-				if (mins < 10) {
-					m = "0" + mins;
-				} else {
-					m = "" + mins;
-				}
-				// Log.i("NATS", "Update Time");
-				highscore.setText(m + ":" + s);
-
-				if (!player.getShield()) {
-					if (counterShield >= player.getTimeToShield()) {
-						player.activateShield();
-						playerBaseSprite.setAlpha(1f);
-					} else {
-						counterShield++;
-					}
-				}
-
-				if (counterGunner >= player.getTimeToGunner()) {
-					Log.i("NATS", "Gunner");
-					counterGunner = 0;
-					// Hier den Gegner ausfindig machen, sobald sie
-					// implementiert sind
-					Bullet b = bulletPool.onAllocateGunner();
-					b.fireBullet(new Vector2(0f, 1f));
-				} else {
-					counterGunner++;
-				}
-
-			}
-		});
-
 		FixtureDef wall = PhysicsFactory.createFixtureDef(10.0f, 0.0f, 0.0f);
 
 		leftBorder = new Rectangle(-295, 240, 10, 760,
@@ -435,8 +386,12 @@ public class GameEnvironment extends Scene {
 				42, nats.getVertexBufferObjectManager());
 
 		bulletPool = new BulletPool(player, this, world, nats);
+		enemyPool = new EnemyPool(player, this, world, nats);
+		time = new TimeHandler(this, player, enemyPool);
 
 		usables = new Usables(nats, this, world, player, bulletPool);
+		
+		th = new TimerHandler(1f, true, time);
 
 		//debug = new DebugRenderer(world, nats.getVertexBufferObjectManager());
 		//this.attachChild(debug);
@@ -785,17 +740,12 @@ public class GameEnvironment extends Scene {
 		this.attachChild(rightBorder);
 		this.attachChild(lowerBorder);
 
-<<<<<<< HEAD
-		//debug = new DebugRenderer(world, nats.getVertexBufferObjectManager());
-		//this.attachChild(debug);
-=======
 		this.attachChild(fireBallSpriteGroup);
 
 		// debug = new DebugRenderer(world,
 		// nats.getVertexBufferObjectManager());
 		// debug.setAlpha(0f);
 		// this.attachChild(debug);
->>>>>>> refs/heads/master
 	}
 
 	public void removeGameScene() {
@@ -1006,8 +956,7 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void resetTimer() {
-		this.mins = 0;
-		this.secs = 0;
+		time.reset();
 		highscore.setText("00:00");
 		player.resumeMusic();
 	}
@@ -1020,6 +969,30 @@ public class GameEnvironment extends Scene {
 	 * private Bullet getBullet() { return
 	 * bulletPool.onHandleObtainItem(pBullet); }
 	 */
+	
+	public Sprite getSmallStasisfieldSprite() {
+		return smallStasisfieldSprite;
+	}
+	
+	public Sprite getSmallTurboSprite() {
+		return smallTurboSprite;
+	}
+	
+	public Sprite getSmallDeadlytrailSprite() {
+		return smallDeadlytrailSprite;
+	}
+	
+	public Sprite getSmallBombSprite() {
+		return smallBombSprite;
+	}
+	
+	public Sprite getUsable1() {
+		return items[0];
+	}
+	
+	public Sprite getUsable2() {
+		return items[1];
+	}
 
 	public void setUsable1(int usable) {
 		Log.i("Usable", "setUsable1");
@@ -1112,6 +1085,10 @@ public class GameEnvironment extends Scene {
 	public Body getPlayerBody() {
 		return playerBaseBody;
 	}
+	
+	public Sprite getPlayerBaseSprite() {
+		return playerBaseSprite;
+	}
 
 	public BuildableBitmapTextureAtlas getFireBallBitmap() {
 		return fireBallBitmapTextureAtlas;
@@ -1123,6 +1100,18 @@ public class GameEnvironment extends Scene {
 
 	public SpriteGroup getFireBallSpriteGroup() {
 		return fireBallSpriteGroup;
+	}
+	
+	public Text getHighScore() {
+		return highscore;
+	}
+	
+	public BulletPool getBulletPool() {
+		return bulletPool;
+	}
+	
+	public UpgradeMenu getUpgradeMenu() {
+		return this.upgradeMenu;
 	}
 
 }

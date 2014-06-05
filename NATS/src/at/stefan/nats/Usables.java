@@ -8,18 +8,16 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.util.adt.color.Color;
-
 import android.util.Log;
 import at.alex.nats.Player;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
 public class Usables {
-	
+
 	private float i = 0.5f;
 	private float j = 0.5f;
-	
+
 	private boolean bigExplosion = false;
 	private boolean smallExplosion = false;
 
@@ -36,6 +34,8 @@ public class Usables {
 	MaxStepPhysicsWorld world;
 	Player player;
 	BulletPool bulletPool;
+
+	Finals finals;
 
 	BitmapTextureAtlas stasisFieldBitmap;
 	ITextureRegion stasisFieldTexture;
@@ -59,6 +59,8 @@ public class Usables {
 		this.player = player;
 		this.bulletPool = bulletPool;
 
+		finals = new Finals();
+
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		stasisFieldBitmap = new BitmapTextureAtlas(nats.getTextureManager(),
 				1600, 960, TextureOptions.DEFAULT);
@@ -74,8 +76,9 @@ public class Usables {
 
 		bombBitmap = new BitmapTextureAtlas(nats.getTextureManager(), 100, 100,
 				TextureOptions.BILINEAR);
-		bombTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				bombBitmap, nats.getApplicationContext(), "Explosion.png", 0, 0);
+		bombTexture = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(bombBitmap, nats.getApplicationContext(),
+						"Explosion.png", 0, 0);
 		bombBitmap.load();
 
 		bombSprite1 = new Sprite(0, 0, bombTexture,
@@ -93,7 +96,18 @@ public class Usables {
 	public void stasisfield() {
 		Log.i("Usables", "Stasisfield");
 		this.stasisfield = true;
-
+		player.setUsables(player.getUsables(finals.stasisfield())-1,
+				finals.stasisfield());
+		if (player.getUsables(finals.stasisfield()) == 0) {
+			// Icon wegnehmen
+			if(gameEnvironment.getUsable1().equals(gameEnvironment.getSmallStasisfieldSprite())) {
+				gameEnvironment.setUsable1(-1);
+			}else {
+				gameEnvironment.setUsable2(-1);
+			}
+			gameEnvironment.getUpgradeMenu().setUsableEquip(finals.stasisfield());
+		}
+		gameEnvironment.getUpgradeMenu().setUsableNumber(finals.stasisfield());
 		// Hier Stasisfield aktivieren
 
 		gameEnvironment.attachChild(stasisFieldSprite);
@@ -122,6 +136,18 @@ public class Usables {
 		final float y;
 
 		turbo = true;
+		
+		player.setUsables(player.getUsables(finals.turbo())-1,
+				finals.turbo());
+		if (player.getUsables(finals.turbo()) == 0) {
+			if(gameEnvironment.getUsable1().equals(gameEnvironment.getSmallTurboSprite())) {
+				gameEnvironment.setUsable1(-1);
+			}else {
+				gameEnvironment.setUsable2(-1);
+			}
+			gameEnvironment.getUpgradeMenu().setUsableEquip(finals.turbo());
+		}
+		gameEnvironment.getUpgradeMenu().setUsableNumber(finals.turbo());
 
 		// Log.i("Usables", "Rotation: " + player.getPlayer().getRotation());
 		float radians = gameEnvironment.getPlayerBody().getAngle();
@@ -157,6 +183,18 @@ public class Usables {
 
 	public void deadlytrail() {
 		deadlytrail = true;
+		
+		player.setUsables(player.getUsables(finals.deadlytrail())-1,
+				finals.deadlytrail());
+		if (player.getUsables(finals.deadlytrail()) == 0) {
+			if(gameEnvironment.getUsable1().equals(gameEnvironment.getSmallDeadlytrailSprite())) {
+				gameEnvironment.setUsable1(-1);
+			}else {
+				gameEnvironment.setUsable2(-1);
+			}
+			gameEnvironment.getUpgradeMenu().setUsableEquip(finals.deadlytrail());
+		}
+		gameEnvironment.getUpgradeMenu().setUsableNumber(finals.deadlytrail());
 
 		nats.getEngine().registerUpdateHandler(
 				new TimerHandler(0.35f, true, new ITimerCallback() {
@@ -197,70 +235,95 @@ public class Usables {
 	}
 
 	public void bomb() {
-	 
-		// Hier alle Gegner "pausieren"
+		this.bomb = true;
 		
+		player.setUsables(player.getUsables(finals.bomb())-1,
+				finals.bomb());
+		if (player.getUsables(finals.bomb()) == 0) {
+			if(gameEnvironment.getUsable1().equals(gameEnvironment.getSmallBombSprite())) {
+				gameEnvironment.setUsable1(-1);
+			}else {
+				gameEnvironment.setUsable2(-1);
+			}
+			gameEnvironment.getUpgradeMenu().setUsableEquip(finals.bomb());
+		}
+		gameEnvironment.getUpgradeMenu().setUsableNumber(finals.bomb());
+
+		// Hier alle Gegner "pausieren"
+
 		bombSprite1.setPosition(400f, 240f);
 		gameEnvironment.attachChild(bombSprite1);
-		
-		nats.getEngine().registerUpdateHandler(new TimerHandler(0.02f, true, new ITimerCallback() {
-			
-			@Override
-			public void onTimePassed(TimerHandler pTimerHandler) {
-				// TODO Auto-generated method stub
-				bombSprite1.setScale(i);
-				i += 0.16f;
-				
-				if(i >= 11.20) {
-					nats.getEngine().unregisterUpdateHandler(pTimerHandler);
-					nats.getEngine().registerUpdateHandler(new TimerHandler(1f, new ITimerCallback() {
-						
-						@Override
-						public void onTimePassed(TimerHandler pTimerHandler) {
-							// TODO Auto-generated method stub
-							nats.getEngine().unregisterUpdateHandler(pTimerHandler);
-							gameEnvironment.detachChild(bombSprite1);
-							gameEnvironment.detachChild(bombSprite2);
-							gameEnvironment.detachChild(bombSprite3);
-							gameEnvironment.detachChild(bombSprite4);
-							gameEnvironment.detachChild(bombSprite5);
-							i = 0.5f;
-							j = 0.5f;
-							smallExplosion = false;
+
+		nats.getEngine().registerUpdateHandler(
+				new TimerHandler(0.02f, true, new ITimerCallback() {
+
+					@Override
+					public void onTimePassed(TimerHandler pTimerHandler) {
+						// TODO Auto-generated method stub
+						bombSprite1.setScale(i);
+						i += 0.16f;
+
+						if (i >= 11.20) {
+							nats.getEngine().unregisterUpdateHandler(
+									pTimerHandler);
+							nats.getEngine().registerUpdateHandler(
+									new TimerHandler(1f, new ITimerCallback() {
+
+										@Override
+										public void onTimePassed(
+												TimerHandler pTimerHandler) {
+											// TODO Auto-generated method stub
+											nats.getEngine()
+													.unregisterUpdateHandler(
+															pTimerHandler);
+											gameEnvironment
+													.detachChild(bombSprite1);
+											gameEnvironment
+													.detachChild(bombSprite2);
+											gameEnvironment
+													.detachChild(bombSprite3);
+											gameEnvironment
+													.detachChild(bombSprite4);
+											gameEnvironment
+													.detachChild(bombSprite5);
+											i = 0.5f;
+											j = 0.5f;
+											smallExplosion = false;
+											Usables.this.bomb = false;
+										}
+									}));
+
+							// Hier die Gegner entfernen
 						}
-					}));
-					
-					// Hier die Gegner entfernen
-				}
-				
-				if(i >= 6.4) {
-					if(!smallExplosion) {
-						smallExplosion = true;
-						bombSprite2.setPosition(0, 480);
-						bombSprite2.setRotation(225f);
-						bombSprite3.setPosition(0, 0);
-						bombSprite3.setRotation(135f);
-						bombSprite4.setPosition(800, 480);
-						bombSprite4.setRotation(315f);
-						bombSprite5.setPosition(800, 0);
-						bombSprite5.setRotation(45f);
-						
-						gameEnvironment.attachChild(bombSprite2);
-						gameEnvironment.attachChild(bombSprite3);
-						gameEnvironment.attachChild(bombSprite4);
-						gameEnvironment.attachChild(bombSprite5);
+
+						if (i >= 6.4) {
+							if (!smallExplosion) {
+								smallExplosion = true;
+								bombSprite2.setPosition(0, 480);
+								bombSprite2.setRotation(225f);
+								bombSprite3.setPosition(0, 0);
+								bombSprite3.setRotation(135f);
+								bombSprite4.setPosition(800, 480);
+								bombSprite4.setRotation(315f);
+								bombSprite5.setPosition(800, 0);
+								bombSprite5.setRotation(45f);
+
+								gameEnvironment.attachChild(bombSprite2);
+								gameEnvironment.attachChild(bombSprite3);
+								gameEnvironment.attachChild(bombSprite4);
+								gameEnvironment.attachChild(bombSprite5);
+							}
+
+							bombSprite2.setScale(j);
+							bombSprite3.setScale(j);
+							bombSprite4.setScale(j);
+							bombSprite5.setScale(j);
+
+							j += 0.16f;
+						}
 					}
-					
-					bombSprite2.setScale(j);
-					bombSprite3.setScale(j);
-					bombSprite4.setScale(j);
-					bombSprite5.setScale(j);
-					
-					j += 0.16f;
-				}
-			}
-		}));
-		
+				}));
+
 	}
 
 	public boolean stasisFieldIsActivated() {

@@ -10,6 +10,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TextureRegion;
 
 import at.alex.nats.Player;
+import at.stefan.nats.EnemyPool;
 import at.stefan.nats.UserData;
 import at.stefan.nats.nats;
 
@@ -29,13 +30,15 @@ public class EnemyTypeTwoSmall extends PEnemy{
 	private FixtureDef fd;
 	private PhysicsConnector pc;
 	private TimerHandler th;
+	private EnemyPool enemyPool;
 
-	public EnemyTypeTwoSmall(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p) {
+	public EnemyTypeTwoSmall(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
 		super(nats);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
 		super.player = p;
+		this.enemyPool = enemyPool;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
 		enemy = new Rectangle(0, 0, 50, 50, nats.getVertexBufferObjectManager());
 		enemy.setVisible(false);

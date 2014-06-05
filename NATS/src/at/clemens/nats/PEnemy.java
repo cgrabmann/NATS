@@ -28,20 +28,20 @@ public abstract class PEnemy {
 		int spawnControll = r.nextInt(4);
 		switch (spawnControll){
 		case (0):
-			this.posx = pf.getScaleX()/splices;
-			this.posy = pf.getScaleY()/splices;
+			this.posx = (pf.getScaleX()-150)/splices;
+			this.posy = (pf.getScaleY()-150)/splices;
 			break;
 		case (1):
-			this.posx = pf.getScaleX()/splices;
-			this.posy = (pf.getScaleY()/splices)*(splices-1);
+			this.posx = (pf.getScaleX()-150)/splices;
+			this.posy = ((pf.getScaleY()-150)/splices)*(splices-1);
 			break;
 		case (2):
-			this.posx = (pf.getScaleX()/splices)*(splices-1);
-			this.posy = pf.getScaleY()/splices;
+			this.posx = ((pf.getScaleX()-150)/splices)*(splices-1);
+			this.posy = (pf.getScaleY()-150)/splices;
 			break;
 		case (3):
-			this.posx = (pf.getScaleX()/splices)*(splices-1);
-			this.posy = (pf.getScaleY()/splices)*(splices-1);
+			this.posx = ((pf.getScaleX()-150)/splices)*(splices-1);
+			this.posy = ((pf.getScaleY()-150)/splices)*(splices-1);
 			break;
 		default:
 			break;
