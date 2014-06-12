@@ -47,24 +47,24 @@ public abstract class PEnemy {
 		
 		switch (spawnControll){
 		case (0):
-			Log.i("NATSSpawn", "Spawn 0");
-			this.posx = 150;
-			this.posy = 150;
+			//Log.i("NATSSpawn", "Spawn 0");
+			this.posx = -200;
+			this.posy = -40;
 			break;
 		case (1):
-			Log.i("NATSSpawn", "Spawn 1");
-			this.posx = 1450;
-			this.posy = 150;
+			//Log.i("NATSSpawn", "Spawn 1");
+			this.posx = 1000;
+			this.posy = 520;
 			break;
 		case (2):
-			Log.i("NATSSpawn", "Spawn 2");
-			this.posx = 150;
-			this.posy = 810;
+			//Log.i("NATSSpawn", "Spawn 2");
+			this.posx = -200;
+			this.posy = 520;
 			break;
 		case (3):
-			Log.i("NATSSpawn", "Spawn 3");
-			this.posx = 1450;
-			this.posy = 810;
+			//Log.i("NATSSpawn", "Spawn 3");
+			this.posx = 1000;
+			this.posy = -40;
 			break;
 		default:
 			break;

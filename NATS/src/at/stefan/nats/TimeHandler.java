@@ -139,12 +139,14 @@ public class TimeHandler implements ITimerCallback {
 		gameEnvironment.getHighScore().setText(m + ":" + s);
 
 		// Gegner spawnen
-
 		/*
-		 * if(secs % 4 == 0) { Log.i("NATS", "Enemy Start"); two =
-		 * enemyPool.onAllocateEnemytwo(); two.start(); }
-		 */
+		if (secs % 10 == 0) {
+			Log.i("NATS", "Enemy Start");
+			two = enemyPool.onAllocateEnemytwo();
+			two.start();
+		}*/
 
+		
 		if (waveCounter >= enemymulti * (mins + 1)) {
 			int spawn = spawnResources;
 			while (spawn > 0) {

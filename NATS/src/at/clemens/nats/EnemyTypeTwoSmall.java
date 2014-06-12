@@ -11,6 +11,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.adt.color.Color;
 
+import android.util.Log;
 import at.alex.nats.Player;
 import at.stefan.nats.EnemyPool;
 import at.stefan.nats.GameEnvironment;
@@ -68,10 +69,16 @@ public class EnemyTypeTwoSmall extends PEnemy {
 				body.setLinearVelocity(
 						EnemyTypeTwoSmall.this.getMovex() * 0.05f,
 						EnemyTypeTwoSmall.this.getMovey() * 0.05f);
+				
+				float pRotationRad = (float) Math.atan2((EnemyTypeTwoSmall.super.movex/maxMoveSpeed),
+						(EnemyTypeTwoSmall.super.movey/maxMoveSpeed));
+				//Log.i("NATSRot", "" + (-pRotationRad));
+				body.setTransform(EnemyTypeTwoSmall.super.posx / 32,
+						EnemyTypeTwoSmall.super.posy / 32, -pRotationRad);
 			}
 		});
 
-		pc = new PhysicsConnector(enemy, body, true, false);
+		pc = new PhysicsConnector(enemy, body, true, true);
 	}
 
 	public void start(float x, float y) {

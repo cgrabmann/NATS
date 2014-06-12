@@ -78,9 +78,9 @@ public class Highscores {
 		highscores.attachChild(titleSprite);
 		
 		
-		scoreArray = sortScores(scoreArray);
-		String scores = getScores(scoreArray);
-		
+		//scoreArray = sortScores(scoreArray);
+		//String scores = getScores(scoreArray);
+		/*
 		ScoreFont = FontFactory.create(nats.getFontManager(),
 				nats.getTextureManager(), 256, 256,
 				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 35,
@@ -91,7 +91,7 @@ public class Highscores {
 				nats.getCameraHeight() - 17, ScoreFont, scores,
 				new TextOptions(HorizontalAlign.CENTER),
 				nats.getVertexBufferObjectManager());
-		highscores.attachChild(scoreText);
+		highscores.attachChild(scoreText);*/
 	}
 
 	public void removeHighscoreScene() {
@@ -102,7 +102,7 @@ public class Highscores {
 		return highscores;
 	}
 	
-	public String[][] sortScores(String[][] scoreList) {
+	/*public String[][] sortScores(String[][] scoreList) {
 		int temp;
 		String tempS = "";
 		
@@ -130,5 +130,5 @@ public class Highscores {
 			scoreString += i+1 + " " + scores[i][0] + " " + scores[i][1] + "\n"; 
 		}
 		return scoreString;
-	}
+	}*/
 }
