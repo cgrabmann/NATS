@@ -34,11 +34,10 @@ public class EnemyBlackHole extends PEnemy{
 	private EnemyPool enemyPool;
 
 	public EnemyBlackHole(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
-		super(nats);
+		super(nats, p);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
-		super.player = p;
 		this.size = 0;
 		this.enemyPool = enemyPool;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());

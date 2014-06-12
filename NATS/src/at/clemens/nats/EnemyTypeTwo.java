@@ -10,6 +10,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.adt.color.Color;
 
+import android.util.Log;
 import at.alex.nats.Player;
 import at.stefan.nats.EnemyPool;
 import at.stefan.nats.UserData;
@@ -21,7 +22,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class EnemyTypeTwo extends PEnemy{
 	
-	private final int maxMoveSpeed = 200;
+	private final int maxMoveSpeed = 150;
+	private final int acceleration = 5;
+	
 	private TextureRegion textur;
 	//private Sprite enemy;
 	private Rectangle enemy;
@@ -34,11 +37,10 @@ public class EnemyTypeTwo extends PEnemy{
 	private EnemyPool enemyPool;
 
 	public EnemyTypeTwo(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
-		super(nats);
+		super(nats, p);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
-		super.player = p;
 		this.enemyPool = enemyPool;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
 		enemy = new Rectangle(0, 0, 50, 50, nats.getVertexBufferObjectManager());
@@ -56,7 +58,8 @@ public class EnemyTypeTwo extends PEnemy{
 			public void onTimePassed(TimerHandler pTimerHandler) {
 				// TODO Auto-generated method stub
 				move();
-				body.setLinearVelocity(getMovex(), getMovey());
+				Log.i("NATS", "movex: " + EnemyTypeTwo.this.getMovex() + " movey: " + EnemyTypeTwo.this.getMovey());
+				body.setLinearVelocity(EnemyTypeTwo.this.getMovex(), EnemyTypeTwo.this.getMovey());
 			}
 		});
 		
@@ -84,7 +87,6 @@ public class EnemyTypeTwo extends PEnemy{
 	@Override
 	protected void createStartPos(Scene pf){
 		super.createStartPos(pf);
-		this.move();
 	}
 
 	@Override
@@ -121,12 +123,16 @@ public class EnemyTypeTwo extends PEnemy{
 		float offsetX, offsetY;
 		float pPosx, pPosy;
 		
+		super.posx = enemy.getX();
+		super.posy = enemy.getY();
+		
 		if(frozen){
 			super.movex = 0;
 			super.movey = 0;
 			return;
 		}
 		
+		Log.i("NATS", "pposx: " + super.player.getPosX() + " pposy: " + super.player.getPosY());
 		pPosx = super.player.getPosX();
 		pPosy = super.player.getPosY();
 		offsetX = pPosx - super.posx;
@@ -134,20 +140,20 @@ public class EnemyTypeTwo extends PEnemy{
 		
 		//Adjust move direction X to new player position
 		if(offsetX < 0){
-			super.movex -= (super.movex > -this.maxMoveSpeed)?1:0;
+			super.movex -= (super.movex > -this.maxMoveSpeed)?acceleration:0;
 		}else if(offsetX > 0){
-			super.movex += (super.movex < this.maxMoveSpeed)?1:0;
+			super.movex += (super.movex < this.maxMoveSpeed)?acceleration:0;
 		}else if(offsetX == 0 && super.movex != 0){
-			super.movex = (super.movex > 0)?super.movex - 1:super.movex + 1;
+			super.movex = (super.movex > 0)?super.movex - acceleration:super.movex + acceleration;
 		}
 		
 		//Adjust move direction Y to new player position
 		if(offsetY < 0){
-			super.movey -= (super.movey > -this.maxMoveSpeed)?1:0;
+			super.movey -= (super.movey > -this.maxMoveSpeed)?acceleration:0;
 		}else if(offsetY > 0){
-			super.movey += (super.movey < this.maxMoveSpeed)?1:0;
+			super.movey += (super.movey < this.maxMoveSpeed)?acceleration:0;
 		}else if(offsetY == 0 && super.movey != 0){
-			super.movey = (super.movey > 0)?super.movey - 1:super.movey + 1;
+			super.movey = (super.movey > 0)?super.movey - acceleration:super.movey + acceleration;
 		}
 		
 		return;
@@ -159,5 +165,13 @@ public class EnemyTypeTwo extends PEnemy{
 	
 	public float getPosy(){
 		return super.posy;
+	}
+	
+	private int getMovex(){
+		return super.movex;
+	}
+	
+	private int getMovey(){
+		return super.movey;
 	}
 }
