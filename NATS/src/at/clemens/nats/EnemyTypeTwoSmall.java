@@ -33,17 +33,12 @@ public class EnemyTypeTwoSmall extends PEnemy {
 	private TimerHandler th;
 	private EnemyPool enemyPool;
 
-	private float movex, movey = 0;
-
-	Player player;
-
-	public EnemyTypeTwoSmall(Scene pf, TextureRegion textur, nats nats,
-			PhysicsWorld world, Player p, EnemyPool enemyPool) {
-		super(nats);
+	public EnemyTypeTwoSmall(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
+		super(nats, p);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
-		this.player = p;
+
 		this.enemyPool = enemyPool;
 		// enemy = new Sprite(super.posx, super.posy, this.textur,
 		// nats.getVertexBufferObjectManager());
@@ -63,7 +58,7 @@ public class EnemyTypeTwoSmall extends PEnemy {
 			public void onTimePassed(TimerHandler pTimerHandler) {
 				// TODO Auto-generated method stub
 				move();
-				body.setLinearVelocity(getMovex(), getMovey());
+				body.setLinearVelocity(EnemyTypeTwoSmall.this.getMovex(), EnemyTypeTwoSmall.this.getMovey());
 			}
 		});
 
@@ -162,10 +157,17 @@ public class EnemyTypeTwoSmall extends PEnemy {
 		return;
 	}
 
+	private int getMovex(){
+		return super.movex;
+	}
+	
+	private int getMovey(){
+		return super.movey;
+	}
+
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
-
+		
 	}
-
 }

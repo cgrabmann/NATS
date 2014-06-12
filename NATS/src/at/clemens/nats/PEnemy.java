@@ -9,16 +9,17 @@ import at.stefan.nats.nats;
 
 public abstract class PEnemy {
 
-	float posx, posy;
-	int movex, movey;
-	boolean frozen;
+	protected float posx, posy;
+	protected int movex, movey;
+	protected boolean frozen;
 	protected Player player;
 	protected nats nats;
 	
 	private final int splices = 5;
 
-	public PEnemy(nats n) {
+	public PEnemy(nats n, Player p) {
 		this.nats = n;
+		this.player = p;
 		this.movex = 0;
 		this.movey = 0;
 	}
@@ -46,14 +47,6 @@ public abstract class PEnemy {
 		default:
 			break;
 		}
-	}
-	
-	public int getMovex(){
-		return movex;
-	}
-	
-	public int getMovey(){
-		return movey;
 	}
 	
 	public abstract void start();

@@ -35,11 +35,10 @@ public class EnemyTypeOne extends PEnemy{
 	private EnemyPool enemyPool;
 
 	public EnemyTypeOne(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
-		super(nats);
+		super(nats, p);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
-		super.player = p;
 		this.enemyPool = enemyPool;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
 		enemy = new Rectangle(0, 0, 50, 50, nats.getVertexBufferObjectManager());
@@ -56,7 +55,7 @@ public class EnemyTypeOne extends PEnemy{
 			public void onTimePassed(TimerHandler pTimerHandler) {
 				// TODO Auto-generated method stub
 				move();
-				body.setLinearVelocity(getMovex(), getMovey());
+				body.setLinearVelocity(EnemyTypeOne.this.getMovex(), EnemyTypeOne.this.getMovey());
 			}
 		});
 		
@@ -139,4 +138,11 @@ public class EnemyTypeOne extends PEnemy{
 		return this.resources;
 	}
 
+	private int getMovex(){
+		return super.movex;
+	}
+	
+	private int getMovey(){
+		return super.movey;
+	}
 }

@@ -45,11 +45,10 @@ public class EnemyTypeZero extends PEnemy {
 
 	public EnemyTypeZero(Scene pf, TextureRegion textur, nats nats,
 			PhysicsWorld world, Player p, EnemyPool enemyPool) {
-		super(nats);
+		super(nats, p);
 		this.world = world;
 		this.game = pf;
 		this.textur = textur;
-		super.player = p;
 		this.enemyPool = enemyPool;
 		frozen = false;
 		smovex = super.movex;
