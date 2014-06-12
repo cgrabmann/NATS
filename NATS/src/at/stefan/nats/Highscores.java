@@ -33,7 +33,7 @@ public class Highscores {
 	Sprite titleSprite;
 
 	Scene highscores;
-	
+
 	String[][] scoreArray = new String[10][2];
 	Font ScoreFont;
 
@@ -77,21 +77,50 @@ public class Highscores {
 				nats.getVertexBufferObjectManager());
 		highscores.attachChild(titleSprite);
 		
-		
+		scoreArray [0][0] = "A";
+        scoreArray [0][1] = "20";
+        scoreArray [1][0] = "A";
+        scoreArray [1][1] = "30";
+        scoreArray [2][0] = "BB";
+        scoreArray [2][1] = "121";
+        scoreArray [3][0] = "A";
+        scoreArray [3][1] = "15";
+        scoreArray [4][0] = "HI";
+        scoreArray [4][1] = "120";
+        scoreArray [5][0] = "HC";
+        scoreArray [5][1] = "30";
+        scoreArray [6][0] = "BC";
+        scoreArray [6][1] = "15";
+        scoreArray [7][0] = "BB";
+        scoreArray [7][1] = "3599";
+        scoreArray [8][0] = "Q";
+        scoreArray [8][1] = "5";
+        scoreArray [9][0] = "W";
+        scoreArray [9][1] = "1";
+
 		scoreArray = sortScores(scoreArray);
-		String scores = getScores(scoreArray);
-		
+		String scoreNames = getScoreName(scoreArray);
+		String scoreTimes = getScoreTime(scoreArray);
+		//String scores = getScores(scoreArray);
+
 		ScoreFont = FontFactory.create(nats.getFontManager(),
 				nats.getTextureManager(), 256, 256,
-				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 35,
+				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 27,
 				Color.WHITE.hashCode());
 		ScoreFont.load();
 
-		Text scoreText = new Text(nats.getCameraWidth() / 2,
-				nats.getCameraHeight() - 17, ScoreFont, scores,
-				new TextOptions(HorizontalAlign.CENTER),
+		Text scoreTextNames = new Text(nats.getCameraWidth() / 3,
+				nats.getCameraHeight() - 300, ScoreFont, scoreNames,
+				new TextOptions(HorizontalAlign.LEFT),
 				nats.getVertexBufferObjectManager());
-		highscores.attachChild(scoreText);
+		
+		Text scoreTextTimes = new Text(nats.getCameraWidth() - nats.getCameraWidth() / 3,
+				nats.getCameraHeight() - 300, ScoreFont, scoreTimes,
+				new TextOptions(HorizontalAlign.LEFT),
+				nats.getVertexBufferObjectManager());
+		
+		highscores.attachChild(scoreTextNames);
+		highscores.attachChild(scoreTextTimes);
 	}
 
 	public void removeHighscoreScene() {
@@ -101,11 +130,11 @@ public class Highscores {
 	public Scene getHighscoreScene() {
 		return highscores;
 	}
-	
+
 	public String[][] sortScores(String[][] scoreList) {
 		int temp;
 		String tempS = "";
-		
+
 		for (int i = 0; i < 10; i ++) {
 			temp = Integer.parseInt(scoreList[i][1]);
 			tempS = scoreList[i][0];
@@ -118,17 +147,45 @@ public class Highscores {
 			scoreList[j][1] = Integer.toString(temp);
 			scoreList[j][0] = tempS;
 		}
-		
+
 		return scoreList;
 	}
-	
-	public String getScores(String[][] scores) {	// provides highscores for Highscores.java
+
+	/*public String getScores(String[][] scores) {	// provides highscores for Highscores.java
 		// converting highscores into better (data)format
 		String scoreString = "";
-		
+
 		for (int i = 0; i < 10; i++) {
 			scoreString += i+1 + " " + scores[i][0] + " " + scores[i][1] + "\n"; 
 		}
 		return scoreString;
+	}*/
+	
+	public String toTime(int seconds){
+		int sec;
+		int min;
+		sec = seconds%60;
+		min = seconds/60;
+		return (min < 10 ? ("0" + Integer.toString(min) + " : ") : Integer.toString(min) + " : ") + (sec < 10 ? ("0" + Integer.toString(sec)) : Integer.toString(sec));
 	}
+	
+	public String getScoreName(String[][] scores) {
+		String scoreString = "";
+		int j = 1;
+		for (int i = 10; i > 0 ; i--) {
+			if (i > 1) scoreString += "  ";
+			scoreString += j + ". " + scores[i-1][0] + "\n";
+			j++;
+		}
+		return scoreString;
+	}
+	
+	public String getScoreTime(String[][] scores) {
+		String scoreString = "";
+		for (int i = 10; i > 0; i--) {
+			scoreString += toTime(Integer.parseInt(scores[i-1][1])) + "\n";
+		}
+		return scoreString;
+	}
+
 }
