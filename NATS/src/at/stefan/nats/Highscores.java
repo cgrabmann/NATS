@@ -13,53 +13,51 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
-
 import android.graphics.Typeface;
 
 public class Highscores {
 
 	nats nats;
 	Camera mainCamera;
-
 	Finals finals;
 	MenuListener menuListener;
-
 	BitmapTextureAtlas highscoresBitmapTextureAtlas;
 	ITextureRegion highscoresITextureRegion;
 	Sprite highscoresSprite;
-
 	BitmapTextureAtlas titleBitmapTextureAtlas;
 	ITextureRegion titleITextureRegion;
 	Sprite titleSprite;
-
 	Scene highscores;
-
 	String[][] scoreArray = new String[10][2];
 	Font ScoreFont;
 
 	public Highscores(nats nats, Camera cam) {
 		this.nats = nats;
 		this.mainCamera = cam;
-
 		finals = new Finals();
 	}
 
 	public void loadHighscoreResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("backgrounds/");
+
 		highscoresBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 800, 480, TextureOptions.DEFAULT);
+
 		highscoresITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(highscoresBitmapTextureAtlas,
-						nats.getApplicationContext(), "MainMenu.jpg", 0, 0);
-		highscoresBitmapTextureAtlas.load();
+				nats.getApplicationContext(), "MainMenu.jpg", 0, 0);
 
+		highscoresBitmapTextureAtlas.load();
+		
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("titles/");
+
 		titleBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 560, 120, TextureOptions.DEFAULT);
+
 		titleITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(titleBitmapTextureAtlas,
-						nats.getApplicationContext(), "HighscoresTitle.png", 0,
-						0);
+				nats.getApplicationContext(), "HighscoresTitle.png", 0,0);
+		
 		titleBitmapTextureAtlas.load();
 	}
 
@@ -68,15 +66,15 @@ public class Highscores {
 		highscoresSprite = new Sprite(nats.getCameraWidth() / 2,
 				nats.getCameraHeight() / 2, highscoresITextureRegion,
 				nats.getVertexBufferObjectManager());
+
 		highscores.attachChild(highscoresSprite);
 		//highscores.setBackground(new Background(0, 0, 255));
-
 		titleSprite = new Sprite(nats.getCameraWidth() / 2,
-				nats.getCameraHeight() - titleBitmapTextureAtlas.getHeight()
-						/ 2, titleITextureRegion,
+				nats.getCameraHeight() - titleBitmapTextureAtlas.getHeight()/ 2, titleITextureRegion,
 				nats.getVertexBufferObjectManager());
+
 		highscores.attachChild(titleSprite);
-		
+
 		scoreArray [0][0] = "A";
         scoreArray [0][1] = "20";
         scoreArray [1][0] = "A";
@@ -101,29 +99,29 @@ public class Highscores {
 		scoreArray = sortScores(scoreArray);
 		String scoreNames = getScoreName(scoreArray);
 		String scoreTimes = getScoreTime(scoreArray);
-		//String scores = getScores(scoreArray);
 
 		ScoreFont = FontFactory.create(nats.getFontManager(),
 				nats.getTextureManager(), 256, 256,
 				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 27,
 				Color.WHITE.hashCode());
 		ScoreFont.load();
-
+		
 		Text scoreTextNames = new Text(nats.getCameraWidth() / 3,
 				nats.getCameraHeight() - 300, ScoreFont, scoreNames,
 				new TextOptions(HorizontalAlign.LEFT),
 				nats.getVertexBufferObjectManager());
-		
+
 		Text scoreTextTimes = new Text(nats.getCameraWidth() - nats.getCameraWidth() / 3,
 				nats.getCameraHeight() - 300, ScoreFont, scoreTimes,
 				new TextOptions(HorizontalAlign.LEFT),
 				nats.getVertexBufferObjectManager());
-		
+
 		highscores.attachChild(scoreTextNames);
 		highscores.attachChild(scoreTextTimes);
 	}
-
+	
 	public void removeHighscoreScene() {
+
 		// remove
 	}
 
@@ -134,7 +132,6 @@ public class Highscores {
 	public String[][] sortScores(String[][] scoreList) {
 		int temp;
 		String tempS = "";
-
 		for (int i = 0; i < 10; i ++) {
 			temp = Integer.parseInt(scoreList[i][1]);
 			tempS = scoreList[i][0];
@@ -147,20 +144,9 @@ public class Highscores {
 			scoreList[j][1] = Integer.toString(temp);
 			scoreList[j][0] = tempS;
 		}
-
 		return scoreList;
 	}
 
-	/*public String getScores(String[][] scores) {	// provides highscores for Highscores.java
-		// converting highscores into better (data)format
-		String scoreString = "";
-
-		for (int i = 0; i < 10; i++) {
-			scoreString += i+1 + " " + scores[i][0] + " " + scores[i][1] + "\n"; 
-		}
-		return scoreString;
-	}*/
-	
 	public String toTime(int seconds){
 		int sec;
 		int min;
@@ -168,7 +154,7 @@ public class Highscores {
 		min = seconds/60;
 		return (min < 10 ? ("0" + Integer.toString(min) + " : ") : Integer.toString(min) + " : ") + (sec < 10 ? ("0" + Integer.toString(sec)) : Integer.toString(sec));
 	}
-	
+
 	public String getScoreName(String[][] scores) {
 		String scoreString = "";
 		int j = 1;
@@ -187,5 +173,4 @@ public class Highscores {
 		}
 		return scoreString;
 	}
-
 }
