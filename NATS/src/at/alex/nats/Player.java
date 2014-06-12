@@ -86,7 +86,7 @@ public class Player {
 				nats.getVertexBufferObjectManager());
 
 		playerBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 80, 120, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 73, 120, TextureOptions.DEFAULT);
 		playerITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(playerBitmapTextureAtlas,
 						nats.getApplicationContext(), "Spaceshuttle.png", 0, 0);

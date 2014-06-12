@@ -21,6 +21,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class EnemyTypeTwo extends PEnemy{
 	
+	private final int resources = 20;
+	
 	private final int maxMoveSpeed = 200;
 	private TextureRegion textur;
 	//private Sprite enemy;
@@ -32,6 +34,9 @@ public class EnemyTypeTwo extends PEnemy{
 	private PhysicsConnector pc;
 	private TimerHandler th;
 	private EnemyPool enemyPool;
+	
+	EnemyTypeTwoSmall twoSmall1;
+	EnemyTypeTwoSmall twoSmall2;
 
 	public EnemyTypeTwo(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
 		super(nats);
@@ -41,14 +46,14 @@ public class EnemyTypeTwo extends PEnemy{
 		super.player = p;
 		this.enemyPool = enemyPool;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
-		enemy = new Rectangle(0, 0, 50, 50, nats.getVertexBufferObjectManager());
-		enemy.setColor(new Color(1f, 0f, 0f));
+		enemy = new Rectangle(0, 0, 60, 60, nats.getVertexBufferObjectManager());
+		enemy.setColor(new Color(0f, 0f, 1f));
 		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
 		body.setActive(false);
 		body.setAwake(false);
-		body.setUserData(new UserData("enemy", this));
+		body.setUserData(new UserData("enemytwo", this));
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
 
@@ -102,6 +107,12 @@ public class EnemyTypeTwo extends PEnemy{
 				body.setTransform(-500, -340, 0.0f);
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
+				
+				twoSmall1 = enemyPool.onAllocateEnemytwoS();
+				twoSmall2 = enemyPool.onAllocateEnemytwoS();
+				
+				twoSmall1.start(enemy.getX(), enemy.getY());
+				twoSmall2.start(enemy.getX(), enemy.getY());
 				
 				nats.getEngine().registerUpdateHandler(new TimerHandler(1f, new ITimerCallback() {
 					
@@ -159,5 +170,9 @@ public class EnemyTypeTwo extends PEnemy{
 	
 	public float getPosy(){
 		return super.posy;
+	}
+	
+	public int getResources() {
+		return this.resources;
 	}
 }

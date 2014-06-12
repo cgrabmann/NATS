@@ -20,6 +20,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class EnemyTypeOne extends PEnemy{
 	
+	private final int resources = 15;
+	
 	private final int maxMoveSpeed = 10;
 	private TextureRegion textur;
 	//private Sprite enemy;
@@ -40,13 +42,13 @@ public class EnemyTypeOne extends PEnemy{
 		super.player = p;
 		this.enemyPool = enemyPool;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
-		enemy = new Rectangle(0, 0, 100, 100, nats.getVertexBufferObjectManager());
+		enemy = new Rectangle(0, 0, 50, 50, nats.getVertexBufferObjectManager());
 		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
 		body.setActive(false);
 		body.setAwake(false);
-		body.setUserData(new UserData("enemyzero", this));
+		body.setUserData(new UserData("enemyone", this));
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
 
@@ -73,7 +75,7 @@ public class EnemyTypeOne extends PEnemy{
 		body.setActive(true);
 		body.setAwake(true);
 		
-		body.setTransform(super.posx, super.posy, 0f);
+		body.setTransform(super.posx/32, super.posy/32, 0f);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -131,6 +133,10 @@ public class EnemyTypeOne extends PEnemy{
 		}
 		
 		return;
+	}
+	
+	public int getResources() {
+		return this.resources;
 	}
 
 }

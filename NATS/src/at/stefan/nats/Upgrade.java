@@ -225,7 +225,8 @@ public class Upgrade {
 		resources.setText("Resources: \n" + player.getRessources());
 		stasisfieldSelect.setVisible(true);
 		actual = Buy.STASISFIELD;
-		if (usables[finals.stasisfield()] == "equip") {
+		if (usables[finals.stasisfield()] == "equip"
+				&& player.getUsables(finals.stasisfield()) > 0) {
 			equip.setPosition(150, 60);
 			equip.setVisible(true);
 			upgradeMenu.registerSpriteInGame(equip);
@@ -246,7 +247,8 @@ public class Upgrade {
 		resources.setText("Resources: \n" + player.getRessources());
 		turboSelect.setVisible(true);
 		actual = Buy.TURBO;
-		if (usables[finals.turbo()] == "equip") {
+		if (usables[finals.turbo()] == "equip"
+				&& player.getUsables(finals.turbo()) > 0) {
 			equip.setPosition(350, 60);
 			equip.setVisible(true);
 			upgradeMenu.registerSpriteInGame(equip);
@@ -267,7 +269,8 @@ public class Upgrade {
 		resources.setText("Resources: \n" + player.getRessources());
 		deadlytrailSelect.setVisible(true);
 		actual = Buy.DEADLYTRAIL;
-		if (usables[finals.deadlytrail()] == "equip") {
+		if (usables[finals.deadlytrail()] == "equip"
+				&& player.getUsables(finals.deadlytrail()) > 0) {
 			equip.setPosition(550, 60);
 			equip.setVisible(true);
 			upgradeMenu.registerSpriteInGame(equip);
@@ -288,7 +291,8 @@ public class Upgrade {
 		resources.setText("Resources: \n" + player.getRessources());
 		bombSelect.setVisible(true);
 		actual = Buy.BOMB;
-		if (usables[finals.bomb()] == "equip") {
+		if (usables[finals.bomb()] == "equip"
+				&& player.getUsables(finals.bomb()) > 0) {
 			equip.setPosition(750, 60);
 			equip.setVisible(true);
 			upgradeMenu.registerSpriteInGame(equip);

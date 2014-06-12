@@ -6,7 +6,6 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -26,8 +25,8 @@ public class EnemyTypeZero extends PEnemy {
 	
 	private final int resources = 10;
 
-	private float posX = 400f;
-	private float posY = 240f;
+	//private float posX = 400f;
+	//private float posY = 240f;
 	private float moveX = 0f;
 	private float moveY = 0f;
 
@@ -65,7 +64,7 @@ public class EnemyTypeZero extends PEnemy {
 				fd);
 		body.setActive(false);
 		body.setAwake(false);
-		body.setUserData(new UserData("enemy", this));
+		body.setUserData(new UserData("enemyzero", this));
 
 		pc = new PhysicsConnector(enemy, body, true, false);
 	}

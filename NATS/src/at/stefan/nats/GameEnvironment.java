@@ -26,6 +26,7 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 
@@ -42,7 +43,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 public class GameEnvironment extends Scene {
 
 	private int counterShot = 0;
-	
 
 	Sprite items[] = new Sprite[2];
 
@@ -64,7 +64,7 @@ public class GameEnvironment extends Scene {
 	Font HUDGameFont;
 
 	MaxStepPhysicsWorld world;
-	//DebugRenderer debug;
+	// DebugRenderer debug;
 
 	Rectangle leftBorder;
 	Rectangle upperBorder;
@@ -147,7 +147,27 @@ public class GameEnvironment extends Scene {
 	BuildableBitmapTextureAtlas fireBallBitmapTextureAtlas;
 	ITextureRegion fireBallITextureRegion;
 	SpriteGroup fireBallSpriteGroup;
-	
+
+	BuildableBitmapTextureAtlas enemyOneBitmapTextureAtlas;
+	TextureRegion enemyOneITextureRegion;
+	SpriteGroup enemyOneSpriteGroup;
+
+	BuildableBitmapTextureAtlas enemyZeroBitmapTextureAtlas;
+	TextureRegion enemyZeroITextureRegion;
+	SpriteGroup enemyZeroSpriteGroup;
+
+	BuildableBitmapTextureAtlas enemyTwoBitmapTextureAtlas;
+	TextureRegion enemyTwoITextureRegion;
+	SpriteGroup enemyTwoSpriteGroup;
+
+	BuildableBitmapTextureAtlas enemyTwoSmallBitmapTextureAtlas;
+	TextureRegion enemyTwoSmallITextureRegion;
+	SpriteGroup enemyTwoSmallSpriteGroup;
+
+	BuildableBitmapTextureAtlas enemyBlackHoleBitmapTextureAtlas;
+	TextureRegion enemyBlackHoleITextureRegion;
+	SpriteGroup enemyBlackHoleSpriteGroup;
+
 	TimeHandler time;
 
 	public GameEnvironment(nats nats, BoundCamera cam, SceneManager s, Player p) {
@@ -385,16 +405,102 @@ public class GameEnvironment extends Scene {
 		fireBallSpriteGroup = new SpriteGroup(0, 0, fireBallBitmapTextureAtlas,
 				42, nats.getVertexBufferObjectManager());
 
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("enemy/");
+		enemyZeroBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
+				nats.getTextureManager(), 50, 50, TextureOptions.BILINEAR);
+		enemyZeroITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(enemyZeroBitmapTextureAtlas,
+						nats.getApplicationContext(), "EnemyZero.png");
+
+		try {
+			enemyZeroBitmapTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 0, 0));
+			enemyZeroBitmapTextureAtlas.load();
+		} catch (TextureAtlasBuilderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.i("NATS", "enemyzerobitmap not working");
+		}
+
+		enemyZeroSpriteGroup = new SpriteGroup(0, 0,
+				enemyZeroBitmapTextureAtlas, 50,
+				nats.getVertexBufferObjectManager());
+		
+		enemyOneBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
+				nats.getTextureManager(), 50, 50, TextureOptions.BILINEAR);
+		enemyOneITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(enemyOneBitmapTextureAtlas,
+						nats.getApplicationContext(), "EnemyOne.png");
+
+		try {
+			enemyOneBitmapTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 0, 0));
+			enemyOneBitmapTextureAtlas.load();
+		} catch (TextureAtlasBuilderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.i("NATS", "enemyOnebitmap not working");
+		}
+
+		enemyOneSpriteGroup = new SpriteGroup(0, 0,
+				enemyOneBitmapTextureAtlas, 50,
+				nats.getVertexBufferObjectManager());
+		
+		enemyTwoBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
+				nats.getTextureManager(), 60, 60, TextureOptions.BILINEAR);
+		enemyTwoITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(enemyTwoBitmapTextureAtlas,
+						nats.getApplicationContext(), "EnemyTwo.png");
+
+		try {
+			enemyTwoBitmapTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 0, 0));
+			enemyTwoBitmapTextureAtlas.load();
+		} catch (TextureAtlasBuilderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.i("NATS", "enemyTwobitmap not working");
+		}
+
+		enemyTwoSpriteGroup = new SpriteGroup(0, 0,
+				enemyTwoBitmapTextureAtlas, 50,
+				nats.getVertexBufferObjectManager());
+		
+		enemyTwoSmallBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
+				nats.getTextureManager(), 30, 30, TextureOptions.BILINEAR);
+		enemyTwoSmallITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(enemyTwoSmallBitmapTextureAtlas,
+						nats.getApplicationContext(), "EnemyTwoSmall.png");
+
+		try {
+			enemyTwoSmallBitmapTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 0, 0));
+			enemyTwoSmallBitmapTextureAtlas.load();
+		} catch (TextureAtlasBuilderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.i("NATS", "enemyTwoSmallbitmap not working");
+		}
+
+		enemyTwoSmallSpriteGroup = new SpriteGroup(0, 0,
+				enemyTwoSmallBitmapTextureAtlas, 50,
+				nats.getVertexBufferObjectManager());
+
 		bulletPool = new BulletPool(player, this, world, nats);
 		enemyPool = new EnemyPool(player, this, world, nats);
 		time = new TimeHandler(this, player, enemyPool);
 
 		usables = new Usables(nats, this, world, player, bulletPool);
-		
+
 		th = new TimerHandler(1f, true, time);
 
-		//debug = new DebugRenderer(world, nats.getVertexBufferObjectManager());
-		//this.attachChild(debug);
+		// debug = new DebugRenderer(world,
+		// nats.getVertexBufferObjectManager());
+		// this.attachChild(debug);
 	}
 
 	public void loadGameScene() {
@@ -741,6 +847,10 @@ public class GameEnvironment extends Scene {
 		this.attachChild(lowerBorder);
 
 		this.attachChild(fireBallSpriteGroup);
+		this.attachChild(enemyZeroSpriteGroup);
+		this.attachChild(enemyOneSpriteGroup);
+		this.attachChild(enemyTwoSpriteGroup);
+		this.attachChild(enemyTwoSmallSpriteGroup);
 
 		// debug = new DebugRenderer(world,
 		// nats.getVertexBufferObjectManager());
@@ -969,27 +1079,27 @@ public class GameEnvironment extends Scene {
 	 * private Bullet getBullet() { return
 	 * bulletPool.onHandleObtainItem(pBullet); }
 	 */
-	
+
 	public Sprite getSmallStasisfieldSprite() {
 		return smallStasisfieldSprite;
 	}
-	
+
 	public Sprite getSmallTurboSprite() {
 		return smallTurboSprite;
 	}
-	
+
 	public Sprite getSmallDeadlytrailSprite() {
 		return smallDeadlytrailSprite;
 	}
-	
+
 	public Sprite getSmallBombSprite() {
 		return smallBombSprite;
 	}
-	
+
 	public Sprite getUsable1() {
 		return items[0];
 	}
-	
+
 	public Sprite getUsable2() {
 		return items[1];
 	}
@@ -1085,7 +1195,7 @@ public class GameEnvironment extends Scene {
 	public Body getPlayerBody() {
 		return playerBaseBody;
 	}
-	
+
 	public Sprite getPlayerBaseSprite() {
 		return playerBaseSprite;
 	}
@@ -1102,16 +1212,52 @@ public class GameEnvironment extends Scene {
 		return fireBallSpriteGroup;
 	}
 	
+	public TextureRegion getEnemyZeroTextureRegion() {
+		return enemyZeroITextureRegion;
+	}
+	
+	public SpriteGroup getEnemyZeroSpriteGroup() {
+		return enemyZeroSpriteGroup;
+	}
+	
+	public TextureRegion getEnemyOneTextureRegion() {
+		return enemyOneITextureRegion;
+	}
+	
+	public SpriteGroup getEnemyOneSpriteGroup() {
+		return enemyOneSpriteGroup;
+	}
+	
+	public TextureRegion getEnemyTwoTextureRegion() {
+		return enemyTwoITextureRegion;
+	}
+	
+	public SpriteGroup getEnemyTwoSpriteGroup() {
+		return enemyTwoSpriteGroup;
+	}
+	
+	public TextureRegion getEnemyTwoSmallTextureRegion() {
+		return enemyTwoSmallITextureRegion;
+	}
+	
+	public SpriteGroup getEnemyTwoSmallSpriteGroup() {
+		return enemyTwoSmallSpriteGroup;
+	}
+
 	public Text getHighScore() {
 		return highscore;
 	}
-	
+
 	public BulletPool getBulletPool() {
 		return bulletPool;
 	}
-	
+
 	public UpgradeMenu getUpgradeMenu() {
 		return this.upgradeMenu;
+	}
+	
+	public MaxStepPhysicsWorld getPhysicsWorld() {
+		return this.world;
 	}
 
 }
