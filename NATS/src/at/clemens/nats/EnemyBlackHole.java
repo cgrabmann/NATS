@@ -11,6 +11,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 
 import at.alex.nats.Player;
 import at.stefan.nats.EnemyPool;
+import at.stefan.nats.GameEnvironment;
 import at.stefan.nats.UserData;
 import at.stefan.nats.nats;
 
@@ -24,7 +25,6 @@ public class EnemyBlackHole extends PEnemy{
 	private TextureRegion textur;
 	//private Sprite enemy;
 	private Rectangle enemy;
-	private Scene game;
 	private PhysicsWorld world;
 	private Body body;
 	private FixtureDef fd;
@@ -33,10 +33,9 @@ public class EnemyBlackHole extends PEnemy{
 	private int size;
 	private EnemyPool enemyPool;
 
-	public EnemyBlackHole(Scene pf, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
-		super(nats, p);
+	public EnemyBlackHole(GameEnvironment g, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
+		super(nats, p, g);
 		this.world = world;
-		this.game = pf;
 		this.textur = textur;
 		this.size = 0;
 		this.enemyPool = enemyPool;
@@ -69,9 +68,9 @@ public class EnemyBlackHole extends PEnemy{
 	
 	@Override
 	public void start(){
-		this.createStartPos(game);
+		this.createStartPos(super.game);
 		this.size = 50;
-		game.attachChild(enemy);
+		super.game.attachChild(enemy);
 		enemy.setVisible(true);
 		
 		//TODO start fly function | alle 15 msec ausführen
@@ -93,7 +92,7 @@ public class EnemyBlackHole extends PEnemy{
 
 	@Override
 	public void stop(){
-		game.detachChild(enemy);
+		super.game.detachChild(enemy);
 		enemy.setVisible(false);
 		body.setActive(false);
 		body.setAwake(false);

@@ -19,7 +19,7 @@ public class TimeHandler implements ITimerCallback {
 
 	private final int enemymulti = 7;
 	private int spawnResources = 50;
-	
+
 	private int secs = 0;
 	private int mins = 0;
 	private int counterShield = 0;
@@ -27,38 +27,38 @@ public class TimeHandler implements ITimerCallback {
 	private int waveCounter = 0;
 	private String s = "00";
 	private String m = "00";
-	
-	private int chanceZero = 2;
-	private int chanceOne = 1;
-	private int chanceTwo = 0;
-	private int chanceFour = 0;
-	
-	private int totalChance = 3;
-	
+
+	private double chanceZero = 2;
+	private double chanceOne = 1;
+	private double chanceTwo = 0;
+	private double chanceFour = 0;
+
+	private double totalChance = 3;
+
 	GameEnvironment gameEnvironment;
 	Player player;
 	EnemyPool enemyPool;
-	
+
 	EnemyTypeZero zero;
 	EnemyTypeOne one;
 	EnemyTypeTwo two;
 	EnemyTypeTwoSmall twoSmall;
-	
+
 	public TimeHandler(GameEnvironment ge, Player p, EnemyPool enemyPool) {
 		this.gameEnvironment = ge;
 		this.player = p;
 		this.enemyPool = enemyPool;
-		
+
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
 	public void onTimePassed(TimerHandler pTimerHandler) {
 		// TODO Auto-generated method stub
 		secs++;
 		if (secs == 60) {
 			mins++;
-			switch(mins) {
+			switch (mins) {
 			case 1:
 				chanceZero = 3;
 				chanceOne = 2;
@@ -137,50 +137,53 @@ public class TimeHandler implements ITimerCallback {
 		}
 		// Log.i("NATS", "Update Time");
 		gameEnvironment.getHighScore().setText(m + ":" + s);
-		
+
 		// Gegner spawnen
 
-		/*if(secs % 4 == 0) {
-			Log.i("NATS", "Enemy Start");
-			two = enemyPool.onAllocateEnemytwo();
-			two.start();
-		}*/
-		
-		
-		if(waveCounter >= enemymulti*(mins+1)){
+		/*
+		 * if(secs % 4 == 0) { Log.i("NATS", "Enemy Start"); two =
+		 * enemyPool.onAllocateEnemytwo(); two.start(); }
+		 */
+
+		if (waveCounter >= enemymulti * (mins + 1)) {
 			int spawn = spawnResources;
-			while(spawn > 0) {
+			while (spawn > 0) {
 				double rand = Math.random();
 				Log.i("NATS", "random: " + rand);
-				Log.i("NATS", "Chance zero: "+(chanceZero)/totalChance);
-				Log.i("NATS", "Chance one: "+(chanceZero+chanceOne)/totalChance);
-				Log.i("NATS", "Chance two: "+(chanceZero+chanceOne+chanceTwo)/totalChance);
-				Log.i("NATS", "Chance twoSmall: "+(chanceZero+chanceOne+chanceTwo+chanceFour)/totalChance);
-				if(rand < chanceZero/totalChance) {		// Gegner 0 spawnen
+				Log.i("NATS", "Chance zero: " + (chanceZero) / totalChance);
+				Log.i("NATS", "Chance one: " + (chanceZero + chanceOne)
+						/ totalChance);
+				Log.i("NATS", "Chance two: "
+						+ (chanceZero + chanceOne + chanceTwo) / totalChance);
+				Log.i("NATS", "Chance twoSmall: "
+						+ (chanceZero + chanceOne + chanceTwo + chanceFour)
+						/ totalChance);
+				if (rand < chanceZero / totalChance) { // Gegner 0 spawnen
 					zero = enemyPool.onAllocateEnemyZero();
 					zero.start();
 					spawn -= zero.getResources();
 					Log.i("NATS", "EnemyZero spawned");
-				}else if(rand < (chanceZero+chanceOne)/totalChance) {	// gegner 1
+				} else if (rand < (chanceZero + chanceOne) / totalChance) { // gegner
+																			// 1
 					one = enemyPool.onAllocateEnemyone();
 					one.start();
 					spawn -= one.getResources();
 					Log.i("NATS", "EnemyOne spawned");
-				}else if(rand < (chanceZero+chanceOne+chanceTwo)/totalChance) {	// gegner 2
+				} else if (rand < (chanceZero + chanceOne + chanceTwo)
+						/ totalChance) { // gegner 2
 					two = enemyPool.onAllocateEnemytwo();
 					two.start();
 					spawn -= two.getResources();
 					Log.i("NATS", "EnemyTwo spawned");
-				}else {		// gegner 4
+				} else { // gegner 4
 					Log.i("NATS", "EnemyFour spawned");
 				}
 			}
 			waveCounter = 0;
 			spawnResources += 20;
-		}else {
+		} else {
 			waveCounter++;
 		}
-		
 
 		if (!player.getShield()) {
 			if (counterShield >= player.getTimeToShield()) {
@@ -196,14 +199,15 @@ public class TimeHandler implements ITimerCallback {
 			counterGunner = 0;
 			// Hier den Gegner ausfindig machen, sobald sie
 			// implementiert sind
-			Iterator<Body> allBodies = gameEnvironment.getPhysicsWorld().getBodies();
+			Iterator<Body> allBodies = gameEnvironment.getPhysicsWorld()
+					.getBodies();
 			Bullet b = gameEnvironment.getBulletPool().onAllocateGunner();
 			b.fireBullet(new Vector2(0f, 1f));
 		} else {
 			counterGunner++;
 		}
 	}
-	
+
 	public void reset() {
 		secs = 0;
 		mins = 0;
@@ -212,5 +216,5 @@ public class TimeHandler implements ITimerCallback {
 		s = "00";
 		m = "00";
 	}
-	
+
 }

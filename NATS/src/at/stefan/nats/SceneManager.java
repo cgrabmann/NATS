@@ -124,4 +124,5 @@ public class SceneManager {
 		pauseMenu.loadPauseScene();
 		upgradeMenu.loadUpgradeScene();
 	}
+
 }

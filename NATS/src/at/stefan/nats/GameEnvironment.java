@@ -94,14 +94,14 @@ public class GameEnvironment extends Scene {
 	Sprite headerSprite;
 
 	AnalogOnScreenControl leftAnalogOnScreenControl;
-	BitmapTextureAtlas leftAnalogAuﬂenBitmapTextureAtlas;
-	ITextureRegion leftAnalogAuﬂenITextureRegion;
+	BitmapTextureAtlas leftAnalogAussenBitmapTextureAtlas;
+	ITextureRegion leftAnalogAussenITextureRegion;
 	BitmapTextureAtlas leftAnalogInnenBitmapTextureAtlas;
 	ITextureRegion leftAnalogInnenITextureRegion;
 
 	AnalogOnScreenControl rightAnalogOnScreenControl;
-	BitmapTextureAtlas rightAnalogAuﬂenBitmapTextureAtlas;
-	ITextureRegion rightAnalogAuﬂenITextureRegion;
+	BitmapTextureAtlas rightAnalogAussenBitmapTextureAtlas;
+	ITextureRegion rightAnalogAussenITextureRegion;
 	BitmapTextureAtlas rightAnalogInnenBitmapTextureAtlas;
 	ITextureRegion rightAnalogInnenITextureRegion;
 
@@ -195,7 +195,7 @@ public class GameEnvironment extends Scene {
 		// playerSprite = player.getPlayer();
 		playerBaseSprite = player.getPlayerBase();
 
-		FixtureDef fd = PhysicsFactory.createFixtureDef(25.0f, 5.0f, 0.0f);
+		FixtureDef fd = PhysicsFactory.createFixtureDef(25.0f, 0.0f, 0.0f);
 
 		/*
 		 * ArrayList<Vector2> triangle = new ArrayList<Vector2>(); final float
@@ -251,13 +251,13 @@ public class GameEnvironment extends Scene {
 
 		// leftAnalogOncScreenControl.
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		leftAnalogAuﬂenBitmapTextureAtlas = new BitmapTextureAtlas(
+		leftAnalogAussenBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
-		leftAnalogAuﬂenITextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(leftAnalogAuﬂenBitmapTextureAtlas,
+		leftAnalogAussenITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(leftAnalogAussenBitmapTextureAtlas,
 						nats.getApplicationContext(), "JoystickAussen.png", 0,
 						0);
-		leftAnalogAuﬂenBitmapTextureAtlas.load();
+		leftAnalogAussenBitmapTextureAtlas.load();
 
 		leftAnalogInnenBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 60, 60, TextureOptions.DEFAULT);
@@ -266,13 +266,13 @@ public class GameEnvironment extends Scene {
 						nats.getApplicationContext(), "JoystickInnen.png", 0, 0);
 		leftAnalogInnenBitmapTextureAtlas.load();
 
-		rightAnalogAuﬂenBitmapTextureAtlas = new BitmapTextureAtlas(
+		rightAnalogAussenBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
-		rightAnalogAuﬂenITextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(rightAnalogAuﬂenBitmapTextureAtlas,
+		rightAnalogAussenITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(rightAnalogAussenBitmapTextureAtlas,
 						nats.getApplicationContext(), "JoystickAussen.png", 0,
 						0);
-		rightAnalogAuﬂenBitmapTextureAtlas.load();
+		rightAnalogAussenBitmapTextureAtlas.load();
 
 		rightAnalogInnenBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 60, 60, TextureOptions.DEFAULT);
@@ -561,7 +561,7 @@ public class GameEnvironment extends Scene {
 				0.5f));
 
 		leftAnalogOnScreenControl = new AnalogOnScreenControl(90, 80,
-				mainCamera, leftAnalogAuﬂenITextureRegion,
+				mainCamera, leftAnalogAussenITextureRegion,
 				leftAnalogInnenITextureRegion, 0.05f,
 				nats.getVertexBufferObjectManager(),
 				new IAnalogOnScreenControlListener() {
@@ -614,7 +614,7 @@ public class GameEnvironment extends Scene {
 
 		rightAnalogOnScreenControl = new AnalogOnScreenControl(
 				nats.getCameraWidth() - 90, 80, mainCamera,
-				rightAnalogAuﬂenITextureRegion, rightAnalogInnenITextureRegion,
+				rightAnalogAussenITextureRegion, rightAnalogInnenITextureRegion,
 				0.05f, nats.getVertexBufferObjectManager(),
 				new IAnalogOnScreenControlListener() {
 
@@ -1258,6 +1258,10 @@ public class GameEnvironment extends Scene {
 	
 	public MaxStepPhysicsWorld getPhysicsWorld() {
 		return this.world;
+	}
+	
+	public Text getRessourcesDisplay(){
+		return this.resources;
 	}
 
 }
