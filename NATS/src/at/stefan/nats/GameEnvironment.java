@@ -1103,8 +1103,6 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void resetTimer() {
-		time.reset();
-		th.reset();
 		this.resetGame();
 		highscore.setText("00:00");
 		player.setRessources(2000);
@@ -1126,6 +1124,9 @@ public class GameEnvironment extends Scene {
 	}
 
 	private void resetGame() {
+		player.reset();
+		time.reset();
+		th.reset();
 		counterShot = 0;
 		list = null;
 		listConnector = null;

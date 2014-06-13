@@ -145,17 +145,25 @@ public class Contacts implements ContactListener {
 		// Player - Enemy
 		else if (a.getUserObject() instanceof PEnemy
 				&& b.getUserString().equals("player")) {
-			if(player.isShieldActivated()) {
+			if(player.isTurboActivated()) {
+				contact.setEnabled(false);
+				((PEnemy)a.getUserObject()).stop();
+			}else if(player.isShieldActivated()) {
 				player.getPlayerBase().setAlpha(0f);
 				player.removeShield();
+				((PEnemy)a.getUserObject()).stop();
 			}else {
 				// Spieler zerstören
 			}
 		} else if (b.getUserObject() instanceof PEnemy
 				&& a.getUserString().equals("player")) {
-			if(player.isShieldActivated()) {
+			if(player.isTurboActivated()) {
+				contact.setEnabled(false);
+				((PEnemy)b.getUserObject()).stop();
+			}else if(player.isShieldActivated()) {
 				player.getPlayerBase().setAlpha(0f);
 				player.removeShield();
+				((PEnemy)b.getUserObject()).stop();
 			}else {
 				// Spieler zerstören
 			}

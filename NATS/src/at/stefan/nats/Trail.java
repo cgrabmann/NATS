@@ -52,7 +52,7 @@ public class Trail {
 
 		fd = PhysicsFactory.createFixtureDef(10f, 0f, 0f);
 		body = PhysicsFactory.createCircleBody(world, sprite,
-				BodyType.DynamicBody, fd);
+				BodyType.StaticBody, fd);
 
 		body.setActive(false);
 		body.setAwake(false);

@@ -67,7 +67,7 @@ public class Player {
 		SoundFactory.setAssetBasePath("sfx/");
 		try {
 			music = MusicFactory.createMusicFromAsset(nats.getMusicManager(),
-					nats.getApplicationContext(), "PumpAbDasBier.mp3");
+					nats.getApplicationContext(), "Spiel.ogg");
 			music.setLooping(true);
 			music.setVolume(1.0f, 1.0f);
 		} catch (IOException e) {

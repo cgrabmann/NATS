@@ -45,7 +45,7 @@ public class ProgressBar extends Entity {
 				(VertexBufferObjectManager) null);
 		if (version == AndEngine.GLES2) {
 			fgRectangle = new Rectangle(this.x, this.y, 0, this.height,
-					(IRectangleVertexBufferObject) null);
+					(VertexBufferObjectManager) null);
 			border[0] = new Line(this.x, this.y, (this.x + this.width), this.y,
 					3, (VertexBufferObjectManager) null);
 			border[1] = new Line(this.x, (this.y + this.height - 2),
@@ -177,10 +177,14 @@ public class ProgressBar extends Entity {
 
 	public void reset() {
 		this.progress = 0;
-		fgRectangle.setWidth(0);
+		this.intervall = 5;
+		this.attached = false;
+		fgRectangle.setWidth(this.width / this.intervall * this.progress);
 		if (this.version == AndEngine.GLES2_AnchorCenter) {
-			fgRectangle.setPosition(this.x, this.y);
+			fgRectangle.setPosition((this.x - this.width / 2 + (this.width
+					/ this.intervall / 2 * this.progress)), this.y);
 		}
+		
 	}
 
 }
