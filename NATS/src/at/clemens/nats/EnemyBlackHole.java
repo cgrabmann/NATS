@@ -71,7 +71,7 @@ public class EnemyBlackHole extends PEnemy{
 	
 	@Override
 	public void start(){
-		this.createStartPos(super.game);
+		super.createStartPos();
 		this.size = 50;
 		super.game.attachChild(enemy);
 		enemy.setVisible(true);
@@ -86,11 +86,6 @@ public class EnemyBlackHole extends PEnemy{
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
-	}
-	
-	@Override
-	protected void createStartPos(Scene pf){
-		super.createStartPos(pf);
 	}
 
 	@Override

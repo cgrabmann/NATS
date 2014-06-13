@@ -111,11 +111,6 @@ public class EnemyTypeTwoSmall extends PEnemy {
 	}
 
 	@Override
-	protected void createStartPos(Scene pf) {
-		super.createStartPos(pf);
-	}
-
-	@Override
 	public void stop() {
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
@@ -161,6 +156,9 @@ public class EnemyTypeTwoSmall extends PEnemy {
 			super.movex = 0;
 			super.movey = 0;
 			return;
+		}else{
+			super.movex = super.smovex;
+			super.movey = super.smovey;
 		}
 
 		// Log.i("NATS", "pposx: " + super.player.getPosX() + " pposy: " +
@@ -191,6 +189,9 @@ public class EnemyTypeTwoSmall extends PEnemy {
 			super.movey = (super.movey > 0) ? super.movey - acceleration
 					: super.movey + acceleration;
 		}
+		
+		super.smovex = super.movex;
+		super.smovey = super.movey;
 
 		return;
 	}

@@ -13,6 +13,7 @@ public abstract class PEnemy {
 
 	protected float posx, posy;
 	protected int movex, movey;
+	protected int smovex, smovey;
 	protected boolean frozen;
 	protected Player player;
 	protected nats nats;
@@ -26,11 +27,13 @@ public abstract class PEnemy {
 		this.player = p;
 		this.movex = 0;
 		this.movey = 0;
+		this.smovex = movex;
+		this.movey = movey;
 		this.game = g;
 		this.spawnControll = 0;
 	}
 	
-	protected void createStartPos(Scene pf){
+	protected void createStartPos(){
 		//Random r = new Random();
 		//int spawnControll = r.nextInt(4);
 		double r = Math.random();
