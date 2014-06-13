@@ -1060,6 +1060,10 @@ public class GameEnvironment extends Scene {
 		while (list.hasNext()) {
 			Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
+			UserData u = (UserData) listConnector.getBody().getUserData();
+			if(u.getUserObject() instanceof PEnemy) {
+				((PEnemy) u.getUserObject()).setFrozen(false);
+			}
 			listConnector.setUpdatePosition(true);
 			listConnector.setUpdateRotation(true);
 		}
@@ -1076,7 +1080,9 @@ public class GameEnvironment extends Scene {
 			Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
-			((PEnemy) u.getUserObject()).s
+			if(u.getUserObject() instanceof PEnemy) {
+				((PEnemy) u.getUserObject()).setFrozen(true);
+			}
 			listConnector.setUpdatePosition(false);
 			listConnector.setUpdateRotation(false);
 		}
@@ -1093,6 +1099,7 @@ public class GameEnvironment extends Scene {
 			UserData u = (UserData) iterationBody.getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
 				PEnemy e = (PEnemy) u.getUserObject();
+				e.setFrozen(false);
 				e.deactivate();
 			}else if(u.getUserString().equals("bullet")) {
 				Bullet b = (Bullet) u.getUserObject();

@@ -126,10 +126,10 @@ public class EnemyTypeTwoSmall extends PEnemy {
 				EnemyTypeTwoSmall.super.game.getEnemyTwoSmallSpriteGroup()
 						.detachChild(enemy);
 				enemy.setVisible(false);
-				body.setActive(false);
-				body.setAwake(false);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
+				body.setActive(false);
+				body.setAwake(false);
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
 
@@ -234,13 +234,17 @@ public class EnemyTypeTwoSmall extends PEnemy {
 						.detachChild(enemy);
 				// Log.i("NATS", "stop1");
 				enemy.setVisible(false);
+				
+				body.setLinearVelocity(0f, 0f);
+				
+				body.setTransform(-500, -340, 0.0f);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
-				body.setTransform(-500, -340, 0.0f);
+				
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
@@ -252,94 +256,3 @@ public class EnemyTypeTwoSmall extends PEnemy {
 	}
 }
 
-/*
- * public class EnemyTypeTwoSmall extends PEnemy {
- * 
- * private final int maxMoveSpeed = 200; private TextureRegion textur; //
- * private Sprite enemy; private Rectangle enemy; private PhysicsWorld world;
- * private Body body; private FixtureDef fd; private PhysicsConnector pc;
- * private TimerHandler th; private EnemyPool enemyPool;
- * 
- * public EnemyTypeTwoSmall(GameEnvironment g, TextureRegion textur, nats nats,
- * PhysicsWorld world, Player p, EnemyPool enemyPool) { super(nats, p, g);
- * this.world = world; this.textur = textur;
- * 
- * this.enemyPool = enemyPool; // enemy = new Sprite(super.posx, super.posy,
- * this.textur, // nats.getVertexBufferObjectManager()); enemy = new
- * Rectangle(0, 0, 20, 20, nats.getVertexBufferObjectManager());
- * enemy.setColor(new Color(1f, 0f, 0f)); enemy.setVisible(false); fd =
- * PhysicsFactory.createFixtureDef(0f, 0f, 0f); body =
- * PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
- * body.setActive(false); body.setAwake(false); body.setUserData(new
- * UserData("enemytwosmall", this));
- * 
- * th = new TimerHandler(0.050f, true, new ITimerCallback() {
- * 
- * @Override public void onTimePassed(TimerHandler pTimerHandler) { // TODO
- * Auto-generated method stub move();
- * body.setLinearVelocity(EnemyTypeTwoSmall.this.getMovex(),
- * EnemyTypeTwoSmall.this.getMovey()); } });
- * 
- * pc = new PhysicsConnector(enemy, body, true, false); }
- * 
- * public void start(float x, float y) { // this.createStartPos(game);
- * super.game.attachChild(enemy); enemy.setVisible(true);
- * 
- * // TODO start fly function | alle 15 msec ausführen // TODO Timehandler
- * 
- * body.setActive(true); body.setAwake(true);
- * 
- * body.setTransform(x / 32, y / 32, 0f);
- * 
- * world.registerPhysicsConnector(pc);
- * nats.getEngine().registerUpdateHandler(th); }
- * 
- * @Override protected void createStartPos(Scene pf) { super.createStartPos(pf);
- * this.move(); }
- * 
- * @Override public void stop() { nats.getEngine().runOnUpdateThread(new
- * Runnable() {
- * 
- * @Override public void run() { // TODO Auto-generated method stub
- * EnemyTypeTwoSmall.super.game.detachChild(enemy); enemy.setVisible(false);
- * body.setActive(false); body.setAwake(false); body.setLinearVelocity(0f, 0f);
- * body.setTransform(-500, -340, 0.0f); world.unregisterPhysicsConnector(pc);
- * nats.getEngine().unregisterUpdateHandler(th);
- * 
- * nats.getEngine().registerUpdateHandler( new TimerHandler(1f, new
- * ITimerCallback() {
- * 
- * @Override public void onTimePassed(TimerHandler pTimerHandler) { // TODO
- * Auto-generated method stub nats.getEngine().unregisterUpdateHandler(
- * pTimerHandler); enemyPool .recycleEnemyTwoSmall(EnemyTypeTwoSmall.this); }
- * })); } });
- * 
- * }
- * 
- * protected void move() { float offsetX, offsetY; float pPosx, pPosy;
- * 
- * if (frozen) { movex = 0; movey = 0; return; }
- * 
- * pPosx = player.getPosX(); pPosy = player.getPosY(); offsetX = pPosx - posx;
- * offsetY = pPosy - posy;
- * 
- * // Adjust move direction X to new player position if (offsetX < 0) { movex -=
- * (movex > -maxMoveSpeed) ? 1 : 0; } else if (offsetX > 0) { movex += (movex <
- * maxMoveSpeed) ? 1 : 0; } else if (offsetX == 0 && movex != 0) { movex =
- * (movex > 0) ? movex - 1 : movex + 1; }
- * 
- * // Adjust move direction Y to new player position if (offsetY < 0) { movey -=
- * (movey > -maxMoveSpeed) ? 1 : 0; } else if (offsetY > 0) { movey += (movey <
- * maxMoveSpeed) ? 1 : 0; } else if (offsetY == 0 && movey != 0) { movey =
- * (movey > 0) ? movey - 1 : movey + 1; }
- * 
- * return; }
- * 
- * private int getMovex(){ return super.movex; }
- * 
- * private int getMovey(){ return super.movey; }
- * 
- * @Override public void start() { // TODO Auto-generated method stub
- * 
- * } }
- */

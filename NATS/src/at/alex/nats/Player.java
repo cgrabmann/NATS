@@ -290,4 +290,29 @@ public class Player {
 			this.music.resume();
 		}
 	}
+	
+	public void reset() {
+		ressources = 2000;
+		shooting = true;
+		turbo = false;
+
+		// Upgrades
+		speed = 0;
+		shotfrequence = 10;
+		shield = false;
+		timeToShield = 45;
+		shotspreading = 0;
+		timeToGunner = 20;
+		
+		this.posX = 400;
+		this.posY = 240;
+		
+		for (int i = 0; i <= 3; i++) {
+			this.usables[i] = 0;
+			this.permanents[i] = 0;
+		}
+		this.permanents[4] = 0;
+		this.usables[0] = 2;
+		this.usables[1] = 1;
+	}
 }

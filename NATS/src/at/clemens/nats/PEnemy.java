@@ -76,7 +76,7 @@ public abstract class PEnemy {
 		game.getRessourcesDisplay().setText(player.getRessourcesForDisplay());
 	}
 	
-	protected void setFrozen(boolean b) {
+	public void setFrozen(boolean b) {
 		this.frozen = b;
 	}
 	

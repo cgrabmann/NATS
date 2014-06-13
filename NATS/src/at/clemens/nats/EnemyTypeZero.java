@@ -133,12 +133,13 @@ public class EnemyTypeZero extends PEnemy {
 				// Log.i("NATS", "stop1");
 				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
+				body.setTransform(-500, -340, 0.0f);
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
-				body.setTransform(-500, -340, 0.0f);
+				
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
@@ -159,16 +160,6 @@ public class EnemyTypeZero extends PEnemy {
 			}
 		});
 
-		/*
-		 * Log.i("NATS", "stop"); game.detachChild(enemy); Log.i("NATS",
-		 * "stop1"); enemy.setVisible(false); Log.i("NATS", "stop2");
-		 * body.setActive(false); Log.i("NATS", "stop3"); body.setAwake(false);
-		 * Log.i("NATS", "stop4"); // body.setLinearVelocity(0f, 0f);
-		 * body.setTransform(-500, -340, 0.0f); Log.i("NATS", "stop5");
-		 * world.unregisterPhysicsConnector(pc); Log.i("NATS", "stop6");
-		 * nats.getEngine().unregisterUpdateHandler(th); Log.i("NATS", "stop7");
-		 * enemyPool.recycleEnemyZero(this); Log.i("NATS", "stop8");
-		 */
 	}
 
 	private boolean getRandomBoolean() {
@@ -216,12 +207,14 @@ public class EnemyTypeZero extends PEnemy {
 				// Log.i("NATS", "stop1");
 				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
+				body.setTransform(-500, -340, 0.0f);
+				
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
-				body.setTransform(-500, -340, 0.0f);
+				
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
