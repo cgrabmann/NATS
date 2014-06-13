@@ -87,7 +87,7 @@ public class EnemyTypeTwo extends PEnemy {
 
 	@Override
 	public void start() {
-		this.createStartPos(super.game);
+		super.createStartPos();
 		if (!enemy.hasParent()) {
 			super.game.getEnemyTwoSpriteGroup().attachChild(enemy);
 		}
@@ -103,11 +103,6 @@ public class EnemyTypeTwo extends PEnemy {
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
-	}
-
-	@Override
-	protected void createStartPos(Scene pf) {
-		super.createStartPos(pf);
 	}
 
 	@Override
@@ -161,6 +156,9 @@ public class EnemyTypeTwo extends PEnemy {
 			super.movex = 0;
 			super.movey = 0;
 			return;
+		}else{
+			super.movex = super.smovex;
+			super.movey = super.smovey;
 		}
 
 		// Log.i("NATS", "pposx: " + super.player.getPosX() + " pposy: " +
@@ -191,6 +189,9 @@ public class EnemyTypeTwo extends PEnemy {
 			super.movey = (super.movey > 0) ? super.movey - acceleration
 					: super.movey + acceleration;
 		}
+		
+		super.smovex = super.movex;
+		super.smovey = super.movey;
 
 		return;
 	}

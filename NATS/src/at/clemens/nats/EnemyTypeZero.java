@@ -29,10 +29,9 @@ public class EnemyTypeZero extends PEnemy {
 
 	// private float posX = 400f;
 	// private float posY = 240f;
-	private float moveX = 0f;
-	private float moveY = 0f;
 
 	private final int maxMoveSpeed = 200;
+	
 	private TextureRegion textur;
 	private Sprite enemy;
 	// private Rectangle enemy;
@@ -41,7 +40,6 @@ public class EnemyTypeZero extends PEnemy {
 	private FixtureDef fd;
 	private PhysicsConnector pc;
 	private TimerHandler th;
-	private float smovex, smovey;
 	private EnemyPool enemyPool;
 
 	public EnemyTypeZero(GameEnvironment g, TextureRegion textur, nats nats,
@@ -51,8 +49,10 @@ public class EnemyTypeZero extends PEnemy {
 		this.textur = textur;
 		this.enemyPool = enemyPool;
 		frozen = false;
-		smovex = super.movex;
-		smovey = super.movey;
+		super.movex = 0;
+		super.movey = 0;
+		super.smovex = super.movex;
+		super.smovey = super.movey;
 		// enemy = new Sprite(super.posx, super.posy, this.textur,
 		// nats.getVertexBufferObjectManager());
 		enemy = new Sprite(0f, 0f, super.game.getEnemyZeroTextureRegion(),
@@ -71,9 +71,9 @@ public class EnemyTypeZero extends PEnemy {
 
 	@Override
 	public void start() {
-		this.createStartPos(super.game);
-		smovex = moveX;
-		smovey = moveY;
+		this.createStartPos();
+		super.smovex = super.movex;
+		super.smovey = super.movey;
 		if (enemy.hasParent()) {
 			Log.i("NATS", "enemy already attached");
 		} else {
@@ -99,7 +99,7 @@ public class EnemyTypeZero extends PEnemy {
 				// Log.i("NATS", "Move");
 				move();
 				// Log.i("NATS", "MoveX: "+moveX + ", MoveY: "+moveY);
-				body.setLinearVelocity(moveX * 0.05f, moveY * 0.05f);
+				body.setLinearVelocity(EnemyTypeZero.super.movex * 0.05f, EnemyTypeZero.super.movey * 0.05f);
 			}
 		});
 
@@ -108,14 +108,14 @@ public class EnemyTypeZero extends PEnemy {
 	}
 
 	@Override
-	protected void createStartPos(Scene pf) {
-		super.createStartPos(pf);
-		moveX = (maxMoveSpeed / 2)
+	protected void createStartPos() {
+		super.createStartPos();
+		super.movex = (maxMoveSpeed / 2)
 				+ (int) (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1));
-		moveY = (maxMoveSpeed / 2)
+		super.movey = (maxMoveSpeed / 2)
 				+ (int) (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1));
-		moveX *= (getRandomBoolean()) ? 1 : -1;
-		moveY *= (getRandomBoolean()) ? 1 : -1;
+		super.movex *= (getRandomBoolean()) ? 1 : -1;
+		super.movey *= (getRandomBoolean()) ? 1 : -1;
 
 	}
 
@@ -179,11 +179,11 @@ public class EnemyTypeZero extends PEnemy {
 	protected void move() {
 		// TODO Auto-generated method stub
 		if (frozen) {
-			moveX = 0;
-			moveY = 0;
+			super.movex = 0;
+			super.movey = 0;
 		} else {
-			moveX = smovex;
-			moveY = smovey;
+			super.movex = super.smovex;
+			super.movey = super.smovey;
 		}
 
 	}

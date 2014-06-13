@@ -1060,6 +1060,8 @@ public class GameEnvironment extends Scene {
 		while (list.hasNext()) {
 			Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
+			UserData u = (UserData) listConnector.getBody().getUserData();
+			((PEnemy) u.getUserObject()).setFrozen(false);
 			listConnector.setUpdatePosition(true);
 			listConnector.setUpdateRotation(true);
 		}
@@ -1076,7 +1078,7 @@ public class GameEnvironment extends Scene {
 			Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
-			((PEnemy) u.getUserObject()).s
+			((PEnemy) u.getUserObject()).setFrozen(true);
 			listConnector.setUpdatePosition(false);
 			listConnector.setUpdateRotation(false);
 		}
