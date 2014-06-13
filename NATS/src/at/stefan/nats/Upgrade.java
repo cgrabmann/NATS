@@ -740,5 +740,20 @@ public class Upgrade {
 	public void setUsableEquip(int pos) {
 		usables[pos] = "equip";
 	}
+	
+	public void reset() {
+		prices[finals.stasisfield()] = 500; // Factor 1.5
+		prices[finals.turbo()] = 750; // Factor 1.6
+		prices[finals.deadlytrail()] = 1000; // Factor 1.7
+		prices[finals.bomb()] = 1500; // Factor 1.8
+
+		usables[finals.stasisfield()] = "discard";
+		usables[finals.turbo()] = "discard";
+		usables[finals.deadlytrail()] = "equip";
+		usables[finals.bomb()] = "equip";
+
+		equipped[0] = finals.stasisfield();
+		equipped[1] = finals.turbo();
+	}
 
 }

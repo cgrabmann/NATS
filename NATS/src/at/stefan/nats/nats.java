@@ -100,16 +100,40 @@ public class nats extends BaseGameActivity {
 
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
-
+	
 	@Override
+	public void onBackPressed() {
+		if(sceneManager.getCurrentScene() == AllScenes.NEW_GAME) {
+			sceneManager.switchScene(AllScenes.PAUSE);
+			//sceneManager.getGameEnvironment().sho
+		}else if (sceneManager.getCurrentScene() != AllScenes.MAIN_MENU) {
+			if (sceneManager.getCurrentScene() == AllScenes.UPGRADE) {
+				sceneManager.switchScene(AllScenes.NEW_GAME);
+			} else if(sceneManager.getCurrentScene() == AllScenes.PAUSE) {
+				// Nichts
+			} else {
+				sceneManager.switchScene(AllScenes.MAIN_MENU);
+			}
+			//sceneManager.switchScene(AllScenes.MAIN_MENU);
+		} else {
+			nats.this.finish();
+		}
+	}
+	
+
+	/*@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if(sceneManager.getCurrentScene() == AllScenes.NEW_GAME) {
 				sceneManager.switchScene(AllScenes.PAUSE);
+				//sceneManager.getGameEnvironment().sho
 			}else if (sceneManager.getCurrentScene() != AllScenes.MAIN_MENU) {
-				if (sceneManager.getCurrentScene() == AllScenes.PAUSE
-						|| sceneManager.getCurrentScene() == AllScenes.UPGRADE) {
+				if (sceneManager.getCurrentScene() == AllScenes.UPGRADE) {
 					sceneManager.switchScene(AllScenes.NEW_GAME);
+				} else if(sceneManager.getCurrentScene() == AllScenes.PAUSE) {
+					// Nichts
+				} else {
+					sceneManager.switchScene(AllScenes.MAIN_MENU);
 				}
 				/*
 				 * if(sceneManager.getCurrentScene() == AllScenes.HIGHSCORES) {
@@ -117,14 +141,14 @@ public class nats extends BaseGameActivity {
 				 * AllScenes.SETTINGS) { // unload }else
 				 * if(sceneManager.getCurrentScene() == AllScenes.NEW_GAME) { //
 				 * unload }
-				 */
+				 *
 				sceneManager.switchScene(AllScenes.MAIN_MENU);
 			} else {
 				nats.this.finish();
 			}
 		}
 		return false;
-	}
+	}*/
 
 	@Override
 	protected void onDestroy() {

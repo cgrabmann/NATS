@@ -216,14 +216,14 @@ public class Player {
 	public void increaseShotFrequence() {
 		this.shotfrequence--;
 	}
-
+	
 	public void activateShield() {
 		this.shield = true;
 	}
 
 	public void removeShield() {
 		this.shield = false;
-	}
+	} 
 
 	public void increaseShield() {
 		this.timeToShield -= 5;
@@ -233,7 +233,7 @@ public class Player {
 		return timeToShield;
 	}
 
-	public boolean getShield() {
+	public boolean isShieldActivated() {
 		return shield;
 	}
 

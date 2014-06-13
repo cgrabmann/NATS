@@ -503,6 +503,8 @@ public class GameEnvironment extends Scene {
 
 		th = new TimerHandler(1f, true, time);
 
+		nats.getEngine().registerUpdateHandler(th);
+
 		// debug = new DebugRenderer(world,
 		// nats.getVertexBufferObjectManager());
 		// this.attachChild(debug);
@@ -528,7 +530,7 @@ public class GameEnvironment extends Scene {
 					// execute action
 					// Log.i("NATS", "Pause");
 					// leftAnalogOnScreenControl.setVisible(false);
-					GameEnvironment.this.registerPauseTouch();
+
 					sceneManager.switchScene(AllScenes.PAUSE);
 				}
 				return true;
@@ -892,14 +894,6 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void hideGameHUD() {
-		// HUDGame.getChildByIndex(GAME_LAYER).setVisible(false);
-		/*
-		 * SmartList<ITouchArea> a = leftAnalogOnScreenControl.getTouchAreas();
-		 * for (int i = 0; i < a.size(); i++) { final ITouchArea item =
-		 * a.get(i); Log.i("NATS", "HIde "+item); }
-		 */
-		// mainCamera.getHUD().detachSelf();
-
 		leftAnalogOnScreenControl.clearTouchAreas();
 		rightAnalogOnScreenControl.clearTouchAreas();
 		HUDGame.unregisterTouchArea(pauseSprite);
@@ -915,6 +909,7 @@ public class GameEnvironment extends Scene {
 	public void showPauseMenu() {
 		Log.i("NATS", "showPauseMenu");
 		mainCamera.setHUD(HUDPause);
+		GameEnvironment.this.registerPauseTouch();
 		this.hideGameHUD();
 		// this.unsetCameraChasing();
 		// HUDGame.getChildByIndex(PAUSE_LAYER).setVisible(true);
@@ -1052,7 +1047,8 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void startTimer() {
-		nats.getEngine().registerUpdateHandler(th);
+		// nats.getEngine().registerUpdateHandler(th);
+		time.setActive(true);
 		player.playMusic();
 		// nats.getEngine().start();
 		list = world.getPhysicsConnectorManager().listIterator();
@@ -1061,7 +1057,7 @@ public class GameEnvironment extends Scene {
 			Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
-			if(u.getUserObject() instanceof PEnemy) {
+			if (u.getUserObject() instanceof PEnemy) {
 				((PEnemy) u.getUserObject()).setFrozen(false);
 			}
 			listConnector.setUpdatePosition(true);
@@ -1071,7 +1067,8 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void pauseTimer() {
-		nats.getEngine().unregisterUpdateHandler(th);
+		// nats.getEngine().unregisterUpdateHandler(th);
+		time.setActive(false);
 		player.pauseMusic();
 		// pause all Objects on the field
 		// nats.getEngine().stop();
@@ -1080,7 +1077,7 @@ public class GameEnvironment extends Scene {
 			Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
-			if(u.getUserObject() instanceof PEnemy) {
+			if (u.getUserObject() instanceof PEnemy) {
 				((PEnemy) u.getUserObject()).setFrozen(true);
 			}
 			listConnector.setUpdatePosition(false);
@@ -1090,8 +1087,11 @@ public class GameEnvironment extends Scene {
 
 	public void resetTimer() {
 		time.reset();
+		th.reset();
+		this.resetGame();
 		highscore.setText("00:00");
 		player.setRessources(2000);
+		resources.setText("0000" + player.getRessources());
 		player.resumeMusic();
 		final Iterator<Body> allBodies = world.getBodies();
 		while (allBodies.hasNext()) {
@@ -1101,19 +1101,36 @@ public class GameEnvironment extends Scene {
 				PEnemy e = (PEnemy) u.getUserObject();
 				e.setFrozen(false);
 				e.deactivate();
-			}else if(u.getUserString().equals("bullet")) {
+			} else if (u.getUserString().equals("bullet")) {
 				Bullet b = (Bullet) u.getUserObject();
 				b.deactivate();
 			}
-			/*
-			 * r.setVisible(false); scene.detachChild(r);
-			 * nats.getEngine().unregisterUpdateHandler(th);
-			 * physicsWorld.unregisterPhysicsConnector(pc); //
-			 * r.setIgnoreUpdate(true); //body.setTransform(-500, -340,
-			 * 0.0f); body.setActive(false); body.setAwake(false);
-			 */
 		}
+	}
 
+	private void resetGame() {
+		counterShot = 0;
+		list = null;
+		listConnector = null;
+		iterationBody = null;
+		items[0] = smallStasisfieldSprite;
+		items[1] = smallTurboSprite;
+		if (smallDeadlytrailSprite.hasParent()) {
+			HUDGame.detachChild(smallDeadlytrailSprite);
+		}
+		if (smallBombSprite.hasParent()) {
+			HUDGame.detachChild(smallBombSprite);
+		}
+		if (!smallStasisfieldSprite.hasParent()) {
+			HUDGame.attachChild(smallStasisfieldSprite);
+		}
+		if (!smallTurboSprite.hasParent()) {
+			HUDGame.attachChild(smallTurboSprite);
+		}
+		smallBombSprite.setPosition(-500f, -400f);
+		smallDeadlytrailSprite.setPosition(-500f, -400f);
+		smallTurboSprite.setPosition(nats.getCameraWidth() - 90, 180);
+		smallStasisfieldSprite.setPosition(nats.getCameraWidth() - 200, 80);
 	}
 
 	public HUD getHUDUpgrade() {

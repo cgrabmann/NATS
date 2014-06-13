@@ -85,6 +85,7 @@ public class PauseMenu {
 					// hidePauseMenu();
 					// hideUpgradeMenu();
 					gameEnvironment.hidePauseMenu();
+					sceneManager.switchScene(AllScenes.NEW_GAME);
 				}
 				return true;
 			};

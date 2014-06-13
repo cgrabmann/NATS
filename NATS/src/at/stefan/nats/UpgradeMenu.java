@@ -729,5 +729,23 @@ public class UpgradeMenu extends Scene {
 					+ player.getUsables(finals.bomb()));
 		}
 	}
+	
+	public void reset() {
+		upgrade.reset();
+		
+		touch = false;
+		movespeedProgressBar.reset();
+		gunnerProgressBar.reset();
+		shieldProgressBar.reset();
+		shotspreadingProgressBar.reset();
+		shotfrequenceProgressBar.reset();
+		stasisfieldText.setText("x"+player.getUsables(finals.stasisfield()));
+		turboText.setText("x"+player.getUsables(finals.turbo()));
+		deadlytrailText.setText("x"+player.getUsables(finals.deadlytrail()));
+		bombText.setText("x"+player.getUsables(finals.bomb()));
+		
+		upgrade.movespeedInfo();
+		
+	}
 
 }

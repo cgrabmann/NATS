@@ -34,21 +34,6 @@ public class Contacts implements ContactListener {
 	@Override
 	public void beginContact(Contact contact) {
 		// TODO Auto-generated method stub
-		/*final Body BodyA = contact.getFixtureA().getBody();
-		final Body BodyB = contact.getFixtureB().getBody();
-
-		// Log.i("Bullet", "new contact");
-		UserData b = (UserData) BodyB.getUserData();
-		UserData a = (UserData) BodyA.getUserData();*/
-
-		/*
-		 * else if (a.getUserString().equals("player") &&
-		 * b.getUserString().equals("wall")) { ((Player)
-		 * a.getUserObject()).setShootingAllowed(false); } else if
-		 * (a.getUserString().equals("wall") &&
-		 * b.getUserString().equals("player")) { ((Player)
-		 * b.getUserObject()).setShootingAllowed(false); }
-		 */
 
 	}
 
@@ -56,20 +41,6 @@ public class Contacts implements ContactListener {
 	public void endContact(Contact contact) {
 		// TODO Auto-generated method stub
 
-		/*
-		 * final Body BodyA = contact.getFixtureA().getBody(); final Body BodyB
-		 * = contact.getFixtureB().getBody();
-		 * 
-		 * UserData b = (UserData) BodyB.getUserData(); UserData a = (UserData)
-		 * BodyA.getUserData();
-		 * 
-		 * if (a.getUserString().equals("player") &&
-		 * b.getUserString().equals("wall")) { ((Player)
-		 * a.getUserObject()).setShootingAllowed(true); } else if
-		 * (a.getUserString().equals("wall") &&
-		 * b.getUserString().equals("player")) { ((Player)
-		 * b.getUserObject()).setShootingAllowed(true); }
-		 */
 	}
 
 	@Override
@@ -174,10 +145,20 @@ public class Contacts implements ContactListener {
 		// Player - Enemy
 		else if (a.getUserObject() instanceof PEnemy
 				&& b.getUserString().equals("player")) {
-			// Player zerstören
+			if(player.isShieldActivated()) {
+				player.getPlayerBase().setAlpha(0f);
+				player.removeShield();
+			}else {
+				// Spieler zerstören
+			}
 		} else if (b.getUserObject() instanceof PEnemy
 				&& a.getUserString().equals("player")) {
-			// Player zerstören
+			if(player.isShieldActivated()) {
+				player.getPlayerBase().setAlpha(0f);
+				player.removeShield();
+			}else {
+				// Spieler zerstören
+			}
 		}
 
 	}

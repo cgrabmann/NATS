@@ -124,5 +124,9 @@ public class SceneManager {
 		pauseMenu.loadPauseScene();
 		upgradeMenu.loadUpgradeScene();
 	}
+	
+	public GameEnvironment getGameEnvironment() {
+		return this.gameEnvironment;
+	}
 
 }
