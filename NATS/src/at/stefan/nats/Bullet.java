@@ -142,12 +142,13 @@ public class Bullet {
 
 	public void activate(Vector2 v) {
 		// TODO Auto-generated method stub
-		body.setTransform(player.getPosX() / 32, player.getPosY() / 32,
-				(float) Math.PI / 2);
 		
 		//Log.i("Bullet", "Activate Bullet");
 		body.setActive(true);
 		body.setAwake(true);
+		
+		body.setTransform(player.getPosX() / 32, player.getPosY() / 32,
+				(float) Math.PI / 2);
 
 		
 		//body.setTransform((player.getPosX() + v.x * 45) / 32,

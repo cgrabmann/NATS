@@ -67,7 +67,6 @@ public class EnemyTypeTwoSmall extends PEnemy {
 		if (!enemy.hasParent()) {
 			super.game.getEnemyTwoSmallSpriteGroup().attachChild(enemy);
 		}
-		enemy.setVisible(true);
 		pc = new PhysicsConnector(enemy, body, true, true);
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
@@ -104,6 +103,7 @@ public class EnemyTypeTwoSmall extends PEnemy {
 			super.movex = 50;
 			super.movey = 0;
 		}
+		enemy.setVisible(true);
 
 		body.setTransform(x / 32, y / 32, 0f);
 

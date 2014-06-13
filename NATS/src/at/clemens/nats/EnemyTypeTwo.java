@@ -70,7 +70,6 @@ public class EnemyTypeTwo extends PEnemy {
 		if (!enemy.hasParent()) {
 			super.game.getEnemyTwoSpriteGroup().attachChild(enemy);
 		}
-		enemy.setVisible(true);
 		pc = new PhysicsConnector(enemy, body, true, true);
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
@@ -100,6 +99,7 @@ public class EnemyTypeTwo extends PEnemy {
 		body.setAwake(true);
 
 		body.setTransform(super.posx / 32, super.posy / 32, 0f);
+		enemy.setVisible(true);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
