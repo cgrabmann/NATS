@@ -59,7 +59,7 @@ public class EnemyTypeZero extends PEnemy {
 				nats.getVertexBufferObjectManager());
 		enemy.setCullingEnabled(true);
 		enemy.setVisible(false);
-		fd = PhysicsFactory.createFixtureDef(5f, 4f, 0f);
+		fd = PhysicsFactory.createFixtureDef(5f, 1f, 0f);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody,
 				fd);
 		body.setActive(false);
@@ -72,8 +72,6 @@ public class EnemyTypeZero extends PEnemy {
 	@Override
 	public void start() {
 		this.createStartPos();
-		super.smovex = super.movex;
-		super.smovey = super.movey;
 		if (enemy.hasParent()) {
 			Log.i("NATS", "enemy already attached");
 		} else {
@@ -110,12 +108,15 @@ public class EnemyTypeZero extends PEnemy {
 	@Override
 	protected void createStartPos() {
 		super.createStartPos();
-		super.movex = (maxMoveSpeed / 2)
-				+ (int) (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1));
-		super.movey = (maxMoveSpeed / 2)
-				+ (int) (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1));
-		super.movex *= (getRandomBoolean()) ? 1 : -1;
-		super.movey *= (getRandomBoolean()) ? 1 : -1;
+		super.movex = (int)((maxMoveSpeed / 2)
+				+ (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1)));
+		super.movey = (int)((maxMoveSpeed / 2)
+				+ (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1)));
+		super.movex = (getRandomBoolean()) ? super.movex : super.movex * (-1);
+		super.movey = (getRandomBoolean()) ? super.movey : super.movey * (-1);
+
+		super.smovex = super.movex;
+		super.smovey = super.movey;
 
 	}
 
