@@ -128,16 +128,16 @@ public class Contacts implements ContactListener {
 		}
 		
 		// PlayerZero - Wall
-		else if (a.getUserString().equals("playerzero")
+		else if (a.getUserString().equals("enemyzero")
 				&& b.getUserString().equals("wallNS")) {
 			((EnemyTypeZero) a.getUserObject()).colisionNS();
-		} else if (b.getUserString().equals("playerzero")
+		} else if (b.getUserString().equals("enemyzero")
 				&& a.getUserString().equals("wallNS")) {
 			((EnemyTypeZero) b.getUserObject()).colisionNS();
-		} else if (a.getUserString().equals("playerzero")
+		} else if (a.getUserString().equals("enemyzero")
 				&& b.getUserString().equals("wallEW")) {
 			((EnemyTypeZero) a.getUserObject()).colisionWE();
-		} else if (b.getUserString().equals("playerzero")
+		} else if (b.getUserString().equals("enemyzero")
 				&& a.getUserString().equals("wallEW")) {
 			((EnemyTypeZero) b.getUserObject()).colisionWE();
 		}

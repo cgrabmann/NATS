@@ -4,6 +4,7 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -26,8 +27,8 @@ public class EnemyBlackHole extends PEnemy{
 	
 	private final int maxMoveSpeed = 10;
 	private TextureRegion textur;
-	//private Sprite enemy;
-	private Rectangle enemy;
+	private Sprite enemy;
+	//private Rectangle enemy;
 	private PhysicsWorld world;
 	private Body body;
 	private FixtureDef fd;
@@ -42,7 +43,7 @@ public class EnemyBlackHole extends PEnemy{
 		this.size = 0;
 		this.enemyPool = enemyPool;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
-		enemy = new Rectangle(0, 0, 100, 100, nats.getVertexBufferObjectManager());
+		enemy = new Sprite(0f,0f,game.getEnemyBlackHoleTextureRegion(),nats.getVertexBufferObjectManager());
 		enemy.setCullingEnabled(true);
 		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
@@ -56,7 +57,7 @@ public class EnemyBlackHole extends PEnemy{
 			@Override
 			public void onTimePassed(TimerHandler pTimerHandler) {
 				// TODO Auto-generated method stub
-				if(size == 100){
+				if(size == 250){
 					// TODO create enemythree
 				}else if(size <= 0){
 					// TODO destroy it self 
@@ -66,23 +67,21 @@ public class EnemyBlackHole extends PEnemy{
 			}
 		});
 		
-		pc = new PhysicsConnector(enemy, body, true, false);
+		pc = new PhysicsConnector(enemy, body, true, true);
 	}
 	
 	@Override
 	public void start(){
 		super.createStartPos();
-		this.size = 50;
+		this.size = this.standardSize;
 		super.game.attachChild(enemy);
 		enemy.setVisible(true);
 		
-		//TODO start fly function | alle 15 msec ausführen
-		//TODO Timehandler
-		
 		body.setActive(true);
 		body.setAwake(true);
-		
-		body.setTransform(super.posx, super.posy, 0f);
+
+		body.setFixedRotation(true);
+		body.setTransform(super.posx/32, super.posy/32, 1f);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -90,14 +89,39 @@ public class EnemyBlackHole extends PEnemy{
 
 	@Override
 	public void stop(){
-		super.game.detachChild(enemy);
-		enemy.setVisible(false);
-		body.setActive(false);
-		body.setAwake(false);
-		body.setLinearVelocity(0f, 0f);
-		body.setTransform(-500, -340, 0.0f);
-		world.unregisterPhysicsConnector(pc);
-		nats.getEngine().unregisterUpdateHandler(th);
+		super.movex = 0;
+		super.movey = 0;
+		super.smovex = super.movex;
+		super.smovey = super.movey;
+		
+		// TODO Auto-generated method stub
+		nats.getEngine().runOnUpdateThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				// Log.i("NATS", "stop");
+				EnemyBlackHole.super.game.detachChild(
+						enemy);
+				// Log.i("NATS", "stop1");
+				enemy.setVisible(false);
+				// Log.i("NATS", "stop2");
+				body.setTransform(-500, -340, 0.0f);
+				
+				body.setActive(false);
+				// Log.i("NATS", "stop3");
+				body.setAwake(false);
+				// Log.i("NATS", "stop4");
+				// body.setLinearVelocity(0f, 0f);
+				
+				// Log.i("NATS", "stop5");
+				world.unregisterPhysicsConnector(pc);
+				// Log.i("NATS", "stop6");
+				nats.getEngine().unregisterUpdateHandler(th);
+				// Log.i("NATS", "stop7");
+				enemyPool.recycleEnemyBlackHole(EnemyBlackHole.this);
+			}
+		});
 	}
 	
 	

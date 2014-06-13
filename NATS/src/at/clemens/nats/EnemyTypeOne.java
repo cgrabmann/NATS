@@ -103,6 +103,11 @@ public class EnemyTypeOne extends PEnemy {
 
 	@Override
 	public void stop() {
+		super.movex = 0;
+		super.movey = 0;
+		super.smovex = super.movex;
+		super.smovey = super.movey;
+		
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
 			@Override
@@ -208,6 +213,11 @@ public class EnemyTypeOne extends PEnemy {
 
 	@Override
 	public void deactivate() {
+		super.movex = 0;
+		super.movey = 0;
+		super.smovex = super.movex;
+		super.smovey = super.movey;
+		
 		// TODO Auto-generated method stub
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
