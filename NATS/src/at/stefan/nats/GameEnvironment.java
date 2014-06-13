@@ -1,5 +1,8 @@
 package at.stefan.nats;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
@@ -33,6 +36,7 @@ import org.andengine.util.adt.color.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import at.alex.nats.Player;
+import at.clemens.nats.PEnemy;
 import at.stefan.nats.SceneManager.AllScenes;
 
 import com.badlogic.gdx.math.Vector2;
@@ -169,6 +173,9 @@ public class GameEnvironment extends Scene {
 	SpriteGroup enemyBlackHoleSpriteGroup;
 
 	TimeHandler time;
+	ListIterator<PhysicsConnector> list = null;
+	PhysicsConnector listConnector = null;
+	Body iterationBody = null;
 
 	public GameEnvironment(nats nats, BoundCamera cam, SceneManager s, Player p) {
 		this.nats = nats;
@@ -424,9 +431,9 @@ public class GameEnvironment extends Scene {
 		}
 
 		enemyZeroSpriteGroup = new SpriteGroup(0, 0,
-				enemyZeroBitmapTextureAtlas, 50,
+				enemyZeroBitmapTextureAtlas, 75,
 				nats.getVertexBufferObjectManager());
-		
+
 		enemyOneBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
 				nats.getTextureManager(), 50, 50, TextureOptions.BILINEAR);
 		enemyOneITextureRegion = BitmapTextureAtlasTextureRegionFactory
@@ -444,10 +451,9 @@ public class GameEnvironment extends Scene {
 			Log.i("NATS", "enemyOnebitmap not working");
 		}
 
-		enemyOneSpriteGroup = new SpriteGroup(0, 0,
-				enemyOneBitmapTextureAtlas, 50,
-				nats.getVertexBufferObjectManager());
-		
+		enemyOneSpriteGroup = new SpriteGroup(0, 0, enemyOneBitmapTextureAtlas,
+				75, nats.getVertexBufferObjectManager());
+
 		enemyTwoBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
 				nats.getTextureManager(), 60, 60, TextureOptions.BILINEAR);
 		enemyTwoITextureRegion = BitmapTextureAtlasTextureRegionFactory
@@ -465,10 +471,9 @@ public class GameEnvironment extends Scene {
 			Log.i("NATS", "enemyTwobitmap not working");
 		}
 
-		enemyTwoSpriteGroup = new SpriteGroup(0, 0,
-				enemyTwoBitmapTextureAtlas, 50,
-				nats.getVertexBufferObjectManager());
-		
+		enemyTwoSpriteGroup = new SpriteGroup(0, 0, enemyTwoBitmapTextureAtlas,
+				75, nats.getVertexBufferObjectManager());
+
 		enemyTwoSmallBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
 				nats.getTextureManager(), 30, 30, TextureOptions.BILINEAR);
 		enemyTwoSmallITextureRegion = BitmapTextureAtlasTextureRegionFactory
@@ -487,7 +492,7 @@ public class GameEnvironment extends Scene {
 		}
 
 		enemyTwoSmallSpriteGroup = new SpriteGroup(0, 0,
-				enemyTwoSmallBitmapTextureAtlas, 50,
+				enemyTwoSmallBitmapTextureAtlas, 75,
 				nats.getVertexBufferObjectManager());
 
 		bulletPool = new BulletPool(player, this, world, nats);
@@ -614,8 +619,9 @@ public class GameEnvironment extends Scene {
 
 		rightAnalogOnScreenControl = new AnalogOnScreenControl(
 				nats.getCameraWidth() - 90, 80, mainCamera,
-				rightAnalogAussenITextureRegion, rightAnalogInnenITextureRegion,
-				0.05f, nats.getVertexBufferObjectManager(),
+				rightAnalogAussenITextureRegion,
+				rightAnalogInnenITextureRegion, 0.05f,
+				nats.getVertexBufferObjectManager(),
 				new IAnalogOnScreenControlListener() {
 
 					@Override
@@ -883,7 +889,6 @@ public class GameEnvironment extends Scene {
 		if (items[1] != null) {
 			HUDGame.registerTouchArea(items[1]);
 		}
-		this.setCameraChasing();
 	}
 
 	public void hideGameHUD() {
@@ -937,10 +942,11 @@ public class GameEnvironment extends Scene {
 		mainCamera.setHUD(HUDEmpty);
 		player.setPosX(400f);
 		player.setPosY(240f);
-		this.unsetCameraChasing();
+		this.mainCamera.setCenter(400f, 240f);
 		playerBaseBody.setTransform(player.getPosX() / 32,
 				player.getPosY() / 32, 0.0f);
 		this.resetTimer();
+		th.reset();
 		this.unregisterPauseTouch();
 	}
 
@@ -948,7 +954,6 @@ public class GameEnvironment extends Scene {
 		Log.i("NATS", "showUpgradeMenu");
 		this.hideGameHUD();
 		mainCamera.setHUD(HUDUpgrade);
-		this.unsetCameraChasing();
 		// this.getChildByIndex(UPGRADE_LAYER).setVisible(true);
 		// HUDGame.getChildByIndex(UPGRADE_LAYER).setVisible(true);
 		HUDGame.unregisterTouchArea(pauseSprite);
@@ -960,7 +965,6 @@ public class GameEnvironment extends Scene {
 		// mainCamera.getHUD().detachSelf();
 		resources.setText(player.getRessourcesForDisplay());
 		this.showGameHUD();
-		this.setCameraChasing();
 		// this.getChildByIndex(UPGRADE_LAYER).setVisible(false);
 		// HUDGame.getChildByIndex(UPGRADE_LAYER).setVisible(false);
 		this.unregisterUpgradeTouch();
@@ -1047,28 +1051,62 @@ public class GameEnvironment extends Scene {
 		this.upgradeMenu = um;
 	}
 
-	public void setCameraChasing() {
-		// this.registerUpdateHandler(cameraTimerHandler);
-	}
-
-	public void unsetCameraChasing() {
-		// this.unregisterUpdateHandler(cameraTimerHandler);
-	}
-
 	public void startTimer() {
 		nats.getEngine().registerUpdateHandler(th);
 		player.playMusic();
+		// nats.getEngine().start();
+		list = world.getPhysicsConnectorManager().listIterator();
+
+		while (list.hasNext()) {
+			Log.i("NATS", "setUpdateFalse");
+			listConnector = list.next();
+			listConnector.setUpdatePosition(true);
+			listConnector.setUpdateRotation(true);
+		}
+
 	}
 
 	public void pauseTimer() {
 		nats.getEngine().unregisterUpdateHandler(th);
 		player.pauseMusic();
+		// pause all Objects on the field
+		// nats.getEngine().stop();
+		list = world.getPhysicsConnectorManager().listIterator();
+		while (list.hasNext()) {
+			Log.i("NATS", "setUpdateFalse");
+			listConnector = list.next();
+			UserData u = (UserData) listConnector.getBody().getUserData();
+			((PEnemy) u.getUserObject()).s
+			listConnector.setUpdatePosition(false);
+			listConnector.setUpdateRotation(false);
+		}
 	}
 
 	public void resetTimer() {
 		time.reset();
 		highscore.setText("00:00");
+		player.setRessources(2000);
 		player.resumeMusic();
+		final Iterator<Body> allBodies = world.getBodies();
+		while (allBodies.hasNext()) {
+			iterationBody = allBodies.next();
+			UserData u = (UserData) iterationBody.getUserData();
+			if (u.getUserObject() instanceof PEnemy) {
+				PEnemy e = (PEnemy) u.getUserObject();
+				e.deactivate();
+			}else if(u.getUserString().equals("bullet")) {
+				Bullet b = (Bullet) u.getUserObject();
+				b.deactivate();
+			}
+			/*
+			 * r.setVisible(false); scene.detachChild(r);
+			 * nats.getEngine().unregisterUpdateHandler(th);
+			 * physicsWorld.unregisterPhysicsConnector(pc); //
+			 * r.setIgnoreUpdate(true); //body.setTransform(-500, -340,
+			 * 0.0f); body.setActive(false); body.setAwake(false);
+			 */
+		}
+
 	}
 
 	public HUD getHUDUpgrade() {
@@ -1211,35 +1249,35 @@ public class GameEnvironment extends Scene {
 	public SpriteGroup getFireBallSpriteGroup() {
 		return fireBallSpriteGroup;
 	}
-	
+
 	public TextureRegion getEnemyZeroTextureRegion() {
 		return enemyZeroITextureRegion;
 	}
-	
+
 	public SpriteGroup getEnemyZeroSpriteGroup() {
 		return enemyZeroSpriteGroup;
 	}
-	
+
 	public TextureRegion getEnemyOneTextureRegion() {
 		return enemyOneITextureRegion;
 	}
-	
+
 	public SpriteGroup getEnemyOneSpriteGroup() {
 		return enemyOneSpriteGroup;
 	}
-	
+
 	public TextureRegion getEnemyTwoTextureRegion() {
 		return enemyTwoITextureRegion;
 	}
-	
+
 	public SpriteGroup getEnemyTwoSpriteGroup() {
 		return enemyTwoSpriteGroup;
 	}
-	
+
 	public TextureRegion getEnemyTwoSmallTextureRegion() {
 		return enemyTwoSmallITextureRegion;
 	}
-	
+
 	public SpriteGroup getEnemyTwoSmallSpriteGroup() {
 		return enemyTwoSmallSpriteGroup;
 	}
@@ -1255,12 +1293,12 @@ public class GameEnvironment extends Scene {
 	public UpgradeMenu getUpgradeMenu() {
 		return this.upgradeMenu;
 	}
-	
+
 	public MaxStepPhysicsWorld getPhysicsWorld() {
 		return this.world;
 	}
-	
-	public Text getRessourcesDisplay(){
+
+	public Text getRessourcesDisplay() {
 		return this.resources;
 	}
 

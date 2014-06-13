@@ -1,15 +1,19 @@
 package at.stefan.nats;
 
+import java.util.Iterator;
+
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import android.util.Log;
 import at.alex.nats.Player;
+import at.clemens.nats.PEnemy;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -50,6 +54,11 @@ public class Usables {
 	Sprite bombSprite5;
 
 	Rectangle rec;
+	
+	Body iterationBody;
+	
+	Iterator<PhysicsConnector> list;
+	PhysicsConnector listConnector;
 
 	public Usables(nats nats, GameEnvironment gameEnvironment,
 			MaxStepPhysicsWorld world, Player player, BulletPool bulletPool) {
@@ -109,6 +118,45 @@ public class Usables {
 		}
 		gameEnvironment.getUpgradeMenu().setUsableNumber(finals.stasisfield());
 		// Hier Stasisfield aktivieren
+		/*final Iterator<Body> allBodies = world.getBodies();
+		while (allBodies.hasNext()) {
+			iterationBody = allBodies.next();
+			UserData u = (UserData) iterationBody.getUserData();
+			if (u.getUserObject() instanceof PEnemy) {
+				PEnemy e = (PEnemy) u.getUserObject();
+				// setUpdate(false)
+			}
+			
+		}*/
+		list = world.getPhysicsConnectorManager().listIterator();
+		while (list.hasNext()) {
+			Log.i("NATS", "setUpdateFalse");
+			listConnector = list.next();
+			UserData u = (UserData) listConnector.getBody().getUserData();
+			if(u.getUserObject() instanceof PEnemy) {
+				listConnector.setUpdatePosition(false);
+				listConnector.setUpdateRotation(false);
+			}
+		}
+		
+		nats.getEngine().registerUpdateHandler(new TimerHandler(5f, new ITimerCallback() {
+			
+			@Override
+			public void onTimePassed(TimerHandler pTimerHandler) {
+				// TODO Auto-generated method stub
+				nats.getEngine().unregisterUpdateHandler(pTimerHandler);
+				list = world.getPhysicsConnectorManager().listIterator();
+				while (list.hasNext()) {
+					Log.i("NATS", "setUpdateFalse");
+					listConnector = list.next();
+					UserData u = (UserData) listConnector.getBody().getUserData();
+					if(u.getUserObject() instanceof PEnemy) {
+						listConnector.setUpdatePosition(true);
+						listConnector.setUpdateRotation(true);
+					}
+				}
+			}
+		}));
 
 		gameEnvironment.attachChild(stasisFieldSprite);
 		nats.getEngine().registerUpdateHandler(
@@ -250,6 +298,25 @@ public class Usables {
 		gameEnvironment.getUpgradeMenu().setUsableNumber(finals.bomb());
 
 		// Hier alle Gegner "pausieren"
+		final Iterator<Body> allBodies = world.getBodies();
+		while (allBodies.hasNext()) {
+			iterationBody = allBodies.next();
+			UserData u = (UserData) iterationBody.getUserData();
+			if (u.getUserObject() instanceof PEnemy) {
+				PEnemy e = (PEnemy) u.getUserObject();
+				e.deactivate();
+			}else if(u.getUserString().equals("bullet")) {
+				Bullet b = (Bullet) u.getUserObject();
+				b.deactivate();
+			}
+			/*
+			 * r.setVisible(false); scene.detachChild(r);
+			 * nats.getEngine().unregisterUpdateHandler(th);
+			 * physicsWorld.unregisterPhysicsConnector(pc); //
+			 * r.setIgnoreUpdate(true); //body.setTransform(-500, -340,
+			 * 0.0f); body.setActive(false); body.setAwake(false);
+			 */
+		}
 
 		bombSprite1.setPosition(400f, 240f);
 		gameEnvironment.attachChild(bombSprite1);

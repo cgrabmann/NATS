@@ -21,6 +21,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class EnemyBlackHole extends PEnemy{
 	
+	private int size = 150;
+	private final int standardSize = 150;
+	
 	private final int maxMoveSpeed = 10;
 	private TextureRegion textur;
 	//private Sprite enemy;
@@ -30,7 +33,6 @@ public class EnemyBlackHole extends PEnemy{
 	private FixtureDef fd;
 	private PhysicsConnector pc;
 	private TimerHandler th;
-	private int size;
 	private EnemyPool enemyPool;
 
 	public EnemyBlackHole(GameEnvironment g, TextureRegion textur, nats nats, PhysicsWorld world, Player p, EnemyPool enemyPool) {
@@ -41,6 +43,7 @@ public class EnemyBlackHole extends PEnemy{
 		this.enemyPool = enemyPool;
 		//enemy = new Sprite(super.posx, super.posy, this.textur, nats.getVertexBufferObjectManager());
 		enemy = new Rectangle(0, 0, 100, 100, nats.getVertexBufferObjectManager());
+		enemy.setCullingEnabled(true);
 		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody, fd);
@@ -102,12 +105,42 @@ public class EnemyBlackHole extends PEnemy{
 		nats.getEngine().unregisterUpdateHandler(th);
 	}
 	
+	
+	@Override
+	public void deactivate() {
+		// TODO Auto-generated method stub
+		nats.getEngine().runOnUpdateThread(new Runnable() {
 
-	public void collitionB(){
-		size -= 5;
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				// Log.i("NATS", "stop");
+				EnemyBlackHole.super.game.detachChild(enemy);
+				// Log.i("NATS", "stop1");
+				enemy.setVisible(false);
+				// Log.i("NATS", "stop2");
+				body.setActive(false);
+				// Log.i("NATS", "stop3");
+				body.setAwake(false);
+				// Log.i("NATS", "stop4");
+				// body.setLinearVelocity(0f, 0f);
+				body.setTransform(-500, -340, 0.0f);
+				// Log.i("NATS", "stop5");
+				world.unregisterPhysicsConnector(pc);
+				// Log.i("NATS", "stop6");
+				nats.getEngine().unregisterUpdateHandler(th);
+				// Log.i("NATS", "stop7");
+				enemyPool.recycleEnemyBlackHole(EnemyBlackHole.this);
+			}
+		});
 	}
 	
-	public void collitionE(){
-		size += 2;
+	public void increaseSize() {
+		this.size += 10;
 	}
+	
+	public void deacreaseSize() {
+		this.size -= 5;
+	}
+	
 }

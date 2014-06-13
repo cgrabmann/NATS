@@ -16,7 +16,7 @@ import at.stefan.nats.nats;
 public class Player {
 
 	// private long time;
-	private int ressources = 50000;
+	private int ressources = 2000;
 	private int permanents[] = new int[5];
 	private int usables[] = new int[4];
 

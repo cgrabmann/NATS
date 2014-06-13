@@ -2,16 +2,12 @@ package at.clemens.nats;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.util.adt.color.Color;
-
-import android.util.Log;
 import at.alex.nats.Player;
 import at.stefan.nats.EnemyPool;
 import at.stefan.nats.GameEnvironment;
@@ -49,13 +45,15 @@ public class EnemyTypeOne extends PEnemy {
 		// nats.getVertexBufferObjectManager());
 		enemy = new Sprite(0f, 0f, super.game.getEnemyOneTextureRegion(),
 				nats.getVertexBufferObjectManager());
-		//enemy.setColor(new Color(1f, 0f, 0f));
+		enemy.setCullingEnabled(true);
+		// enemy.setColor(new Color(1f, 0f, 0f));
 		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
-		//body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody,
-		//		fd);
-		body = PhysicsFactory.createCircleBody(world, enemy, BodyType.DynamicBody,
-				fd);
+		// body = PhysicsFactory.createBoxBody(world, enemy,
+		// BodyType.DynamicBody,
+		// fd);
+		body = PhysicsFactory.createCircleBody(world, enemy,
+				BodyType.DynamicBody, fd);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemytwo", this));
@@ -70,10 +68,11 @@ public class EnemyTypeOne extends PEnemy {
 				// " movey: " + EnemyTypeTwo.this.getMovey());
 				body.setLinearVelocity(EnemyTypeOne.this.getMovex() * 0.05f,
 						EnemyTypeOne.this.getMovey() * 0.05f);
-				
-				float pRotationRad = (float) Math.atan2((EnemyTypeOne.super.movex/maxMoveSpeed),
-						(EnemyTypeOne.super.movey/maxMoveSpeed));
-				//Log.i("NATSRot", "" + (-pRotationRad));
+
+				float pRotationRad = (float) Math.atan2(
+						(EnemyTypeOne.super.movex / maxMoveSpeed),
+						(EnemyTypeOne.super.movey / maxMoveSpeed));
+				// Log.i("NATSRot", "" + (-pRotationRad));
 				body.setTransform(EnemyTypeOne.super.posx / 32,
 						EnemyTypeOne.super.posy / 32, -pRotationRad);
 			}
@@ -86,7 +85,7 @@ public class EnemyTypeOne extends PEnemy {
 	public void start() {
 		this.createStartPos(super.game);
 		if (!enemy.hasParent()) {
-			super.game.attachChild(enemy);
+			super.game.getEnemyOneSpriteGroup().attachChild(enemy);
 		}
 		enemy.setVisible(true);
 
@@ -115,7 +114,8 @@ public class EnemyTypeOne extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				EnemyTypeOne.super.addRessources(resources);
-				EnemyTypeOne.super.game.detachChild(enemy);
+				EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(
+						enemy);
 				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);
@@ -181,7 +181,7 @@ public class EnemyTypeOne extends PEnemy {
 			super.movey = (super.movey > 0) ? super.movey - acceleration
 					: super.movey + acceleration;
 		}
-		
+
 		return;
 	}
 
@@ -203,5 +203,35 @@ public class EnemyTypeOne extends PEnemy {
 
 	private int getMovey() {
 		return super.movey;
+	}
+
+	@Override
+	public void deactivate() {
+		// TODO Auto-generated method stub
+		nats.getEngine().runOnUpdateThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				// Log.i("NATS", "stop");
+				EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(
+						enemy);
+				// Log.i("NATS", "stop1");
+				enemy.setVisible(false);
+				// Log.i("NATS", "stop2");
+				body.setActive(false);
+				// Log.i("NATS", "stop3");
+				body.setAwake(false);
+				// Log.i("NATS", "stop4");
+				// body.setLinearVelocity(0f, 0f);
+				body.setTransform(-500, -340, 0.0f);
+				// Log.i("NATS", "stop5");
+				world.unregisterPhysicsConnector(pc);
+				// Log.i("NATS", "stop6");
+				nats.getEngine().unregisterUpdateHandler(th);
+				// Log.i("NATS", "stop7");
+				enemyPool.recycleEnemyOne(EnemyTypeOne.this);
+			}
+		});
 	}
 }

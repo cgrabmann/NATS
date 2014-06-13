@@ -52,6 +52,7 @@ public class EnemyTypeTwo extends PEnemy {
 		// nats.getVertexBufferObjectManager());
 		enemy = new Sprite(0f, 0f, super.game.getEnemyTwoTextureRegion(),
 				nats.getVertexBufferObjectManager());
+		enemy.setCullingEnabled(true);
 		// enemy.setColor(new Color(0f, 0f, 1f));
 		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
@@ -71,10 +72,11 @@ public class EnemyTypeTwo extends PEnemy {
 				// " movey: " + EnemyTypeTwo.this.getMovey());
 				body.setLinearVelocity(EnemyTypeTwo.this.getMovex() * 0.05f,
 						EnemyTypeTwo.this.getMovey() * 0.05f);
-				
-				float pRotationRad = (float) Math.atan2((EnemyTypeTwo.super.movex/maxMoveSpeed),
-						(EnemyTypeTwo.super.movey/maxMoveSpeed));
-				//Log.i("NATSRot", "" + (-pRotationRad));
+
+				float pRotationRad = (float) Math.atan2(
+						(EnemyTypeTwo.super.movex / maxMoveSpeed),
+						(EnemyTypeTwo.super.movey / maxMoveSpeed));
+				// Log.i("NATSRot", "" + (-pRotationRad));
 				body.setTransform(EnemyTypeTwo.super.posx / 32,
 						EnemyTypeTwo.super.posy / 32, -pRotationRad);
 			}
@@ -87,7 +89,7 @@ public class EnemyTypeTwo extends PEnemy {
 	public void start() {
 		this.createStartPos(super.game);
 		if (!enemy.hasParent()) {
-			super.game.attachChild(enemy);
+			super.game.getEnemyTwoSpriteGroup().attachChild(enemy);
 		}
 		enemy.setVisible(true);
 
@@ -116,7 +118,8 @@ public class EnemyTypeTwo extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				EnemyTypeTwo.super.addRessources(resources);
-				EnemyTypeTwo.super.game.detachChild(enemy);
+				EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(
+						enemy);
 				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);
@@ -210,5 +213,35 @@ public class EnemyTypeTwo extends PEnemy {
 
 	private int getMovey() {
 		return super.movey;
+	}
+
+	@Override
+	public void deactivate() {
+		// TODO Auto-generated method stub
+		nats.getEngine().runOnUpdateThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				// Log.i("NATS", "stop");
+				EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(
+						enemy);
+				// Log.i("NATS", "stop1");
+				enemy.setVisible(false);
+				// Log.i("NATS", "stop2");
+				body.setActive(false);
+				// Log.i("NATS", "stop3");
+				body.setAwake(false);
+				// Log.i("NATS", "stop4");
+				// body.setLinearVelocity(0f, 0f);
+				body.setTransform(-500, -340, 0.0f);
+				// Log.i("NATS", "stop5");
+				world.unregisterPhysicsConnector(pc);
+				// Log.i("NATS", "stop6");
+				nats.getEngine().unregisterUpdateHandler(th);
+				// Log.i("NATS", "stop7");
+				enemyPool.recycleEnemyTwo(EnemyTypeTwo.this);
+			}
+		});
 	}
 }

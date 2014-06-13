@@ -215,6 +215,13 @@ public class TimeHandler implements ITimerCallback {
 		mins = 0;
 		counterShield = 0;
 		counterGunner = 0;
+		waveCounter = 0;
+		chanceZero = 2;
+		chanceOne = 1;
+		chanceTwo = 0;
+		chanceFour = 0;
+		totalChance = 3;
+		spawnResources = 50;
 		s = "00";
 		m = "00";
 	}

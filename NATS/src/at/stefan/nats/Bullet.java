@@ -140,7 +140,7 @@ public class Bullet {
 		return this;
 	}
 
-	private void activate(Vector2 v) {
+	public void activate(Vector2 v) {
 		// TODO Auto-generated method stub
 		body.setTransform(player.getPosX() / 32, player.getPosY() / 32,
 				(float) Math.PI / 2);
@@ -163,7 +163,7 @@ public class Bullet {
 
 	}
 
-	private void deactivate() {
+	public void deactivate() {
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 			
 			@Override
@@ -181,6 +181,10 @@ public class Bullet {
 		});
 		//Log.i("Bullet", "Deactivate Bullet");
 		
+	}
+	
+	public Rectangle getSprite() {
+		return this.r;
 	}
 
 }
