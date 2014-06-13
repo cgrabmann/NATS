@@ -970,6 +970,18 @@ public class GameEnvironment extends Scene {
 		// HUDGame.getChildByIndex(UPGRADE_LAYER).setVisible(true);
 		HUDGame.unregisterTouchArea(pauseSprite);
 		HUDGame.unregisterTouchArea(updateSprite);
+		time.setActive(false);
+		list = world.getPhysicsConnectorManager().listIterator();
+		while (list.hasNext()) {
+			Log.i("NATS", "setUpdateFalse");
+			listConnector = list.next();
+			UserData u = (UserData) listConnector.getBody().getUserData();
+			if (u.getUserObject() instanceof PEnemy) {
+				((PEnemy) u.getUserObject()).setFrozen(true);
+			}
+			listConnector.setUpdatePosition(false);
+			listConnector.setUpdateRotation(false);
+		}
 	}
 
 	public void hideUpgradeMenu() {
@@ -982,6 +994,18 @@ public class GameEnvironment extends Scene {
 		this.unregisterUpgradeTouch();
 		HUDGame.registerTouchArea(pauseSprite);
 		HUDGame.registerTouchArea(updateSprite);
+		time.setActive(true);
+		list = world.getPhysicsConnectorManager().listIterator();
+		while (list.hasNext()) {
+			Log.i("NATS", "setUpdateFalse");
+			listConnector = list.next();
+			UserData u = (UserData) listConnector.getBody().getUserData();
+			if (u.getUserObject() instanceof PEnemy) {
+				((PEnemy) u.getUserObject()).setFrozen(false);
+			}
+			listConnector.setUpdatePosition(true);
+			listConnector.setUpdateRotation(true);
+		}
 	}
 
 	public void registerPauseTouch() {
@@ -1126,7 +1150,7 @@ public class GameEnvironment extends Scene {
 	private void resetGame() {
 		player.reset();
 		time.reset();
-		th.reset();
+		upgradeMenu.reset();
 		counterShot = 0;
 		list = null;
 		listConnector = null;
@@ -1154,11 +1178,6 @@ public class GameEnvironment extends Scene {
 	public HUD getHUDUpgrade() {
 		return HUDUpgrade;
 	}
-
-	/*
-	 * private Bullet getBullet() { return
-	 * bulletPool.onHandleObtainItem(pBullet); }
-	 */
 
 	public Sprite getSmallStasisfieldSprite() {
 		return smallStasisfieldSprite;
