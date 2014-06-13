@@ -12,11 +12,11 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import at.alex.nats.Player;
 
 public class SceneManager {
-	
+
 	nats nats;
 	LimitedFPSEngine mEngine;
 	BoundCamera mainCamera;
-	
+
 	MainMenu mainMenu;
 	Highscores highscores;
 	Settings settings;
@@ -24,11 +24,11 @@ public class SceneManager {
 	GameEnvironment gameEnvironment;
 	PauseMenu pauseMenu;
 	UpgradeMenu upgradeMenu;
-	
+
 	Scene splashScene;
-	
+
 	Finals finals;
-	
+
 	BitmapTextureAtlas splashBitmapTextureAtlas;
 	ITextureRegion splashITextureRegion;
 	Sprite splashSprite;
@@ -43,11 +43,11 @@ public class SceneManager {
 		this.nats = nats;
 		this.mEngine = mEngine;
 		this.mainCamera = cam;
-		
+
 		finals = new Finals();
 	}
 
-	
+
 
 	public void loadSplashResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("backgrounds/");
@@ -58,22 +58,22 @@ public class SceneManager {
 						nats.getApplicationContext(), "Titelbild.png", 0, 0);
 		splashBitmapTextureAtlas.load();
 	}
-	
+
 	public void initSplashScene() {
 		splashScene = new Scene();
 		splashSprite = new Sprite(nats.getCameraWidth() / 2, nats.getCameraHeight() / 2,
 				splashITextureRegion, nats.getVertexBufferObjectManager());
 		splashScene.attachChild(splashSprite);
 	}
-	
+
 	public void removeSplashScene() {
 		splashScene.detachChild(splashSprite);
 	}
-	
+
 	public AllScenes getCurrentScene() {
 		return currentScene;
 	}
-	
+
 	public void switchScene(AllScenes scenes) {
 		if(scenes == AllScenes.MAIN_MENU) {
 			mEngine.setScene(mainMenu.getMainMenuScene());
@@ -100,7 +100,7 @@ public class SceneManager {
 			currentScene = AllScenes.UPGRADE;
 		}
 	}
-	
+
 	public void loadAllResources() {
 		mainMenu = new MainMenu(nats, mainCamera, this);
 		highscores = new Highscores(nats, mainCamera);
@@ -109,14 +109,14 @@ public class SceneManager {
 		gameEnvironment = new GameEnvironment(nats, mainCamera, this, player);
 		pauseMenu = new PauseMenu(nats, mainCamera, gameEnvironment, this);
 		upgradeMenu = new UpgradeMenu(nats, mainCamera, gameEnvironment, this, player);
-		
+
 		mainMenu.loadMainMenuResources();
 		highscores.loadHighscoreResources();
 		settings.loadSettingsResources();
 		gameEnvironment.loadGameResources();
 		pauseMenu.loadPauseResources();
 		upgradeMenu.loadUpgradeResources();
-		
+
 		mainMenu.loadMainMenuScene();
 		highscores.loadHighscoreScene();
 		settings.loadSettingsScene();
