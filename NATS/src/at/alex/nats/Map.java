@@ -29,14 +29,14 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 	private final int GAME_LAYER = 0;
 	private final int PAUSE_LAYER = 1;
 	private final int UPGRADE_LAYER = 2;
-	
-	//‹bergabe
+
+	//√úbergabe
 	nats nats;
 	BoundCamera mainCamera;
 	SceneManager sceneManager;
-	
+
 	Runnable gameLoop;
-	
+
 	PauseMenu pauseMenu;
 
 	Finals finals;				//Scenekonstanten
@@ -51,12 +51,12 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 	BitmapTextureAtlas pauseBitmapTextureAtlas;
 	ITextureRegion pauseITextureRegion;
 	Sprite pauseSprite;
-	
+
 	//Updatebutton
 	BitmapTextureAtlas updateBitmapTextureAtlas;
 	ITextureRegion updateITextureRegion;
 	Sprite updateSprite;
-	
+
 	//Player
 	Player player;
 	BitmapTextureAtlas playerBitmapTextureAtlas;
@@ -65,8 +65,8 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 
 	//linke Analogstick
 	AnalogOnScreenControl leftAnalogOnScreenControl;
-	BitmapTextureAtlas leftAnalogAuﬂenBitmapTextureAtlas;
-	ITextureRegion leftAnalogAuﬂenITextureRegion;
+	BitmapTextureAtlas leftAnalogAu√üenBitmapTextureAtlas;
+	ITextureRegion leftAnalogAu√üenITextureRegion;
 	BitmapTextureAtlas leftAnalogInnenBitmapTextureAtlas;
 	ITextureRegion leftAnalogInnenITextureRegion;
 
@@ -74,7 +74,7 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 	AnalogOnScreenControl rightAnalogOnScreenControl;
 	BitmapTextureAtlas rightAnalogBitmapTextureAtlas;
 	ITextureRegion rightAnalogITextureRegion;
-	
+
 	HUD hud;
 
 	Sprite pause[] = new Sprite[2];
@@ -112,7 +112,7 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 				.createFromAsset(updateBitmapTextureAtlas,
 						nats.getApplicationContext(), "Update.png", 0, 0);
 		updateBitmapTextureAtlas.load();
-		
+
 		playerBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 70, 70, TextureOptions.DEFAULT);
 		playerITextureRegion = BitmapTextureAtlasTextureRegionFactory
@@ -120,14 +120,14 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 						nats.getApplicationContext(), "Update.png", 0, 0);
 		playerBitmapTextureAtlas.load();
 
-		leftAnalogAuﬂenBitmapTextureAtlas = new BitmapTextureAtlas(
+		leftAnalogAu√üenBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 200, 200, TextureOptions.DEFAULT);
-		leftAnalogAuﬂenITextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(leftAnalogAuﬂenBitmapTextureAtlas,
+		leftAnalogAu√üenITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(leftAnalogAu√üenBitmapTextureAtlas,
 						nats.getApplicationContext(), "JoystickAusen.png", 0,
 						0);
-		leftAnalogAuﬂenBitmapTextureAtlas.load();
-		
+		leftAnalogAu√üenBitmapTextureAtlas.load();
+
 		leftAnalogInnenBitmapTextureAtlas = new BitmapTextureAtlas(
 				nats.getTextureManager(), 150, 150, TextureOptions.DEFAULT);
 		leftAnalogInnenITextureRegion = BitmapTextureAtlasTextureRegionFactory
@@ -136,10 +136,10 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 						0);
 		leftAnalogInnenBitmapTextureAtlas.load();
 		leftAnalogOnScreenControl = new AnalogOnScreenControl(100, 100,
-				mainCamera, leftAnalogAuﬂenITextureRegion,
+				mainCamera, leftAnalogAu√üenITextureRegion,
 				leftAnalogInnenITextureRegion, 0.5f,
 				nats.getVertexBufferObjectManager(), this);
-		
+
 		//leftAnalogOncScreenControl.
 	}
 
@@ -153,7 +153,7 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 		this.attachChild(new Entity()); // First Layer
 		this.attachChild(new Entity()); // Second Layer
 		this.attachChild(new Entity()); // Third Layer
-		
+
 		//erstellen von Background
 		gameSprite = new Sprite(nats.getCameraWidth() / 2,
 				nats.getCameraHeight() / 2, gameITextureRegion,
@@ -162,7 +162,7 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 		//add to Gamelayer
 		this.getChildByIndex(GAME_LAYER).attachChild(gameSprite);
 		// game.setBackground(new Background(0, 0, 255));
-		
+
 		//erstellen von PauseSprite
 		pauseSprite = new Sprite(50, nats.getCameraHeight() - 35,
 				pauseITextureRegion, nats.getVertexBufferObjectManager()) {
@@ -178,15 +178,15 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 				return true;
 			};
 		};
-		
+
 		//erstellen von PlayerSprite
 		playerSprite = new Sprite(player.getPosX(),
 				player.getPosY(), playerITextureRegion,
 				nats.getVertexBufferObjectManager());
-		
+
 		//add Player to Gamelayer
 		this.getChildByIndex(GAME_LAYER).attachChild(playerSprite);
-		
+
 		//erstellen von UpgradeSprite
 		updateSprite = new Sprite(nats.getCameraWidth() - 50,
 				nats.getCameraHeight() - 35, updateITextureRegion,
@@ -203,8 +203,8 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 				return true;
 			};
 		};
-		
-		
+
+
 		leftAnalogOnScreenControl.getControlBase().setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         leftAnalogOnScreenControl.getControlBase().setAlpha(0.5f);
         leftAnalogOnScreenControl.getControlBase().setScaleCenter(0, 128);
@@ -212,14 +212,14 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
         leftAnalogOnScreenControl.getControlKnob().setScale(1.25f);
         leftAnalogOnScreenControl.refreshControlKnobPosition();
 
-        //register TouchArea f¸r Pause und Upgrades
+        //register TouchArea f√ºr Pause und Upgrades
 		this.registerTouchArea(pauseSprite);
 		this.registerTouchArea(updateSprite);
 
-		//dem Game_Layer hinzuf¸gen
+		//dem Game_Layer hinzuf√ºgen
 		this.getChildByIndex(GAME_LAYER).attachChild(pauseSprite);
 		this.getChildByIndex(GAME_LAYER).attachChild(updateSprite);
-		
+
 		//((Scene) this.getChildByIndex(GAME_LAYER)).setChildScene(leftAnalogOnScreenControl);
 		hud.attachChild(leftAnalogOnScreenControl);
 		mainCamera.setHUD(hud);
@@ -233,19 +233,19 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 		this.getChildByIndex(PAUSE_LAYER).setVisible(false);
 		this.getChildByIndex(UPGRADE_LAYER).setVisible(false);
 	}
-	
+
 	public void startGame(){
-		
+
 		gameLoop = new Runnable(){
 
 			@Override
 			public void run() {
 				//Gameloop
 				while(true){
-					
+
 				}
 			}
-			
+
 		};
 	}
 
@@ -352,13 +352,12 @@ public class Map extends Scene implements IAnalogOnScreenControlListener {
 	public void onControlChange(BaseOnScreenControl pBaseOnScreenControl,
 			float pValueX, float pValueY) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onControlClick(AnalogOnScreenControl pAnalogOnScreenControl) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
-

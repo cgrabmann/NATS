@@ -79,7 +79,7 @@ public class Highscores {
         scoreArray [0][1] = "20";
         scoreArray [1][0] = "A";
         scoreArray [1][1] = "30";
-        scoreArray [2][0] = "BB";
+        scoreArray [2][0] = "ft";
         scoreArray [2][1] = "121";
         scoreArray [3][0] = "A";
         scoreArray [3][1] = "15";
@@ -89,33 +89,33 @@ public class Highscores {
         scoreArray [5][1] = "30";
         scoreArray [6][0] = "BC";
         scoreArray [6][1] = "15";
-        scoreArray [7][0] = "BB";
+        scoreArray [7][0] = "WWWWWWWWWW";
         scoreArray [7][1] = "3599";
         scoreArray [8][0] = "Q";
         scoreArray [8][1] = "5";
-        scoreArray [9][0] = "W";
-        scoreArray [9][1] = "1";
+        scoreArray [9][0] = "WMMMMMMMMM";
+        scoreArray [9][1] = "671";
 
-		scoreArray = sortScores(scoreArray);
-		String scoreNames = getScoreName(scoreArray);
+        scoreArray = sortScores(scoreArray);
+        String scoreNames = getScoreName(scoreArray);
 		String scoreTimes = getScoreTime(scoreArray);
-
-		ScoreFont = FontFactory.create(nats.getFontManager(),
+        
+        ScoreFont = FontFactory.create(nats.getFontManager(),
 				nats.getTextureManager(), 256, 256,
-				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 27,
+				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 28,
 				Color.WHITE.hashCode());
 		ScoreFont.load();
 		
-		Text scoreTextNames = new Text(nats.getCameraWidth() / 3,
+		Text scoreTextNames = new Text((nats.getCameraWidth() / 4) + 80,
 				nats.getCameraHeight() - 300, ScoreFont, scoreNames,
 				new TextOptions(HorizontalAlign.LEFT),
 				nats.getVertexBufferObjectManager());
 
-		Text scoreTextTimes = new Text(nats.getCameraWidth() - nats.getCameraWidth() / 3,
+		Text scoreTextTimes = new Text(nats.getCameraWidth() - nats.getCameraWidth() / 4,
 				nats.getCameraHeight() - 300, ScoreFont, scoreTimes,
 				new TextOptions(HorizontalAlign.LEFT),
 				nats.getVertexBufferObjectManager());
-
+        
 		highscores.attachChild(scoreTextNames);
 		highscores.attachChild(scoreTextTimes);
 	}
@@ -160,8 +160,8 @@ public class Highscores {
 		int j = 1;
 		for (int i = 10; i > 0 ; i--) {
 			if (i > 1) scoreString += "  ";
-			scoreString += j + ". " + scores[i-1][0] + "\n";
-			j++;
+				scoreString += j + ". " + scores[i-1][0] + "\n";
+				j++;
 		}
 		return scoreString;
 	}
@@ -173,4 +173,5 @@ public class Highscores {
 		}
 		return scoreString;
 	}
+	
 }
