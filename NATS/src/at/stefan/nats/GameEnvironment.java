@@ -494,6 +494,23 @@ public class GameEnvironment extends Scene {
 		enemyTwoSmallSpriteGroup = new SpriteGroup(0, 0,
 				enemyTwoSmallBitmapTextureAtlas, 75,
 				nats.getVertexBufferObjectManager());
+		
+		enemyBlackHoleBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
+				nats.getTextureManager(), 250, 250, TextureOptions.BILINEAR);
+		enemyBlackHoleITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(enemyBlackHoleBitmapTextureAtlas,
+						nats.getApplicationContext(), "SchwarzesLoch.png");
+
+		try {
+			enemyBlackHoleBitmapTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 0, 0));
+			enemyBlackHoleBitmapTextureAtlas.load();
+		} catch (TextureAtlasBuilderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.i("NATS", "enemyBlackHolebitmap not working");
+		}
 
 		bulletPool = new BulletPool(player, this, world, nats);
 		enemyPool = new EnemyPool(player, this, world, nats);
@@ -1275,6 +1292,10 @@ public class GameEnvironment extends Scene {
 
 	public TextureRegion getEnemyTwoTextureRegion() {
 		return enemyTwoITextureRegion;
+	}
+	
+	public TextureRegion getEnemyBlackHoleTextureRegion(){
+		return enemyBlackHoleITextureRegion;
 	}
 
 	public SpriteGroup getEnemyTwoSpriteGroup() {
