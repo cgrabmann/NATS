@@ -29,6 +29,8 @@ public abstract class PEnemy {
 		this.movey = 0;
 		this.smovex = movex;
 		this.movey = movey;
+		this.posx = -500f;
+		this.posy = -400f;
 		this.game = g;
 		this.spawnControll = 0;
 	}
@@ -81,6 +83,17 @@ public abstract class PEnemy {
 	
 	public void setFrozen(boolean b) {
 		this.frozen = b;
+	}
+	
+	protected void reset() {
+		// TODO Auto-generated method stub
+		this.movex = 0;
+		this.movey = 0;
+		this.smovex = this.movex;
+		this.smovey = this.movey;
+		this.posx = -500f;
+		this.posy = -340f;
+		this.frozen = false;
 	}
 	
 	public abstract void start();
