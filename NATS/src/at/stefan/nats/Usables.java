@@ -134,6 +134,7 @@ public class Usables {
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
 			if(u.getUserObject() instanceof PEnemy) {
+				((PEnemy)u.getUserObject()).setFrozen(true);
 				listConnector.setUpdatePosition(false);
 				listConnector.setUpdateRotation(false);
 			}
@@ -151,6 +152,7 @@ public class Usables {
 					listConnector = list.next();
 					UserData u = (UserData) listConnector.getBody().getUserData();
 					if(u.getUserObject() instanceof PEnemy) {
+						((PEnemy)u.getUserObject()).setFrozen(false);
 						listConnector.setUpdatePosition(true);
 						listConnector.setUpdateRotation(true);
 					}
