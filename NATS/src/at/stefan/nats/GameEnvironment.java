@@ -1190,6 +1190,7 @@ public class GameEnvironment extends Scene {
 			if (items[0] != null) {
 				Log.i("Usable", "-1");
 				HUDGame.detachChild(items[0]);
+				HUDGame.unregisterTouchArea(items[0]);
 				// this.unregisterTouchArea(items[0]);
 				items[0] = null;
 			}
@@ -1234,6 +1235,7 @@ public class GameEnvironment extends Scene {
 			Log.i("Usable", "-1");
 			if (items[1] != null) {
 				HUDGame.detachChild(items[1]);
+				HUDGame.unregisterTouchArea(items[1]);
 				// this.unregisterTouchArea(items[1]);
 				items[1] = null;
 			}

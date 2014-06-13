@@ -192,8 +192,10 @@ public class Usables {
 		if (player.getUsables(finals.turbo()) == 0) {
 			if(gameEnvironment.getUsable1().equals(gameEnvironment.getSmallTurboSprite())) {
 				gameEnvironment.setUsable1(-1);
+				// unregister Touch
 			}else {
 				gameEnvironment.setUsable2(-1);
+				// unregister Touch
 			}
 			gameEnvironment.getUpgradeMenu().setUsableEquip(finals.turbo());
 		}

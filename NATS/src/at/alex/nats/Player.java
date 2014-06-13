@@ -69,7 +69,7 @@ public class Player {
 			music = MusicFactory.createMusicFromAsset(nats.getMusicManager(),
 					nats.getApplicationContext(), "Spiel.ogg");
 			music.setLooping(true);
-			music.setVolume(1.0f, 1.0f);
+			music.setVolume(0.5f, 0.5f);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
