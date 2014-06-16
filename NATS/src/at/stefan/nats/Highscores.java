@@ -10,9 +10,12 @@ import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+//import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
+//import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
+
 import android.graphics.Typeface;
 
 public class Highscores {
@@ -45,10 +48,10 @@ public class Highscores {
 
 		highscoresITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(highscoresBitmapTextureAtlas,
-				nats.getApplicationContext(), "MainMenu.jpg", 0, 0);
+						nats.getApplicationContext(), "MainMenu.jpg", 0, 0);
 
 		highscoresBitmapTextureAtlas.load();
-		
+
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("titles/");
 
 		titleBitmapTextureAtlas = new BitmapTextureAtlas(
@@ -56,8 +59,9 @@ public class Highscores {
 
 		titleITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(titleBitmapTextureAtlas,
-				nats.getApplicationContext(), "HighscoresTitle.png", 0,0);
-		
+						nats.getApplicationContext(), "HighscoresTitle.png", 0,
+						0);
+
 		titleBitmapTextureAtlas.load();
 	}
 
@@ -82,11 +86,11 @@ public class Highscores {
         scoreArray [2][0] = "ft";
         scoreArray [2][1] = "121";
         scoreArray [3][0] = "A";
-        scoreArray [3][1] = "15";
+        scoreArray [3][1] = "0";
         scoreArray [4][0] = "HI";
         scoreArray [4][1] = "120";
-        scoreArray [5][0] = "HC";
-        scoreArray [5][1] = "30";
+        scoreArray [5][0] = "DEFAULT";
+        scoreArray [5][1] = "0";
         scoreArray [6][0] = "BC";
         scoreArray [6][1] = "15";
         scoreArray [7][0] = "WWWWWWWWWW";
@@ -119,6 +123,20 @@ public class Highscores {
         
 		highscores.attachChild(scoreTextNames);
 		highscores.attachChild(scoreTextTimes);
+		
+		//Input field
+		/*
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("titles/");
+		BuildableBitmapTextureAtlas mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(nats.getTextureManager(), 512, 256, TextureOptions.NEAREST);
+		ITiledTextureRegion myTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, nats, "HighscoresTitle.png", 1, 1);
+		
+		mBitmapTextureAtlas.load();
+		
+		InputText name = new InputText(400, 240, "Name", "Enter Name", myTiledTextureRegion, ScoreFont, 17, 19, nats.getVertexBufferObjectManager(), nats);
+		highscores.attachChild(name);
+		highscores.registerTouchArea(name);
+		*/
+		
 	}
 	
 	public void removeHighscoreScene() {
@@ -133,7 +151,7 @@ public class Highscores {
 	public String[][] sortScores(String[][] scoreList) {
 		int temp;
 		String tempS = "";
-		for (int i = 0; i < 10; i ++) {
+		for (int i = 0; i < 10; i++) {
 			temp = Integer.parseInt(scoreList[i][1]);
 			tempS = scoreList[i][0];
 			int j = i;
@@ -148,32 +166,35 @@ public class Highscores {
 		return scoreList;
 	}
 
-	public String toTime(int seconds){
+	public String toTime(int seconds) {
 		int sec;
 		int min;
-		sec = seconds%60;
-		min = seconds/60;
-		return (min < 10 ? ("0" + Integer.toString(min) + " : ") : Integer.toString(min) + " : ") + (sec < 10 ? ("0" + Integer.toString(sec)) : Integer.toString(sec));
+		sec = seconds % 60;
+		min = seconds / 60;
+		return (min < 10 ? ("0" + Integer.toString(min) + " : ") : Integer
+				.toString(min) + " : ")
+				+ (sec < 10 ? ("0" + Integer.toString(sec)) : Integer
+						.toString(sec));
 	}
 
 	public String getScoreName(String[][] scores) {
 		String scoreString = "";
 		int j = 1;
-		for (int i = 10; i > 0 ; i--) {
-			if (i > 1) scoreString += "  ";
-				scoreString += j + ". " + scores[i-1][0] + "\n";
-				j++;
+		for (int i = 10; i > 0; i--) {
+			if (i > 1)
+				scoreString += "  ";
+			scoreString += j + ". " + scores[i - 1][0] + "\n";
+			j++;
 		}
 		return scoreString;
 	}
-	
+
 	public String getScoreTime(String[][] scores) {
 		String scoreString = "";
 		for (int i = 10; i > 0; i--) {
-			scoreString += toTime(Integer.parseInt(scores[i-1][1])) + "\n";
+			scoreString += toTime(Integer.parseInt(scores[i - 1][1])) + "\n";
 		}
 		return scoreString;
 	}
-	
-}
 
+}
