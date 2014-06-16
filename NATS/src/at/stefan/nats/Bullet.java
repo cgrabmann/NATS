@@ -30,7 +30,7 @@ public class Bullet {
 	nats nats;
 	Player player;
 	Vector2 einheitsVector;
-	float bulletSpeed = 350;
+	float bulletSpeed = 425f;
 	float shotfrequence;
 
 	TimerHandler th;
@@ -142,10 +142,13 @@ public class Bullet {
 
 	public void activate(Vector2 v) {
 		// TODO Auto-generated method stub
-		
+		if(!r.hasParent()) {
+			scene.attachChild(r);
+		}
 		//Log.i("Bullet", "Activate Bullet");
 		body.setActive(true);
 		body.setAwake(true);
+		r.setVisible(true);
 		
 		body.setTransform(player.getPosX() / 32, player.getPosY() / 32,
 				(float) Math.PI / 2);
@@ -154,10 +157,7 @@ public class Bullet {
 		//body.setTransform((player.getPosX() + v.x * 45) / 32,
 		//		(player.getPosY() + v.y * 45) / 32, (float) Math.PI / 2);
 		// r.setIgnoreUpdate(false);
-		if(!r.hasParent()) {
-			scene.attachChild(r);
-		}
-		r.setVisible(true);
+		
 
 		physicsWorld.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -170,14 +170,14 @@ public class Bullet {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
+				body.setTransform(-500, -340, 0.0f);
 				r.setVisible(false);
+				body.setActive(false);
+				body.setAwake(false);
 				scene.detachChild(r);
 				nats.getEngine().unregisterUpdateHandler(th);
 				physicsWorld.unregisterPhysicsConnector(pc);
 				// r.setIgnoreUpdate(true);
-				//body.setTransform(-500, -340, 0.0f);
-				body.setActive(false);
-				body.setAwake(false);
 			}
 		});
 		//Log.i("Bullet", "Deactivate Bullet");

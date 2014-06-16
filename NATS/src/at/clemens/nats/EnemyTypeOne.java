@@ -23,7 +23,7 @@ public class EnemyTypeOne extends PEnemy {
 
 	private final int resources = 15;
 
-	private final float maxMoveSpeed = 300f;
+	private final float maxMoveSpeed = 250f;
 	private final int acceleration = 10;
 
 	private TextureRegion textur;
@@ -48,13 +48,16 @@ public class EnemyTypeOne extends PEnemy {
 				nats.getVertexBufferObjectManager());
 		enemy.setCullingEnabled(true);
 		// enemy.setColor(new Color(1f, 0f, 0f));
-		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
 		// body = PhysicsFactory.createBoxBody(world, enemy,
 		// BodyType.DynamicBody,
 		// fd);
+		super.game.getEnemyOneSpriteGroup().attachChild(enemy);
 		body = PhysicsFactory.createCircleBody(world, enemy,
 				BodyType.DynamicBody, fd);
+		body.setTransform(-500, -340, 0.0f);
+		enemy.setPosition(-500f, -340f);
+		enemy.setVisible(false);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemytwo", this));
@@ -64,9 +67,9 @@ public class EnemyTypeOne extends PEnemy {
 	@Override
 	public void start() {
 		super.createStartPos();
-		if (!enemy.hasParent()) {
+		/*if (!enemy.hasParent()) {
 			super.game.getEnemyOneSpriteGroup().attachChild(enemy);
-		}
+		}*/
 		pc = new PhysicsConnector(enemy, body, true, true);
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
@@ -91,12 +94,13 @@ public class EnemyTypeOne extends PEnemy {
 
 		// TODO start fly function | alle 15 msec ausführen
 		// TODO Timehandler
+		enemy.setVisible(true);
 
+		body.setTransform(super.posx / 32, super.posy / 32, 0f);
+		
 		body.setActive(true);
 		body.setAwake(true);
 
-		body.setTransform(super.posx / 32, super.posy / 32, 0f);
-		enemy.setVisible(true);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -104,7 +108,6 @@ public class EnemyTypeOne extends PEnemy {
 
 	@Override
 	public void stop() {
-		this.reset();
 		
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
@@ -112,15 +115,16 @@ public class EnemyTypeOne extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				EnemyTypeOne.super.addRessources(resources);
-				EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(
-						enemy);
-				enemy.setVisible(false);
+				//EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500f, -340f);
+				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);	
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
+				EnemyTypeOne.this.reset();
 
 				nats.getEngine().registerUpdateHandler(
 						new TimerHandler(1f, new ITimerCallback() {
@@ -211,7 +215,6 @@ public class EnemyTypeOne extends PEnemy {
 
 	@Override
 	public void deactivate() {
-		this.reset();
 		
 		// TODO Auto-generated method stub
 		nats.getEngine().runOnUpdateThread(new Runnable() {
@@ -220,25 +223,28 @@ public class EnemyTypeOne extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				// Log.i("NATS", "stop");
-				EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(
-						enemy);
-				// Log.i("NATS", "stop1");
-				enemy.setVisible(false);
-				
+				nats.getEngine().unregisterUpdateHandler(th);
 				body.setLinearVelocity(0f, 0f);
 				
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500f, -340f);
+				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
+				//EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
+				// Log.i("NATS", "stop1");
+				
+				
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
 				
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
-				nats.getEngine().unregisterUpdateHandler(th);
+				
+				EnemyTypeOne.this.reset();
 				// Log.i("NATS", "stop7");
 				enemyPool.recycleEnemyOne(EnemyTypeOne.this);
 			}

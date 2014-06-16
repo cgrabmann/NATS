@@ -2,16 +2,12 @@ package at.clemens.nats;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.util.adt.color.Color;
 
-import android.util.Log;
 import at.alex.nats.Player;
 import at.stefan.nats.EnemyPool;
 import at.stefan.nats.GameEnvironment;
@@ -26,7 +22,7 @@ public class EnemyTypeTwo extends PEnemy {
 
 	private final int resources = 20;
 
-	private final float maxMoveSpeed = 350f;
+	private final float maxMoveSpeed = 300f;
 	private final int acceleration = 10;
 
 	private TextureRegion textur;
@@ -54,10 +50,13 @@ public class EnemyTypeTwo extends PEnemy {
 				nats.getVertexBufferObjectManager());
 		enemy.setCullingEnabled(true);
 		// enemy.setColor(new Color(0f, 0f, 1f));
-		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
+		super.game.getEnemyTwoSpriteGroup().attachChild(enemy);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody,
 				fd);
+		body.setTransform(-500, -340, 0.0f);
+		enemy.setPosition(-500f, -340f);
+		enemy.setVisible(false);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemytwo", this));
@@ -67,9 +66,9 @@ public class EnemyTypeTwo extends PEnemy {
 	@Override
 	public void start() {
 		super.createStartPos();
-		if (!enemy.hasParent()) {
+		/*if (!enemy.hasParent()) {
 			super.game.getEnemyTwoSpriteGroup().attachChild(enemy);
-		}
+		}*/
 		pc = new PhysicsConnector(enemy, body, true, true);
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
@@ -94,12 +93,13 @@ public class EnemyTypeTwo extends PEnemy {
 
 		// TODO start fly function | alle 15 msec ausführen
 		// TODO Timehandler
-
+		enemy.setVisible(true);
+		
+		body.setTransform(super.posx / 32, super.posy / 32, 0f);
+		
 		body.setActive(true);
 		body.setAwake(true);
 
-		body.setTransform(super.posx / 32, super.posy / 32, 0f);
-		enemy.setVisible(true);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -107,7 +107,8 @@ public class EnemyTypeTwo extends PEnemy {
 
 	@Override
 	public void stop() {
-		this.reset();
+		final float x = super.posx;
+		final float y = super.posy;
 		
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
@@ -115,21 +116,22 @@ public class EnemyTypeTwo extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				EnemyTypeTwo.super.addRessources(resources);
-				EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(
-						enemy);
-				enemy.setVisible(false);
+				//EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(enemy);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500, -340);
+				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
-
+				EnemyTypeTwo.this.reset();
+				
 				twoSmall1 = enemyPool.onAllocateEnemytwoS();
 				twoSmall2 = enemyPool.onAllocateEnemytwoS();
-
-				twoSmall1.start(enemy.getX(), enemy.getY());
-				twoSmall2.start(enemy.getX(), enemy.getY());
+	
+				twoSmall1.start(x, y);
+				twoSmall2.start(x, y);
 
 				nats.getEngine().registerUpdateHandler(
 						new TimerHandler(1f, new ITimerCallback() {
@@ -220,7 +222,6 @@ public class EnemyTypeTwo extends PEnemy {
 
 	@Override
 	public void deactivate() {
-		this.reset();
 		
 		// TODO Auto-generated method stub
 		nats.getEngine().runOnUpdateThread(new Runnable() {
@@ -229,25 +230,29 @@ public class EnemyTypeTwo extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				// Log.i("NATS", "stop");
-				EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(
-						enemy);
-				// Log.i("NATS", "stop1");
-				enemy.setVisible(false);
-				
+				nats.getEngine().unregisterUpdateHandler(th);
 				body.setLinearVelocity(0f, 0f);
 				
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500, -340);
+				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
+				//EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(enemy);
+				// Log.i("NATS", "stop1");
+				
+				
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
 				
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
-				nats.getEngine().unregisterUpdateHandler(th);
+				
+				
+				EnemyTypeTwo.this.reset();
 				// Log.i("NATS", "stop7");
 				enemyPool.recycleEnemyTwo(EnemyTypeTwo.this);
 			}

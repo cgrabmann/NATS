@@ -16,7 +16,7 @@ import at.stefan.nats.nats;
 public class Player {
 
 	// private long time;
-	private int ressources = 2000;
+	private int ressources = 500000;
 	private int permanents[] = new int[5];
 	private int usables[] = new int[4];
 
@@ -29,7 +29,7 @@ public class Player {
 
 	// Upgrades
 	private int speed = 0;
-	private int shotfrequence = 10;
+	private int shotfrequence = 7;
 	private boolean shield = false;
 	private int timeToShield = 45;
 	private int shotspreading = 0;
@@ -70,10 +70,9 @@ public class Player {
 		this.usables[0] = 2;
 		this.usables[1] = 1;
 
-		SoundFactory.setAssetBasePath("sfx/");
 		try {
 			music = MusicFactory.createMusicFromAsset(nats.getMusicManager(),
-					nats.getApplicationContext(), "Spiel.ogg");
+					nats.getApplicationContext(), "sfx/Spiel.ogg");
 			music.setLooping(true);
 			music.setVolume(0.5f, 0.5f);
 		} catch (IOException e) {
@@ -326,6 +325,12 @@ public class Player {
 	public void resumeMusic() {
 		if(music != null && !music.isPlaying()) {
 			this.music.resume();
+		}
+	}
+	
+	public void stopMusic() {
+		if(music != null && music.isPlaying()){
+			this.music.stop();
 		}
 	}
 	

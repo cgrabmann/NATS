@@ -5,15 +5,14 @@ import java.util.Iterator;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-
 import android.util.Log;
 import at.alex.nats.Player;
 import at.clemens.nats.EnemyTypeOne;
 import at.clemens.nats.EnemyTypeTwo;
-import at.clemens.nats.EnemyTypeTwoSmall;
 import at.clemens.nats.EnemyTypeZero;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 
 public class TimeHandler implements ITimerCallback {
 	
@@ -44,7 +43,6 @@ public class TimeHandler implements ITimerCallback {
 	EnemyTypeZero zero;
 	EnemyTypeOne one;
 	EnemyTypeTwo two;
-	EnemyTypeTwoSmall twoSmall;
 
 	public TimeHandler(GameEnvironment ge, Player p, EnemyPool enemyPool) {
 		this.gameEnvironment = ge;
@@ -154,34 +152,34 @@ public class TimeHandler implements ITimerCallback {
 				int spawn = spawnResources;
 				while (spawn > 0) {
 					double rand = Math.random();
-					Log.i("NATS", "random: " + rand);
+					/*Log.i("NATS", "random: " + rand);
 					Log.i("NATS", "Chance zero: " + (chanceZero) / totalChance);
 					Log.i("NATS", "Chance one: " + (chanceZero + chanceOne)
 							/ totalChance);
 					Log.i("NATS", "Chance two: "
 							+ (chanceZero + chanceOne + chanceTwo) / totalChance);
-					Log.i("NATS", "Chance twoSmall: "
+					Log.i("NATS", "Chance Four: "
 							+ (chanceZero + chanceOne + chanceTwo + chanceFour)
-							/ totalChance);
+							/ totalChance);*/
 					if (rand < chanceZero / totalChance) { // Gegner 0 spawnen
 						zero = enemyPool.onAllocateEnemyZero();
 						zero.start();
 						spawn -= zero.getResources();
-						Log.i("NATS", "EnemyZero spawned");
+						//Log.i("NATS", "EnemyZero spawned");
 					} else if (rand < (chanceZero + chanceOne) / totalChance) { // gegner
 																				// 1
 						one = enemyPool.onAllocateEnemyone();
 						one.start();
 						spawn -= one.getResources();
-						Log.i("NATS", "EnemyOne spawned");
+						//Log.i("NATS", "EnemyOne spawned");
 					} else if (rand < (chanceZero + chanceOne + chanceTwo)
 							/ totalChance) { // gegner 2
 						two = enemyPool.onAllocateEnemytwo();
 						two.start();
 						spawn -= two.getResources();
-						Log.i("NATS", "EnemyTwo spawned");
+						//Log.i("NATS", "EnemyTwo spawned");
 					} else { // gegner 4
-						Log.i("NATS", "EnemyFour spawned");
+						//Log.i("NATS", "EnemyFour spawned");
 					}
 				}
 				waveCounter = 0;
