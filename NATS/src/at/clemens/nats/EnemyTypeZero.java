@@ -98,8 +98,8 @@ public class EnemyTypeZero extends PEnemy {
 				body.setLinearVelocity(EnemyTypeZero.super.movex * 0.05f, EnemyTypeZero.super.movey * 0.05f);
 			}
 		});
-		body.setTransform(super.posx / 32, super.posy / 32, 0f);
 		enemy.setVisible(true);
+		body.setTransform(super.posx / 32, super.posy / 32, 0f);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -134,9 +134,10 @@ public class EnemyTypeZero extends PEnemy {
 				EnemyTypeZero.super.game.getEnemyZeroSpriteGroup().detachChild(
 						enemy);
 				// Log.i("NATS", "stop1");
+				body.setLinearVelocity(0f, 0f);
+				body.setTransform(-500, -340, 0.0f);
 				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
-				body.setTransform(-500, -340, 0.0f);
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
@@ -210,9 +211,10 @@ public class EnemyTypeZero extends PEnemy {
 				EnemyTypeZero.super.game.getEnemyZeroSpriteGroup().detachChild(
 						enemy);
 				// Log.i("NATS", "stop1");
+				body.setLinearVelocity(0f, 0f);
+				body.setTransform(-500, -340, 0.0f);
 				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
-				body.setTransform(-500, -340, 0.0f);
 				
 				body.setActive(false);
 				// Log.i("NATS", "stop3");

@@ -104,9 +104,9 @@ public class EnemyBlackHole extends PEnemy{
 				EnemyBlackHole.super.game.detachChild(
 						enemy);
 				// Log.i("NATS", "stop1");
-				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setVisible(false);
 				
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
@@ -136,6 +136,7 @@ public class EnemyBlackHole extends PEnemy{
 				// Log.i("NATS", "stop");
 				EnemyBlackHole.super.game.detachChild(enemy);
 				// Log.i("NATS", "stop1");
+				body.setTransform(-500, -340, 0.0f);
 				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
@@ -143,7 +144,6 @@ public class EnemyBlackHole extends PEnemy{
 				body.setAwake(false);
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
-				body.setTransform(-500, -340, 0.0f);
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");

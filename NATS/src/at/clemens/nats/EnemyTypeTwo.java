@@ -98,8 +98,8 @@ public class EnemyTypeTwo extends PEnemy {
 		body.setActive(true);
 		body.setAwake(true);
 
-		body.setTransform(super.posx / 32, super.posy / 32, 0f);
 		enemy.setVisible(true);
+		body.setTransform(super.posx / 32, super.posy / 32, 0f);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -113,23 +113,22 @@ public class EnemyTypeTwo extends PEnemy {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				EnemyTypeTwo.super.addRessources(resources);
-				EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(
-						enemy);
-				enemy.setVisible(false);
-				body.setLinearVelocity(0f, 0f);
-				body.setTransform(-500, -340, 0.0f);
-				body.setActive(false);
-				body.setAwake(false);
-				world.unregisterPhysicsConnector(pc);
-				nats.getEngine().unregisterUpdateHandler(th);
-
 				twoSmall1 = enemyPool.onAllocateEnemytwoS();
 				twoSmall2 = enemyPool.onAllocateEnemytwoS();
 
 				twoSmall1.start(enemy.getX(), enemy.getY());
 				twoSmall2.start(enemy.getX(), enemy.getY());
+				// TODO Auto-generated method stub
+				EnemyTypeTwo.super.addRessources(resources);
+				EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(
+						enemy);
+				body.setLinearVelocity(0f, 0f);
+				body.setTransform(-500, -340, 0.0f);
+				enemy.setVisible(false);
+				body.setActive(false);
+				body.setAwake(false);
+				world.unregisterPhysicsConnector(pc);
+				nats.getEngine().unregisterUpdateHandler(th);
 
 				nats.getEngine().registerUpdateHandler(
 						new TimerHandler(1f, new ITimerCallback() {
@@ -232,11 +231,11 @@ public class EnemyTypeTwo extends PEnemy {
 				EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(
 						enemy);
 				// Log.i("NATS", "stop1");
-				enemy.setVisible(false);
 				
 				body.setLinearVelocity(0f, 0f);
 				
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");

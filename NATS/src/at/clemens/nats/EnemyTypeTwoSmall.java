@@ -123,9 +123,9 @@ public class EnemyTypeTwoSmall extends PEnemy {
 				EnemyTypeTwoSmall.super.addRessources(resources);
 				EnemyTypeTwoSmall.super.game.getEnemyTwoSmallSpriteGroup()
 						.detachChild(enemy);
-				enemy.setVisible(false);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);
 				world.unregisterPhysicsConnector(pc);
