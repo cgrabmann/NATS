@@ -62,6 +62,16 @@ public class EnemyTypeTwo extends PEnemy {
 		body.setAwake(false);
 		body.setUserData(new UserData("enemytwo", this));
 
+	}
+
+	@Override
+	public void start() {
+		super.createStartPos();
+		if (!enemy.hasParent()) {
+			super.game.getEnemyTwoSpriteGroup().attachChild(enemy);
+		}
+		pc = new PhysicsConnector(enemy, body, true, true);
+		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
 
 			@Override
@@ -82,17 +92,6 @@ public class EnemyTypeTwo extends PEnemy {
 			}
 		});
 
-		pc = new PhysicsConnector(enemy, body, true, true);
-	}
-
-	@Override
-	public void start() {
-		super.createStartPos();
-		if (!enemy.hasParent()) {
-			super.game.getEnemyTwoSpriteGroup().attachChild(enemy);
-		}
-		enemy.setVisible(true);
-
 		// TODO start fly function | alle 15 msec ausführen
 		// TODO Timehandler
 
@@ -100,6 +99,7 @@ public class EnemyTypeTwo extends PEnemy {
 		body.setAwake(true);
 
 		body.setTransform(super.posx / 32, super.posy / 32, 0f);
+		enemy.setVisible(true);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -107,10 +107,7 @@ public class EnemyTypeTwo extends PEnemy {
 
 	@Override
 	public void stop() {
-		super.movex = 0;
-		super.movey = 0;
-		super.smovex = super.movex;
-		super.smovey = super.movey;
+		this.reset();
 		
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
@@ -223,10 +220,7 @@ public class EnemyTypeTwo extends PEnemy {
 
 	@Override
 	public void deactivate() {
-		super.movex = 0;
-		super.movey = 0;
-		super.smovex = super.movex;
-		super.smovey = super.movey;
+		this.reset();
 		
 		// TODO Auto-generated method stub
 		nats.getEngine().runOnUpdateThread(new Runnable() {
@@ -258,5 +252,12 @@ public class EnemyTypeTwo extends PEnemy {
 				enemyPool.recycleEnemyTwo(EnemyTypeTwo.this);
 			}
 		});
+	}
+	
+	@Override
+	protected void reset(){
+		super.reset();
+		this.pc = null;
+		this.th = null;
 	}
 }
