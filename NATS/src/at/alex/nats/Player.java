@@ -24,7 +24,8 @@ public class Player {
 	// private float velX, velY;
 
 	private boolean shooting = true;
-	private boolean turbo = false;
+	
+	private boolean gamePaused = false;
 
 	// Upgrades
 	private int speed = 0;
@@ -33,6 +34,11 @@ public class Player {
 	private int timeToShield = 45;
 	private int shotspreading = 0;
 	private int timeToGunner = 20;
+	
+	private boolean stasisField = false;
+	private boolean turbo = false;
+	private boolean deadlyTrail = false;
+	private boolean bomb = false;
 
 	nats nats;
 
@@ -261,6 +267,14 @@ public class Player {
 		this.shooting = b;
 	}
 	
+	public void setStasisField(boolean b) {
+		this.stasisField = b;
+	}
+	
+	public boolean isStasisFieldActivated() {
+		return this.stasisField;
+	}
+	
 	public void activateTurbo() {
 		this.turbo = true;
 	}
@@ -271,6 +285,30 @@ public class Player {
 	
 	public boolean isTurboActivated() {
 		return this.turbo;
+	}
+	
+	public void setDeadlyTrail(boolean b) {
+		this.deadlyTrail = b;
+	}
+	
+	public boolean isDeadlyTrailActivated() {
+		return this.deadlyTrail;
+	}
+	
+	public void setBomb(boolean b) {
+		this.bomb = b;
+	}
+	
+	public boolean isBombActivated() {
+		return this.bomb;
+	}
+	
+	public void setPause(boolean b) {
+		this.gamePaused = b;
+	}
+	
+	public boolean isGamePaused() {
+		return gamePaused;
 	}
 	
 	public void playMusic() {
@@ -294,7 +332,13 @@ public class Player {
 	public void reset() {
 		ressources = 2000;
 		shooting = true;
+		
+		gamePaused = false;
+		
+		stasisField = false;
 		turbo = false;
+		deadlyTrail = false;
+		bomb = false;
 
 		// Upgrades
 		speed = 0;

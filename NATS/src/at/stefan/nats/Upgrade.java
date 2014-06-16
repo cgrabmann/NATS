@@ -226,11 +226,13 @@ public class Upgrade {
 		stasisfieldSelect.setVisible(true);
 		actual = Buy.STASISFIELD;
 		if (usables[finals.stasisfield()] == "equip"
-				&& player.getUsables(finals.stasisfield()) > 0) {
+				&& player.getUsables(finals.stasisfield()) > 0
+				&& (equipped[0] == -1 || equipped[1] == -1)) {
 			equip.setPosition(150, 60);
 			equip.setVisible(true);
 			upgradeMenu.registerSpriteInGame(equip);
-		} else {
+		} else if (equipped[0] == finals.stasisfield()
+				|| equipped[1] == finals.stasisfield()) {
 			discard.setPosition(150, 60);
 			discard.setVisible(true);
 			upgradeMenu.registerSpriteInGame(discard);
@@ -248,11 +250,13 @@ public class Upgrade {
 		turboSelect.setVisible(true);
 		actual = Buy.TURBO;
 		if (usables[finals.turbo()] == "equip"
-				&& player.getUsables(finals.turbo()) > 0) {
+				&& player.getUsables(finals.turbo()) > 0
+				&& (equipped[0] == -1 || equipped[1] == -1)) {
 			equip.setPosition(350, 60);
 			equip.setVisible(true);
 			upgradeMenu.registerSpriteInGame(equip);
-		} else {
+		} else if (equipped[0] == finals.turbo()
+				|| equipped[1] == finals.turbo()) {
 			discard.setPosition(350, 60);
 			discard.setVisible(true);
 			upgradeMenu.registerSpriteInGame(discard);
@@ -270,11 +274,13 @@ public class Upgrade {
 		deadlytrailSelect.setVisible(true);
 		actual = Buy.DEADLYTRAIL;
 		if (usables[finals.deadlytrail()] == "equip"
-				&& player.getUsables(finals.deadlytrail()) > 0) {
+				&& player.getUsables(finals.deadlytrail()) > 0
+				&& (equipped[0] == -1 || equipped[1] == -1)) {
 			equip.setPosition(550, 60);
 			equip.setVisible(true);
 			upgradeMenu.registerSpriteInGame(equip);
-		} else {
+		} else if (equipped[0] == finals.deadlytrail()
+				|| equipped[1] == finals.deadlytrail()) {
 			discard.setPosition(550, 60);
 			discard.setVisible(true);
 			upgradeMenu.registerSpriteInGame(discard);
@@ -292,11 +298,12 @@ public class Upgrade {
 		bombSelect.setVisible(true);
 		actual = Buy.BOMB;
 		if (usables[finals.bomb()] == "equip"
-				&& player.getUsables(finals.bomb()) > 0) {
+				&& player.getUsables(finals.bomb()) > 0
+				&& (equipped[0] == -1 || equipped[1] == -1)) {
 			equip.setPosition(750, 60);
 			equip.setVisible(true);
 			upgradeMenu.registerSpriteInGame(equip);
-		} else {
+		} else if (equipped[0] == finals.bomb() || equipped[1] == finals.bomb()) {
 			discard.setPosition(750, 60);
 			discard.setVisible(true);
 			upgradeMenu.registerSpriteInGame(discard);
@@ -584,7 +591,7 @@ public class Upgrade {
 			if (player.getUsables(finals.stasisfield()) == 0) { // wenn kein
 																// Item
 																// verfügbar ist
-				Log.i("NATS", "stasisfield-kein Item vorhanden");
+				// Log.i("NATS", "stasisfield-kein Item vorhanden");
 				// break;
 			} else if (equipped[0] == -1) {
 				equipped[0] = finals.stasisfield();
@@ -593,7 +600,7 @@ public class Upgrade {
 				equipped[1] = finals.stasisfield();
 				usables[finals.stasisfield()] = "discard";
 			} else {
-				Log.i("Usable", "equip stasisfield, no slot");
+				// Log.i("Usable", "equip stasisfield, no slot");
 				// Toast.makeText(nats.getBaseContext(), "Both Slots in Use!",
 				// Toast.LENGTH_SHORT).show();
 			}
@@ -602,7 +609,7 @@ public class Upgrade {
 		case TURBO:
 			if (player.getUsables(finals.turbo()) == 0) { // wenn kein Item
 															// verfügbar ist
-				Log.i("NATS", "turbo-kein Item vorhanden");
+				// Log.i("NATS", "turbo-kein Item vorhanden");
 				// break;
 			} else if (equipped[0] == -1) {
 				equipped[0] = finals.turbo();
@@ -611,7 +618,7 @@ public class Upgrade {
 				equipped[1] = finals.turbo();
 				usables[finals.turbo()] = "discard";
 			} else {
-				Log.i("Usable", "equip turbo, no slot");
+				// Log.i("Usable", "equip turbo, no slot");
 				// Toast.makeText(nats.getBaseContext(), "Both Slots in Use!",
 				// Toast.LENGTH_SHORT).show();
 			}
@@ -621,7 +628,7 @@ public class Upgrade {
 			if (player.getUsables(finals.deadlytrail()) == 0) { // wenn kein
 																// Item
 																// verfügbar ist
-				Log.i("NATS", "deadlytrail-kein Item vorhanden");
+				// Log.i("NATS", "deadlytrail-kein Item vorhanden");
 				// break;
 			} else if (equipped[0] == -1) {
 				equipped[0] = finals.deadlytrail();
@@ -630,7 +637,7 @@ public class Upgrade {
 				equipped[1] = finals.deadlytrail();
 				usables[finals.deadlytrail()] = "discard";
 			} else {
-				Log.i("Usable", "equip deadlytrail, no slot");
+				// Log.i("Usable", "equip deadlytrail, no slot");
 				// Toast.makeText(nats.getBaseContext(), "Both Slots in Use!",
 				// Toast.LENGTH_SHORT).show();
 			}
@@ -639,7 +646,7 @@ public class Upgrade {
 		case BOMB:
 			if (player.getUsables(finals.bomb()) == 0) { // wenn kein Item
 															// verfügbar ist
-				Log.i("NATS", "bomb-kein Item vorhanden");
+				// Log.i("NATS", "bomb-kein Item vorhanden");
 				// break;
 			} else if (equipped[0] == -1) {
 				equipped[0] = finals.bomb();
@@ -648,7 +655,7 @@ public class Upgrade {
 				equipped[1] = finals.bomb();
 				usables[finals.bomb()] = "discard";
 			} else {
-				Log.i("Usable", "equip bomb, no slot");
+				// Log.i("Usable", "equip bomb, no slot");
 				// Toast.makeText(nats.getBaseContext(), "Both Slots in Use!",
 				// Toast.LENGTH_SHORT).show();
 			}
@@ -661,28 +668,28 @@ public class Upgrade {
 	}
 
 	public void discard() {
-		Log.i("Usable", "actual = " + this.actual);
+		// Log.i("Usable", "actual = " + this.actual);
 		switch (this.actual) {
 		case STASISFIELD:
-			Log.i("Usable", "case stasisfield");
+			// Log.i("Usable", "case stasisfield");
 			if (equipped[0] == finals.stasisfield()) {
-				Log.i("Usable", "equipped-0");
+				// Log.i("Usable", "equipped-0");
 				equipped[0] = -1;
 				usables[finals.stasisfield()] = "equip";
 			} else if (equipped[1] == finals.stasisfield()) {
-				Log.i("Usable", "equipped-1");
+				// Log.i("Usable", "equipped-1");
 				equipped[1] = -1;
 				usables[finals.stasisfield()] = "equip";
 			} else {
-				Log.i("Usable", "else");
-				Log.i("Usable", "discard stasisfield, no slot");
+				// Log.i("Usable", "else");
+				// Log.i("Usable", "discard stasisfield, no slot");
 				// Toast.makeText(nats.getBaseContext(), "Item isn't equipped!",
 				// Toast.LENGTH_SHORT).show();
 			}
 			this.stasisfieldInfo();
 			break;
 		case TURBO:
-			Log.i("Usable", "case turbo");
+			// Log.i("Usable", "case turbo");
 			if (equipped[0] == finals.turbo()) {
 				equipped[0] = -1;
 				usables[finals.turbo()] = "equip";
@@ -690,14 +697,14 @@ public class Upgrade {
 				equipped[1] = -1;
 				usables[finals.turbo()] = "equip";
 			} else {
-				Log.i("Usable", "discard turbo, no slot");
+				// Log.i("Usable", "discard turbo, no slot");
 				// Toast.makeText(nats.getBaseContext(), "Item isn't equipped!",
 				// Toast.LENGTH_SHORT).show();
 			}
 			this.turboInfo();
 			break;
 		case DEADLYTRAIL:
-			Log.i("Usable", "case deadlytrail");
+			// Log.i("Usable", "case deadlytrail");
 			if (equipped[0] == finals.deadlytrail()) {
 				equipped[0] = -1;
 				usables[finals.deadlytrail()] = "equip";
@@ -705,14 +712,14 @@ public class Upgrade {
 				equipped[1] = -1;
 				usables[finals.deadlytrail()] = "equip";
 			} else {
-				Log.i("Usable", "discard deadlytrail, no slot");
+				// Log.i("Usable", "discard deadlytrail, no slot");
 				// Toast.makeText(nats.getBaseContext(), "Item isn't equipped!",
 				// Toast.LENGTH_SHORT).show();
 			}
 			this.deadlytrailInfo();
 			break;
 		case BOMB:
-			Log.i("Usable", "case bomb");
+			// Log.i("Usable", "case bomb");
 			if (equipped[0] == finals.bomb()) {
 				equipped[0] = -1;
 				usables[finals.bomb()] = "equip";
@@ -720,7 +727,7 @@ public class Upgrade {
 				equipped[1] = -1;
 				usables[finals.bomb()] = "equip";
 			} else {
-				Log.i("Usable", "discard bomb, no slot");
+				// Log.i("Usable", "discard bomb, no slot");
 				// Toast.makeText(nats.getBaseContext(), "Item isn't equipped!",
 				// Toast.LENGTH_SHORT).show();
 			}
@@ -729,7 +736,7 @@ public class Upgrade {
 		default:
 
 		}
-		Log.i("Usable", "actualizeEquipment");
+		// Log.i("Usable", "actualizeEquipment");
 		upgradeMenu.actualizeEquipment(equipped);
 	}
 
@@ -741,6 +748,10 @@ public class Upgrade {
 		usables[pos] = "equip";
 	}
 	
+	public void unsetEquipped(int a) {
+		equipped[a] = -1;
+	}
+
 	public void reset() {
 		prices[finals.stasisfield()] = 500; // Factor 1.5
 		prices[finals.turbo()] = 750; // Factor 1.6

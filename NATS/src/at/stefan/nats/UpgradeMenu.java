@@ -671,40 +671,40 @@ public class UpgradeMenu extends Scene {
 	public void actualizeEquipment(int e[]) {
 		Log.i("Usable", "actualizeEquip");
 		if (e[0] == finals.stasisfield()) {
-			Log.i("Usable", "e0 = stasisfield");
+			//Log.i("Usable", "e0 = stasisfield");
 			gameEnvironment.setUsable1(finals.stasisfield());
 		} else if (e[1] == finals.stasisfield()) {
-			Log.i("Usable", "e1 = stasisfield");
+			//Log.i("Usable", "e1 = stasisfield");
 			gameEnvironment.setUsable2(finals.stasisfield());
 		}
 		if (e[0] == finals.turbo()) {
-			Log.i("Usable", "e0 = turbo");
+			//Log.i("Usable", "e0 = turbo");
 			gameEnvironment.setUsable1(finals.turbo());
 		} else if (e[1] == finals.turbo()) {
-			Log.i("Usable", "e1 = turbo");
+			//Log.i("Usable", "e1 = turbo");
 			gameEnvironment.setUsable2(finals.turbo());
 		}
 		if (e[0] == finals.deadlytrail()) {
-			Log.i("Usable", "e0 = deadlytrail");
+			//Log.i("Usable", "e0 = deadlytrail");
 			gameEnvironment.setUsable1(finals.deadlytrail());
 		} else if (e[1] == finals.deadlytrail()) {
-			Log.i("Usable", "e1 = deadlytrail");
+			//Log.i("Usable", "e1 = deadlytrail");
 			gameEnvironment.setUsable2(finals.deadlytrail());
 		}
 		if (e[0] == finals.bomb()) {
-			Log.i("Usable", "e0 = bomb");
+			//Log.i("Usable", "e0 = bomb");
 			gameEnvironment.setUsable1(finals.bomb());
 		} else if (e[1] == finals.bomb()) {
-			Log.i("Usable", "e1 = bomb");
+			//Log.i("Usable", "e1 = bomb");
 			gameEnvironment.setUsable2(finals.bomb());
 		}
 
 		if (e[0] == -1) {
-			Log.i("Usable", "e0 = -1");
+			//Log.i("Usable", "e0 = -1");
 			gameEnvironment.setUsable1(-1);
 		}
 		if (e[1] == -1) {
-			Log.i("Usable", "e1 = -1");
+			//Log.i("Usable", "e1 = -1");
 			gameEnvironment.setUsable2(-1);
 		}
 	}
@@ -730,6 +730,10 @@ public class UpgradeMenu extends Scene {
 		}
 	}
 	
+	public void startMenu() {
+		upgrade.movespeedInfo();
+	}
+	
 	public void reset() {
 		upgrade.reset();
 		
@@ -746,6 +750,10 @@ public class UpgradeMenu extends Scene {
 		
 		upgrade.movespeedInfo();
 		
+	}
+	
+	public Upgrade getUpgrade() {
+		return upgrade;
 	}
 
 }

@@ -119,6 +119,7 @@ public class GameEnvironment extends Scene {
 
 	Sprite playerBaseSprite;
 	Body playerBaseBody;
+	PhysicsConnector playerPC;
 
 	Body leftBorderBody;
 	Body upperBorderBody;
@@ -220,6 +221,8 @@ public class GameEnvironment extends Scene {
 
 		playerBaseBody.setUserData(new UserData("player", this.player));
 		// playerBody.setUserData("player");
+		playerPC = new PhysicsConnector(playerBaseSprite, playerBaseBody, true,
+				true);
 
 		mainCamera.setChaseEntity(playerBaseSprite);
 		mainCamera.setBounds(-400, -240, 1200, 720);
@@ -259,33 +262,33 @@ public class GameEnvironment extends Scene {
 		// leftAnalogOncScreenControl.
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		leftAnalogAussenBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 130, 130, TextureOptions.DEFAULT);
 		leftAnalogAussenITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(leftAnalogAussenBitmapTextureAtlas,
-						nats.getApplicationContext(), "JoystickAussen.png", 0,
-						0);
+						nats.getApplicationContext(),
+						"JoystickAussenGross.png", 0, 0);
 		leftAnalogAussenBitmapTextureAtlas.load();
 
 		leftAnalogInnenBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 60, 60, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 78, 78, TextureOptions.DEFAULT);
 		leftAnalogInnenITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(leftAnalogInnenBitmapTextureAtlas,
-						nats.getApplicationContext(), "JoystickInnen.png", 0, 0);
+						nats.getApplicationContext(), "InnenGross.png", 0, 0);
 		leftAnalogInnenBitmapTextureAtlas.load();
 
 		rightAnalogAussenBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 100, 100, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 130, 130, TextureOptions.DEFAULT);
 		rightAnalogAussenITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(rightAnalogAussenBitmapTextureAtlas,
-						nats.getApplicationContext(), "JoystickAussen.png", 0,
-						0);
+						nats.getApplicationContext(),
+						"JoystickAussenGross.png", 0, 0);
 		rightAnalogAussenBitmapTextureAtlas.load();
 
 		rightAnalogInnenBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 60, 60, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 78, 78, TextureOptions.DEFAULT);
 		rightAnalogInnenITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(rightAnalogInnenBitmapTextureAtlas,
-						nats.getApplicationContext(), "JoystickInnen.png", 0, 0);
+						nats.getApplicationContext(), "InnenGross.png", 0, 0);
 		rightAnalogInnenBitmapTextureAtlas.load();
 
 		HUDGameFont = FontFactory.create(nats.getFontManager(),
@@ -359,33 +362,33 @@ public class GameEnvironment extends Scene {
 		// lowerBorderBody.setUserData("wall");
 
 		smallStasisfieldBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 28, 28, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 40, 40, TextureOptions.DEFAULT);
 		smallStasisfieldITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(smallStasisfieldBitmapTextureAtlas,
-						nats.getApplicationContext(), "Stasisfield_Klein.png",
+						nats.getApplicationContext(), "Stasisfield_Small.png",
 						0, 0);
 		smallStasisfieldBitmapTextureAtlas.load();
 
 		smallTurboBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 28, 28, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 40, 40, TextureOptions.DEFAULT);
 		smallTurboITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(smallTurboBitmapTextureAtlas,
-						nats.getApplicationContext(), "Turbo_Klein.png", 0, 0);
+						nats.getApplicationContext(), "Turbo_Small.png", 0, 0);
 		smallTurboBitmapTextureAtlas.load();
 
 		smallDeadlytrailBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 28, 28, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 40, 40, TextureOptions.DEFAULT);
 		smallDeadlytrailITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(smallDeadlytrailBitmapTextureAtlas,
-						nats.getApplicationContext(), "Deadlytrail_Klein.png",
+						nats.getApplicationContext(), "Deadlytrail_Small.png",
 						0, 0);
 		smallDeadlytrailBitmapTextureAtlas.load();
 
 		smallBombBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 28, 28, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 40, 40, TextureOptions.DEFAULT);
 		smallBombITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(smallBombBitmapTextureAtlas,
-						nats.getApplicationContext(), "Bomb_Klein.png", 0, 0);
+						nats.getApplicationContext(), "Bomb_Small.png", 0, 0);
 		smallBombBitmapTextureAtlas.load();
 
 		// bulletSpriteGroup = new SpriteGroup(0, 0, pTexture, 50,
@@ -494,7 +497,7 @@ public class GameEnvironment extends Scene {
 		enemyTwoSmallSpriteGroup = new SpriteGroup(0, 0,
 				enemyTwoSmallBitmapTextureAtlas, 75,
 				nats.getVertexBufferObjectManager());
-		
+
 		enemyBlackHoleBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
 				nats.getTextureManager(), 250, 250, TextureOptions.BILINEAR);
 		enemyBlackHoleITextureRegion = BitmapTextureAtlasTextureRegionFactory
@@ -549,6 +552,7 @@ public class GameEnvironment extends Scene {
 					// leftAnalogOnScreenControl.setVisible(false);
 
 					sceneManager.switchScene(AllScenes.PAUSE);
+					player.setPause(true);
 				}
 				return true;
 			};
@@ -564,6 +568,8 @@ public class GameEnvironment extends Scene {
 					GameEnvironment.this.registerUpgradeTouch();
 					sceneManager.switchScene(AllScenes.UPGRADE);
 					upgradeMenu.actualizeResources();
+					upgradeMenu.startMenu();
+					player.setPause(true);
 				}
 
 				return true;
@@ -575,16 +581,16 @@ public class GameEnvironment extends Scene {
 				nats.getVertexBufferObjectManager());
 		headerSprite.setAlpha(0.55f);
 
-		usable1 = new Rectangle(nats.getCameraWidth() - 200, 80, 30, 30,
+		usable1 = new Rectangle(nats.getCameraWidth() - 240, 80, 40, 40,
 				nats.getVertexBufferObjectManager());
 		usable1.setColor(new Color(0.0f, (float) 128 / 255, (float) 128 / 255,
 				0.5f));
-		usable2 = new Rectangle(nats.getCameraWidth() - 90, 180, 30, 30,
+		usable2 = new Rectangle(nats.getCameraWidth() - 90, 235, 40, 40,
 				nats.getVertexBufferObjectManager());
 		usable2.setColor(new Color(0.0f, (float) 128 / 255, (float) 128 / 255,
 				0.5f));
 
-		leftAnalogOnScreenControl = new AnalogOnScreenControl(90, 80,
+		leftAnalogOnScreenControl = new AnalogOnScreenControl(110, 100,
 				mainCamera, leftAnalogAussenITextureRegion,
 				leftAnalogInnenITextureRegion, 0.05f,
 				nats.getVertexBufferObjectManager(),
@@ -637,7 +643,7 @@ public class GameEnvironment extends Scene {
 				});
 
 		rightAnalogOnScreenControl = new AnalogOnScreenControl(
-				nats.getCameraWidth() - 90, 80, mainCamera,
+				nats.getCameraWidth() - 110, 100, mainCamera,
 				rightAnalogAussenITextureRegion,
 				rightAnalogInnenITextureRegion, 0.05f,
 				nats.getVertexBufferObjectManager(),
@@ -769,14 +775,14 @@ public class GameEnvironment extends Scene {
 				});
 		// rightAnalogOnScreenControl
 
-		smallStasisfieldSprite = new Sprite(nats.getCameraWidth() - 200, 80,
+		smallStasisfieldSprite = new Sprite(nats.getCameraWidth() - 240, 80,
 				smallStasisfieldITextureRegion,
 				nats.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
 					float Y) {
 				if (pSceneTouchEvent.isActionDown()) {
-					Log.i("Usable", "smallStasis");
+					// Log.i("Usable", "smallStasis");
 					if (!usables.stasisFieldIsActivated()) {
 						usables.stasisfield();
 					}
@@ -784,13 +790,13 @@ public class GameEnvironment extends Scene {
 				return true;
 			};
 		};
-		smallTurboSprite = new Sprite(nats.getCameraWidth() - 90, 180,
+		smallTurboSprite = new Sprite(nats.getCameraWidth() - 90, 235,
 				smallTurboITextureRegion, nats.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
 					float Y) {
 				if (pSceneTouchEvent.isActionDown()) {
-					Log.i("Usable", "smallTurbo");
+					// Log.i("Usable", "smallTurbo");
 					if (!usables.turboIsActivated()) {
 						usables.turbo(playerBaseBody);
 					}
@@ -805,7 +811,7 @@ public class GameEnvironment extends Scene {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
 					float Y) {
 				if (pSceneTouchEvent.isActionDown()) {
-					Log.i("Usable", "smallDeadly");
+					// Log.i("Usable", "smallDeadly");
 					if (!usables.deadlyTrailIsActivated()) {
 						usables.deadlytrail();
 					}
@@ -819,7 +825,7 @@ public class GameEnvironment extends Scene {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
 					float Y) {
 				if (pSceneTouchEvent.isActionDown()) {
-					Log.i("Usable", "smallBomb");
+					// Log.i("Usable", "smallBomb");
 					if (!usables.bombIsActivated()) {
 						usables.bomb();
 					}
@@ -853,8 +859,7 @@ public class GameEnvironment extends Scene {
 		// PhysicsWorld
 		this.registerUpdateHandler(world);
 
-		world.registerPhysicsConnector(new PhysicsConnector(playerBaseSprite,
-				playerBaseBody, true, true));
+		world.registerPhysicsConnector(playerPC);
 		// world.registerPhysicsConnector(new PhysicsConnector(playerSprite,
 		// playerBody, true, true));
 		world.registerPhysicsConnector(new PhysicsConnector(leftBorder,
@@ -940,7 +945,7 @@ public class GameEnvironment extends Scene {
 		Log.i("NATS", "hidePauseMenu");
 		// mainCamera.getHUD().detachSelf();
 		this.showGameHUD();
-		this.startTimer();
+		//this.startTimer();
 		// this.setCameraChasing();
 		// this.getChildByIndex(PAUSE_LAYER).setVisible(false);
 		// HUDGame.getChildByIndex(PAUSE_LAYER).setVisible(false);
@@ -995,16 +1000,20 @@ public class GameEnvironment extends Scene {
 		HUDGame.registerTouchArea(pauseSprite);
 		HUDGame.registerTouchArea(updateSprite);
 		time.setActive(true);
-		list = world.getPhysicsConnectorManager().listIterator();
-		while (list.hasNext()) {
-			Log.i("NATS", "setUpdateFalse");
-			listConnector = list.next();
-			UserData u = (UserData) listConnector.getBody().getUserData();
-			if (u.getUserObject() instanceof PEnemy) {
-				((PEnemy) u.getUserObject()).setFrozen(false);
+		if (!player.isStasisFieldActivated()) {
+			list = world.getPhysicsConnectorManager().listIterator();
+			while (list.hasNext()) {
+				Log.i("NATS", "setUpdateFalse");
+				listConnector = list.next();
+				UserData u = (UserData) listConnector.getBody().getUserData();
+				if (u.getUserObject() instanceof PEnemy) {
+					((PEnemy) u.getUserObject()).setFrozen(false);
+				}
+				listConnector.setUpdatePosition(true);
+				listConnector.setUpdateRotation(true);
 			}
-			listConnector.setUpdatePosition(true);
-			listConnector.setUpdateRotation(true);
+		} else {
+			world.registerPhysicsConnector(playerPC);
 		}
 	}
 
@@ -1090,29 +1099,37 @@ public class GameEnvironment extends Scene {
 	public void startTimer() {
 		// nats.getEngine().registerUpdateHandler(th);
 		time.setActive(true);
+		player.setPause(false);
 		player.playMusic();
 		// nats.getEngine().start();
-		list = world.getPhysicsConnectorManager().listIterator();
 
-		while (list.hasNext()) {
-			Log.i("NATS", "setUpdateFalse");
-			listConnector = list.next();
-			UserData u = (UserData) listConnector.getBody().getUserData();
-			if (u.getUserObject() instanceof PEnemy) {
-				((PEnemy) u.getUserObject()).setFrozen(false);
+		if (!player.isStasisFieldActivated()) {
+			list = world.getPhysicsConnectorManager().listIterator();
+
+			while (list.hasNext()) {
+				Log.i("NATS", "setUpdateFalse");
+				listConnector = list.next();
+				UserData u = (UserData) listConnector.getBody().getUserData();
+				if (u.getUserObject() instanceof PEnemy) {
+					((PEnemy) u.getUserObject()).setFrozen(false);
+				}
+				listConnector.setUpdatePosition(true);
+				listConnector.setUpdateRotation(true);
 			}
-			listConnector.setUpdatePosition(true);
-			listConnector.setUpdateRotation(true);
+		} else {
+			playerPC.setUpdatePosition(true);
+			playerPC.setUpdateRotation(true);
 		}
-
 	}
 
 	public void pauseTimer() {
 		// nats.getEngine().unregisterUpdateHandler(th);
 		time.setActive(false);
+		player.setPause(true);
 		player.pauseMusic();
 		// pause all Objects on the field
 		// nats.getEngine().stop();
+		// if(!player.isStasisFieldActivated()) {
 		list = world.getPhysicsConnectorManager().listIterator();
 		while (list.hasNext()) {
 			Log.i("NATS", "setUpdateFalse");
@@ -1124,6 +1141,7 @@ public class GameEnvironment extends Scene {
 			listConnector.setUpdatePosition(false);
 			listConnector.setUpdateRotation(false);
 		}
+		// }
 	}
 
 	public void resetTimer() {
@@ -1171,8 +1189,8 @@ public class GameEnvironment extends Scene {
 		}
 		smallBombSprite.setPosition(-500f, -400f);
 		smallDeadlytrailSprite.setPosition(-500f, -400f);
-		smallTurboSprite.setPosition(nats.getCameraWidth() - 90, 180);
-		smallStasisfieldSprite.setPosition(nats.getCameraWidth() - 200, 80);
+		smallTurboSprite.setPosition(nats.getCameraWidth() - 90, 235);
+		smallStasisfieldSprite.setPosition(nats.getCameraWidth() - 240, 80);
 	}
 
 	public HUD getHUDUpgrade() {
@@ -1207,87 +1225,91 @@ public class GameEnvironment extends Scene {
 		Log.i("Usable", "setUsable1");
 		if (usable == -1) {
 			if (items[0] != null) {
-				Log.i("Usable", "-1");
+				// Log.i("Usable", "-1");
+				items[0].setPosition(-500f, -400f);
 				HUDGame.detachChild(items[0]);
 				HUDGame.unregisterTouchArea(items[0]);
+
 				// this.unregisterTouchArea(items[0]);
 				items[0] = null;
 			}
 		} else if (usable == finals.stasisfield()) {
 			if (items[0] == null) {
-				Log.i("Usable", "stasisfield");
+				// Log.i("Usable", "stasisfield");
 				items[0] = smallStasisfieldSprite;
 				HUDGame.attachChild(items[0]);
-				items[0].setPosition(nats.getCameraWidth() - 200, 80);
+				items[0].setPosition(nats.getCameraWidth() - 240, 80);
 				// this.registerTouchArea(items[0]);
 			}
 		} else if (usable == finals.turbo()) {
 			if (items[0] == null) {
-				Log.i("Usable", "turbo");
+				// Log.i("Usable", "turbo");
 				items[0] = smallTurboSprite;
 				HUDGame.attachChild(items[0]);
-				items[0].setPosition(nats.getCameraWidth() - 200, 80);
+				items[0].setPosition(nats.getCameraWidth() - 240, 80);
 				// this.registerTouchArea(items[0]);
 			}
 		} else if (usable == finals.deadlytrail()) {
 			if (items[0] == null) {
-				Log.i("Usable", "deadlytrail");
+				// Log.i("Usable", "deadlytrail");
 				items[0] = smallDeadlytrailSprite;
 				HUDGame.attachChild(items[0]);
-				items[0].setPosition(nats.getCameraWidth() - 200, 80);
+				items[0].setPosition(nats.getCameraWidth() - 240, 80);
 				// this.registerTouchArea(items[0]);
 			}
 		} else if (usable == finals.bomb()) {
 			if (items[0] == null) {
-				Log.i("Usable", "bomb");
+				// Log.i("Usable", "bomb");
 				items[0] = smallBombSprite;
 				HUDGame.attachChild(items[0]);
-				items[0].setPosition(nats.getCameraWidth() - 200, 80);
+				items[0].setPosition(nats.getCameraWidth() - 240, 80);
 				// this.registerTouchArea(items[0]);
 			}
 		}
 	}
 
 	public void setUsable2(int usable) {
-		Log.i("Usable", "setUsable2");
+		// Log.i("Usable", "setUsable2");
 		if (usable == -1) {
-			Log.i("Usable", "-1");
+			// Log.i("Usable", "-1");
 			if (items[1] != null) {
+				items[1].setPosition(-500f, -400f);
 				HUDGame.detachChild(items[1]);
 				HUDGame.unregisterTouchArea(items[1]);
+
 				// this.unregisterTouchArea(items[1]);
 				items[1] = null;
 			}
 		} else if (usable == finals.stasisfield()) {
 			if (items[1] == null) {
-				Log.i("Usable", "stasisfield");
+				// Log.i("Usable", "stasisfield");
 				items[1] = smallStasisfieldSprite;
 				HUDGame.attachChild(items[1]);
-				items[1].setPosition(nats.getCameraWidth() - 90, 180);
+				items[1].setPosition(nats.getCameraWidth() - 90, 235);
 				// this.registerTouchArea(items[1]);
 			}
 		} else if (usable == finals.turbo()) {
 			if (items[1] == null) {
-				Log.i("Usable", "turbo");
+				// Log.i("Usable", "turbo");
 				items[1] = smallTurboSprite;
 				HUDGame.attachChild(items[1]);
-				items[1].setPosition(nats.getCameraWidth() - 90, 180);
+				items[1].setPosition(nats.getCameraWidth() - 90, 235);
 				// this.registerTouchArea(items[1]);
 			}
 		} else if (usable == finals.deadlytrail()) {
 			if (items[1] == null) {
-				Log.i("Usable", "deadlytrail");
+				// Log.i("Usable", "deadlytrail");
 				items[1] = smallDeadlytrailSprite;
 				HUDGame.attachChild(items[1]);
-				items[1].setPosition(nats.getCameraWidth() - 90, 180);
+				items[1].setPosition(nats.getCameraWidth() - 90, 235);
 				// this.registerTouchArea(items[1]);
 			}
 		} else if (usable == finals.bomb()) {
 			if (items[1] == null) {
-				Log.i("Usable", "bomb");
+				// Log.i("Usable", "bomb");
 				items[1] = smallBombSprite;
 				HUDGame.attachChild(items[1]);
-				items[1].setPosition(nats.getCameraWidth() - 90, 180);
+				items[1].setPosition(nats.getCameraWidth() - 90, 235);
 				// this.registerTouchArea(items[1]);
 			}
 		}
@@ -1332,8 +1354,8 @@ public class GameEnvironment extends Scene {
 	public TextureRegion getEnemyTwoTextureRegion() {
 		return enemyTwoITextureRegion;
 	}
-	
-	public TextureRegion getEnemyBlackHoleTextureRegion(){
+
+	public TextureRegion getEnemyBlackHoleTextureRegion() {
 		return enemyBlackHoleITextureRegion;
 	}
 
@@ -1367,6 +1389,10 @@ public class GameEnvironment extends Scene {
 
 	public Text getRessourcesDisplay() {
 		return this.resources;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 }

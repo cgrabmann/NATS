@@ -47,7 +47,7 @@ public class nats extends BaseGameActivity {
 		//mainCamera.onUpdate(10f);
 		
 		EngineOptions options = new EngineOptions(true,
-				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(),
+				ScreenOrientation.LANDSCAPE_SENSOR, new FillResolutionPolicy(),
 				mainCamera);
 		options.getRenderOptions().setDithering(true);
 		options.getTouchOptions().setNeedsMultiTouch(true);

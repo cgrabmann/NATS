@@ -33,6 +33,9 @@ public class Usables {
 	private boolean deadlytrail = false;
 	private boolean bomb = false;
 
+	private float timerStasis = 0;
+	private float timerTrail = 0;
+
 	nats nats;
 	GameEnvironment gameEnvironment;
 	MaxStepPhysicsWorld world;
@@ -54,9 +57,9 @@ public class Usables {
 	Sprite bombSprite5;
 
 	Rectangle rec;
-	
+
 	Body iterationBody;
-	
+
 	Iterator<PhysicsConnector> list;
 	PhysicsConnector listConnector;
 
@@ -103,77 +106,83 @@ public class Usables {
 	}
 
 	public void stasisfield() {
-		Log.i("Usables", "Stasisfield");
+		// Log.i("Usables", "Stasisfield");
 		this.stasisfield = true;
-		player.setUsables(player.getUsables(finals.stasisfield())-1,
+		player.setStasisField(true);
+		player.setUsables(player.getUsables(finals.stasisfield()) - 1,
 				finals.stasisfield());
 		if (player.getUsables(finals.stasisfield()) == 0) {
 			// Icon wegnehmen
-			if(gameEnvironment.getUsable1().equals(gameEnvironment.getSmallStasisfieldSprite())) {
+			if (gameEnvironment.getUsable1().equals(
+					gameEnvironment.getSmallStasisfieldSprite())) {
 				gameEnvironment.setUsable1(-1);
-			}else {
+				gameEnvironment.getUpgradeMenu().getUpgrade().unsetEquipped(0);
+			} else {
 				gameEnvironment.setUsable2(-1);
+				gameEnvironment.getUpgradeMenu().getUpgrade().unsetEquipped(1);
 			}
-			gameEnvironment.getUpgradeMenu().setUsableEquip(finals.stasisfield());
+			gameEnvironment.getUpgradeMenu().setUsableEquip(
+					finals.stasisfield());
 		}
 		gameEnvironment.getUpgradeMenu().setUsableNumber(finals.stasisfield());
 		// Hier Stasisfield aktivieren
-		/*final Iterator<Body> allBodies = world.getBodies();
-		while (allBodies.hasNext()) {
-			iterationBody = allBodies.next();
-			UserData u = (UserData) iterationBody.getUserData();
-			if (u.getUserObject() instanceof PEnemy) {
-				PEnemy e = (PEnemy) u.getUserObject();
-				// setUpdate(false)
-			}
-			
-		}*/
+		/*
+		 * final Iterator<Body> allBodies = world.getBodies(); while
+		 * (allBodies.hasNext()) { iterationBody = allBodies.next(); UserData u
+		 * = (UserData) iterationBody.getUserData(); if (u.getUserObject()
+		 * instanceof PEnemy) { PEnemy e = (PEnemy) u.getUserObject(); //
+		 * setUpdate(false) }
+		 * 
+		 * }
+		 */
 		list = world.getPhysicsConnectorManager().listIterator();
 		while (list.hasNext()) {
 			Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
-			if(u.getUserObject() instanceof PEnemy) {
-				((PEnemy)u.getUserObject()).setFrozen(true);
+			if (u.getUserObject() instanceof PEnemy) {
+				((PEnemy) u.getUserObject()).setFrozen(true);
 				listConnector.setUpdatePosition(false);
 				listConnector.setUpdateRotation(false);
 			}
 		}
-		
-		nats.getEngine().registerUpdateHandler(new TimerHandler(5f, new ITimerCallback() {
-			
-			@Override
-			public void onTimePassed(TimerHandler pTimerHandler) {
-				// TODO Auto-generated method stub
-				nats.getEngine().unregisterUpdateHandler(pTimerHandler);
-				list = world.getPhysicsConnectorManager().listIterator();
-				while (list.hasNext()) {
-					Log.i("NATS", "setUpdateFalse");
-					listConnector = list.next();
-					UserData u = (UserData) listConnector.getBody().getUserData();
-					if(u.getUserObject() instanceof PEnemy) {
-						((PEnemy)u.getUserObject()).setFrozen(false);
-						listConnector.setUpdatePosition(true);
-						listConnector.setUpdateRotation(true);
-					}
-				}
-			}
-		}));
 
 		gameEnvironment.attachChild(stasisFieldSprite);
+
 		nats.getEngine().registerUpdateHandler(
-				new TimerHandler(5f, new ITimerCallback() {
+				new TimerHandler(0.2f, true, new ITimerCallback() {
 
 					@Override
 					public void onTimePassed(TimerHandler pTimerHandler) {
 						// TODO Auto-generated method stub
-						Log.i("Usables", "Stasisfield Ende");
+						if (!player.isGamePaused()) {
+							if (timerStasis >= 5) {
+								nats.getEngine().unregisterUpdateHandler(
+										pTimerHandler);
+								list = world.getPhysicsConnectorManager()
+										.listIterator();
+								while (list.hasNext()) {
+									Log.i("NATS", "setUpdateFalse");
+									listConnector = list.next();
+									UserData u = (UserData) listConnector
+											.getBody().getUserData();
+									if (u.getUserObject() instanceof PEnemy) {
+										((PEnemy) u.getUserObject())
+												.setFrozen(false);
+										listConnector.setUpdatePosition(true);
+										listConnector.setUpdateRotation(true);
+									}
+									gameEnvironment
+											.detachChild(stasisFieldSprite);
+									stasisfield = false;
+									timerStasis = 0f;
+								}
+								player.setStasisField(false);
+							} else {
+								timerStasis += 0.2;
+							}
+						}
 
-						// Hier stasisField Aktionen rückgängig machen
-
-						gameEnvironment.detachChild(stasisFieldSprite);
-						stasisfield = false;
-						nats.getEngine().unregisterUpdateHandler(pTimerHandler);
 					}
 				}));
 	}
@@ -186,15 +195,17 @@ public class Usables {
 		final float y;
 
 		turbo = true;
-		
-		player.setUsables(player.getUsables(finals.turbo())-1,
-				finals.turbo());
+
+		player.setUsables(player.getUsables(finals.turbo()) - 1, finals.turbo());
 		if (player.getUsables(finals.turbo()) == 0) {
-			if(gameEnvironment.getUsable1().equals(gameEnvironment.getSmallTurboSprite())) {
+			if (gameEnvironment.getUsable1().equals(
+					gameEnvironment.getSmallTurboSprite())) {
 				gameEnvironment.setUsable1(-1);
+				gameEnvironment.getUpgradeMenu().getUpgrade().unsetEquipped(0);
 				// unregister Touch
-			}else {
+			} else {
 				gameEnvironment.setUsable2(-1);
+				gameEnvironment.getUpgradeMenu().getUpgrade().unsetEquipped(1);
 				// unregister Touch
 			}
 			gameEnvironment.getUpgradeMenu().setUsableEquip(finals.turbo());
@@ -219,83 +230,110 @@ public class Usables {
 					@Override
 					public void onTimePassed(TimerHandler pTimerHandler) {
 						// TODO Auto-generated method stub
-						body.setLinearVelocity(x * 2500f, y * 2500f);
-						if (counterTurbo >= 10) {
-							turbo = false;
-							player.setShootingAllowed(true);
-							player.deactivateTurbo();
-							nats.getEngine().unregisterUpdateHandler(
-									pTimerHandler);
-							counterTurbo = 0;
+						if (!player.isGamePaused()) {
+							body.setLinearVelocity(x * 2500f, y * 2500f);
+							if (counterTurbo >= 10) {
+								turbo = false;
+								player.setShootingAllowed(true);
+								player.deactivateTurbo();
+								nats.getEngine().unregisterUpdateHandler(
+										pTimerHandler);
+								counterTurbo = 0;
+							}
+							counterTurbo++;
 						}
-						counterTurbo++;
+
 					}
 				}));
 	}
 
 	public void deadlytrail() {
 		deadlytrail = true;
-		
-		player.setUsables(player.getUsables(finals.deadlytrail())-1,
+		player.setDeadlyTrail(true);
+
+		player.setUsables(player.getUsables(finals.deadlytrail()) - 1,
 				finals.deadlytrail());
 		if (player.getUsables(finals.deadlytrail()) == 0) {
-			if(gameEnvironment.getUsable1().equals(gameEnvironment.getSmallDeadlytrailSprite())) {
+			if (gameEnvironment.getUsable1().equals(
+					gameEnvironment.getSmallDeadlytrailSprite())) {
 				gameEnvironment.setUsable1(-1);
-			}else {
+				gameEnvironment.getUpgradeMenu().getUpgrade().unsetEquipped(0);
+			} else {
 				gameEnvironment.setUsable2(-1);
+				gameEnvironment.getUpgradeMenu().getUpgrade().unsetEquipped(1);
 			}
-			gameEnvironment.getUpgradeMenu().setUsableEquip(finals.deadlytrail());
+			gameEnvironment.getUpgradeMenu().setUsableEquip(
+					finals.deadlytrail());
 		}
 		gameEnvironment.getUpgradeMenu().setUsableNumber(finals.deadlytrail());
 
 		nats.getEngine().registerUpdateHandler(
-				new TimerHandler(0.35f, true, new ITimerCallback() {
+				new TimerHandler(0.05f, true, new ITimerCallback() {
 
 					@Override
 					public void onTimePassed(TimerHandler pTimerHandler) {
 						// TODO Auto-generated method stub
-						Log.i("Usables", "allocate trail");
-						Trail t = bulletPool.onAllocateTrail();
-						/*
-						 * Log.i("Usables", "set trail; X,Y: " +
-						 * player.getFlamePosX() + "," + player.getFlamePosY());
-						 */
-						t.set(player.getPosX(), player.getPosY());
 
-						if (counterDeadly >= 40) {
-							nats.getEngine().unregisterUpdateHandler(
-									pTimerHandler);
-							counterDeadly = 0;
-							nats.getEngine().registerUpdateHandler(
-									new TimerHandler(7f, new ITimerCallback() {
+						if (!player.isGamePaused()) {
+							Log.i("NATS", "Trail");
+							Trail t = bulletPool.onAllocateTrail();
+							/*
+							 * Log.i("Usables", "set trail; X,Y: " +
+							 * player.getFlamePosX() + "," +
+							 * player.getFlamePosY());
+							 */
+							t.set(player.getPosX(), player.getPosY());
 
-										@Override
-										public void onTimePassed(
-												TimerHandler pTimerHandler) {
-											// TODO Auto-generated method stub
-											nats.getEngine()
-													.unregisterUpdateHandler(
-															pTimerHandler);
-											deadlytrail = false;
-										}
-									}));
+							if (counterDeadly >= 40) {
+								nats.getEngine().unregisterUpdateHandler(
+										pTimerHandler);
+								counterDeadly = 0;
+								nats.getEngine().registerUpdateHandler(
+										new TimerHandler(0.05f, true,
+												new ITimerCallback() {
+
+													@Override
+													public void onTimePassed(
+															TimerHandler pTimerHandler) {
+														// TODO Auto-generated
+														// method stub
+														if (!player
+																.isGamePaused()) {
+															if (timerTrail >= 7) {
+																nats.getEngine()
+																		.unregisterUpdateHandler(
+																				pTimerHandler);
+																deadlytrail = false;
+																player.setDeadlyTrail(false);
+															}
+															timerTrail += 0.05;
+														}
+
+													}
+												}));
+							}
+
+							counterDeadly++;
 						}
+						// Log.i("Usables", "allocate trail");
 
-						counterDeadly++;
 					}
 				}));
 	}
 
 	public void bomb() {
 		this.bomb = true;
-		
-		player.setUsables(player.getUsables(finals.bomb())-1,
-				finals.bomb());
+		player.setBomb(true);
+
+		player.setUsables(player.getUsables(finals.bomb()) - 1, finals.bomb());
 		if (player.getUsables(finals.bomb()) == 0) {
-			if(gameEnvironment.getUsable1().equals(gameEnvironment.getSmallBombSprite())) {
+			if (gameEnvironment.getUsable1().equals(
+					gameEnvironment.getSmallBombSprite())) {
 				gameEnvironment.setUsable1(-1);
-			}else {
+				gameEnvironment.getUpgradeMenu().getUpgrade().unsetEquipped(0);
+			} else {
 				gameEnvironment.setUsable2(-1);
+				gameEnvironment.getUpgradeMenu().getUpgrade().unsetEquipped(1);
 			}
 			gameEnvironment.getUpgradeMenu().setUsableEquip(finals.bomb());
 		}
@@ -308,17 +346,14 @@ public class Usables {
 			UserData u = (UserData) iterationBody.getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
 				PEnemy e = (PEnemy) u.getUserObject();
-				e.deactivate();
-			}else if(u.getUserString().equals("bullet")) {
-				Bullet b = (Bullet) u.getUserObject();
-				b.deactivate();
+				e.stop();
 			}
 			/*
 			 * r.setVisible(false); scene.detachChild(r);
 			 * nats.getEngine().unregisterUpdateHandler(th);
 			 * physicsWorld.unregisterPhysicsConnector(pc); //
-			 * r.setIgnoreUpdate(true); //body.setTransform(-500, -340,
-			 * 0.0f); body.setActive(false); body.setAwake(false);
+			 * r.setIgnoreUpdate(true); //body.setTransform(-500, -340, 0.0f);
+			 * body.setActive(false); body.setAwake(false);
 			 */
 		}
 
@@ -331,67 +366,73 @@ public class Usables {
 					@Override
 					public void onTimePassed(TimerHandler pTimerHandler) {
 						// TODO Auto-generated method stub
-						bombSprite1.setScale(i);
-						i += 0.16f;
+						if (!player.isGamePaused()) {
+							bombSprite1.setScale(i);
+							i += 0.16f;
 
-						if (i >= 11.20) {
-							nats.getEngine().unregisterUpdateHandler(
-									pTimerHandler);
-							nats.getEngine().registerUpdateHandler(
-									new TimerHandler(1f, new ITimerCallback() {
+							if (i >= 11.20) {
+								nats.getEngine().unregisterUpdateHandler(
+										pTimerHandler);
+								nats.getEngine().registerUpdateHandler(
+										new TimerHandler(1f,
+												new ITimerCallback() {
 
-										@Override
-										public void onTimePassed(
-												TimerHandler pTimerHandler) {
-											// TODO Auto-generated method stub
-											nats.getEngine()
-													.unregisterUpdateHandler(
-															pTimerHandler);
-											gameEnvironment
-													.detachChild(bombSprite1);
-											gameEnvironment
-													.detachChild(bombSprite2);
-											gameEnvironment
-													.detachChild(bombSprite3);
-											gameEnvironment
-													.detachChild(bombSprite4);
-											gameEnvironment
-													.detachChild(bombSprite5);
-											i = 0.5f;
-											j = 0.5f;
-											smallExplosion = false;
-											Usables.this.bomb = false;
-										}
-									}));
+													@Override
+													public void onTimePassed(
+															TimerHandler pTimerHandler) {
+														// TODO Auto-generated
+														// method stub
+														nats.getEngine()
+																.unregisterUpdateHandler(
+																		pTimerHandler);
+														gameEnvironment
+																.detachChild(bombSprite1);
+														gameEnvironment
+																.detachChild(bombSprite2);
+														gameEnvironment
+																.detachChild(bombSprite3);
+														gameEnvironment
+																.detachChild(bombSprite4);
+														gameEnvironment
+																.detachChild(bombSprite5);
+														i = 0.5f;
+														j = 0.5f;
+														smallExplosion = false;
+														Usables.this.bomb = false;
+														player.setBomb(false);
+													}
+												}));
 
-							// Hier die Gegner entfernen
-						}
-
-						if (i >= 6.4) {
-							if (!smallExplosion) {
-								smallExplosion = true;
-								bombSprite2.setPosition(0, 480);
-								bombSprite2.setRotation(225f);
-								bombSprite3.setPosition(0, 0);
-								bombSprite3.setRotation(135f);
-								bombSprite4.setPosition(800, 480);
-								bombSprite4.setRotation(315f);
-								bombSprite5.setPosition(800, 0);
-								bombSprite5.setRotation(45f);
-
-								gameEnvironment.attachChild(bombSprite2);
-								gameEnvironment.attachChild(bombSprite3);
-								gameEnvironment.attachChild(bombSprite4);
-								gameEnvironment.attachChild(bombSprite5);
+								// Hier die Gegner entfernen
 							}
 
-							bombSprite2.setScale(j);
-							bombSprite3.setScale(j);
-							bombSprite4.setScale(j);
-							bombSprite5.setScale(j);
+							if (i >= 6.4) {
+								if (!smallExplosion) {
+									smallExplosion = true;
+									bombSprite2.setPosition(0, 480);
+									bombSprite2.setRotation(225f);
+									bombSprite3.setPosition(0, 0);
+									bombSprite3.setRotation(135f);
+									bombSprite4.setPosition(800, 480);
+									bombSprite4.setRotation(315f);
+									bombSprite5.setPosition(800, 0);
+									bombSprite5.setRotation(45f);
 
-							j += 0.16f;
+									gameEnvironment.attachChild(bombSprite2);
+									gameEnvironment.attachChild(bombSprite3);
+									gameEnvironment.attachChild(bombSprite4);
+									gameEnvironment.attachChild(bombSprite5);
+								}
+
+								bombSprite2.setScale(j);
+								bombSprite3.setScale(j);
+								bombSprite4.setScale(j);
+								bombSprite5.setScale(j);
+
+								j += 0.16f;
+							}
 						}
+
 					}
 				}));
 
