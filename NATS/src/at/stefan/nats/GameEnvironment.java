@@ -604,7 +604,7 @@ public class GameEnvironment extends Scene {
 							// Log.i("NATS",
 							// "Angle: "+(playerBaseBody.getAngle()*180/Math.PI));
 						} else {
-							int speed = 10 + 1 * player.getSpeed();
+							int speed = 11 + 1 * player.getSpeed();
 							player.getPlayerFlame().setVisible(true);
 							playerBaseBody.setLinearVelocity(pValueX * speed,
 									pValueY * speed);

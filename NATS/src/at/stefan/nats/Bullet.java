@@ -30,7 +30,7 @@ public class Bullet {
 	nats nats;
 	Player player;
 	Vector2 einheitsVector;
-	float bulletSpeed = 350;
+	float bulletSpeed = 400f;
 	float shotfrequence;
 
 	TimerHandler th;
