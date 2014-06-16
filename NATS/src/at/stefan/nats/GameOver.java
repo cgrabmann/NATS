@@ -22,7 +22,6 @@ import android.graphics.Typeface;
 import at.stefan.nats.SceneManager.AllScenes;
 
 public class GameOver extends Scene{
-	private boolean gameover = false;
 	private int score;
 	
 	nats nats;
@@ -82,6 +81,8 @@ public class GameOver extends Scene{
 	
 	public void showGameOver(){
 		
+		Highscores highscores = new Highscores(nats, mainCamera);
+		
 		Font myFont = FontFactory.create(nats.getFontManager(),
 
 				nats.getTextureManager(), 256, 256,
@@ -89,13 +90,19 @@ public class GameOver extends Scene{
 				Color.WHITE.hashCode());
 		myFont.load();
 		
-		if(isNewHighScore()){
+		if(isNewHighScore(score, highscores.getLastHighScore())){
 			
 			String title = "New high score:  " + Integer.toString(score);
 			
 			InputText name = new InputText(400, 240, title, "Enter Name", myTiledTextureRegion, myFont, 17, 19, nats.getVertexBufferObjectManager(), nats);
 			this.attachChild(name);
-			this.registerTouchArea(name);
+			//New highscore will be sent to the highscore list
+			//TO DO
+			
+			
+			
+			
+			//this.registerTouchArea(name);
 		}
 		else {
 			
@@ -128,12 +135,7 @@ public class GameOver extends Scene{
 		
 	}
 	
-	public boolean isNewHighScore(){
-		return false;
-	}
-	
-	
-	
-		// this.setBackground(new Background(0.5f, 0.5f, 0.5f, 0.5f));
-		
+	public boolean isNewHighScore(int score, int lastHighScore){
+		return score > lastHighScore;
+	}	
 }

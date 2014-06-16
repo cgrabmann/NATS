@@ -196,5 +196,10 @@ public class Highscores {
 		}
 		return scoreString;
 	}
+	
+	public int getLastHighScore(){
+		scoreArray = sortScores(scoreArray);
+		return Integer.parseInt(scoreArray[0][1]);
+	}
 
 }
