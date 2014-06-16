@@ -406,7 +406,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.i("NATS", "fireballbitmap not working");
+			//Log.i("NATS", "fireballbitmap not working");
 		}
 
 		fireBallSpriteGroup = new SpriteGroup(0, 0, fireBallBitmapTextureAtlas,
@@ -427,7 +427,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.i("NATS", "enemyzerobitmap not working");
+			//Log.i("NATS", "enemyzerobitmap not working");
 		}
 
 		enemyZeroSpriteGroup = new SpriteGroup(0, 0,
@@ -448,7 +448,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.i("NATS", "enemyOnebitmap not working");
+			//Log.i("NATS", "enemyOnebitmap not working");
 		}
 
 		enemyOneSpriteGroup = new SpriteGroup(0, 0, enemyOneBitmapTextureAtlas,
@@ -468,7 +468,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.i("NATS", "enemyTwobitmap not working");
+			//Log.i("NATS", "enemyTwobitmap not working");
 		}
 
 		enemyTwoSpriteGroup = new SpriteGroup(0, 0, enemyTwoBitmapTextureAtlas,
@@ -488,7 +488,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.i("NATS", "enemyTwoSmallbitmap not working");
+			//Log.i("NATS", "enemyTwoSmallbitmap not working");
 		}
 
 		enemyTwoSmallSpriteGroup = new SpriteGroup(0, 0,
@@ -509,7 +509,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.i("NATS", "enemyBlackHolebitmap not working");
+			//Log.i("NATS", "enemyBlackHolebitmap not working");
 		}
 
 		bulletPool = new BulletPool(player, this, world, nats);
@@ -650,8 +650,8 @@ public class GameEnvironment extends Scene {
 						// TODO Auto-generated method stub
 
 						if (player.isShootingAllowed()
-								&& (Math.abs(pValueX) > 0.5f || Math
-										.abs(pValueY) > 0.5f)) {
+								&& (Math.abs(pValueX) > 0.2f || Math
+										.abs(pValueY) > 0.2f)) {
 							// Log.i("NATS", "Created bullet");
 							if (counterShot >= player.getShotFrequence()) {
 								double rand = Math.random();
@@ -776,7 +776,7 @@ public class GameEnvironment extends Scene {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
 					float Y) {
 				if (pSceneTouchEvent.isActionDown()) {
-					Log.i("Usable", "smallStasis");
+					//Log.i("Usable", "smallStasis");
 					if (!usables.stasisFieldIsActivated()) {
 						usables.stasisfield();
 					}
@@ -790,7 +790,7 @@ public class GameEnvironment extends Scene {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
 					float Y) {
 				if (pSceneTouchEvent.isActionDown()) {
-					Log.i("Usable", "smallTurbo");
+					//Log.i("Usable", "smallTurbo");
 					if (!usables.turboIsActivated()) {
 						usables.turbo(playerBaseBody);
 					}
@@ -805,7 +805,7 @@ public class GameEnvironment extends Scene {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
 					float Y) {
 				if (pSceneTouchEvent.isActionDown()) {
-					Log.i("Usable", "smallDeadly");
+					//Log.i("Usable", "smallDeadly");
 					if (!usables.deadlyTrailIsActivated()) {
 						usables.deadlytrail();
 					}
@@ -819,7 +819,7 @@ public class GameEnvironment extends Scene {
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
 					float Y) {
 				if (pSceneTouchEvent.isActionDown()) {
-					Log.i("Usable", "smallBomb");
+					//Log.i("Usable", "smallBomb");
 					if (!usables.bombIsActivated()) {
 						usables.bomb();
 					}
@@ -928,6 +928,7 @@ public class GameEnvironment extends Scene {
 		mainCamera.setHUD(HUDPause);
 		GameEnvironment.this.registerPauseTouch();
 		this.hideGameHUD();
+		player.pauseMusic();
 		// this.unsetCameraChasing();
 		// HUDGame.getChildByIndex(PAUSE_LAYER).setVisible(true);
 		// this.getChildByIndex(PAUSE_LAYER).setVisible(true);
@@ -941,6 +942,7 @@ public class GameEnvironment extends Scene {
 		// mainCamera.getHUD().detachSelf();
 		this.showGameHUD();
 		this.startTimer();
+		player.resumeMusic();
 		// this.setCameraChasing();
 		// this.getChildByIndex(PAUSE_LAYER).setVisible(false);
 		// HUDGame.getChildByIndex(PAUSE_LAYER).setVisible(false);
@@ -954,6 +956,7 @@ public class GameEnvironment extends Scene {
 		mainCamera.setHUD(HUDEmpty);
 		player.setPosX(400f);
 		player.setPosY(240f);
+		player.stopMusic();
 		this.mainCamera.setCenter(400f, 240f);
 		playerBaseBody.setTransform(player.getPosX() / 32,
 				player.getPosY() / 32, 0.0f);
@@ -963,7 +966,7 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void showUpgradeMenu() {
-		Log.i("NATS", "showUpgradeMenu");
+		//Log.i("NATS", "showUpgradeMenu");
 		this.hideGameHUD();
 		mainCamera.setHUD(HUDUpgrade);
 		// this.getChildByIndex(UPGRADE_LAYER).setVisible(true);
@@ -973,7 +976,7 @@ public class GameEnvironment extends Scene {
 		time.setActive(false);
 		list = world.getPhysicsConnectorManager().listIterator();
 		while (list.hasNext()) {
-			Log.i("NATS", "setUpdateFalse");
+			//Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
@@ -985,7 +988,7 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void hideUpgradeMenu() {
-		Log.i("NATS", "hideUpgradeMenu");
+		//Log.i("NATS", "hideUpgradeMenu");
 		// mainCamera.getHUD().detachSelf();
 		resources.setText(player.getRessourcesForDisplay());
 		this.showGameHUD();
@@ -997,7 +1000,7 @@ public class GameEnvironment extends Scene {
 		time.setActive(true);
 		list = world.getPhysicsConnectorManager().listIterator();
 		while (list.hasNext()) {
-			Log.i("NATS", "setUpdateFalse");
+			//Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
@@ -1090,12 +1093,11 @@ public class GameEnvironment extends Scene {
 	public void startTimer() {
 		// nats.getEngine().registerUpdateHandler(th);
 		time.setActive(true);
-		player.playMusic();
 		// nats.getEngine().start();
 		list = world.getPhysicsConnectorManager().listIterator();
 
 		while (list.hasNext()) {
-			Log.i("NATS", "setUpdateFalse");
+			//Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
@@ -1110,12 +1112,11 @@ public class GameEnvironment extends Scene {
 	public void pauseTimer() {
 		// nats.getEngine().unregisterUpdateHandler(th);
 		time.setActive(false);
-		player.pauseMusic();
 		// pause all Objects on the field
 		// nats.getEngine().stop();
 		list = world.getPhysicsConnectorManager().listIterator();
 		while (list.hasNext()) {
-			Log.i("NATS", "setUpdateFalse");
+			//Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
@@ -1131,7 +1132,6 @@ public class GameEnvironment extends Scene {
 		highscore.setText("00:00");
 		player.setRessources(2000);
 		resources.setText("0000" + player.getRessources());
-		player.resumeMusic();
 		final Iterator<Body> allBodies = world.getBodies();
 		while (allBodies.hasNext()) {
 			iterationBody = allBodies.next();
@@ -1205,10 +1205,10 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void setUsable1(int usable) {
-		Log.i("Usable", "setUsable1");
+		//Log.i("Usable", "setUsable1");
 		if (usable == -1) {
 			if (items[0] != null) {
-				Log.i("Usable", "-1");
+				//Log.i("Usable", "-1");
 				HUDGame.detachChild(items[0]);
 				HUDGame.unregisterTouchArea(items[0]);
 				// this.unregisterTouchArea(items[0]);
@@ -1216,7 +1216,7 @@ public class GameEnvironment extends Scene {
 			}
 		} else if (usable == finals.stasisfield()) {
 			if (items[0] == null) {
-				Log.i("Usable", "stasisfield");
+				//Log.i("Usable", "stasisfield");
 				items[0] = smallStasisfieldSprite;
 				HUDGame.attachChild(items[0]);
 				items[0].setPosition(nats.getCameraWidth() - 200, 80);
@@ -1224,7 +1224,7 @@ public class GameEnvironment extends Scene {
 			}
 		} else if (usable == finals.turbo()) {
 			if (items[0] == null) {
-				Log.i("Usable", "turbo");
+				//Log.i("Usable", "turbo");
 				items[0] = smallTurboSprite;
 				HUDGame.attachChild(items[0]);
 				items[0].setPosition(nats.getCameraWidth() - 200, 80);
@@ -1232,7 +1232,7 @@ public class GameEnvironment extends Scene {
 			}
 		} else if (usable == finals.deadlytrail()) {
 			if (items[0] == null) {
-				Log.i("Usable", "deadlytrail");
+				//Log.i("Usable", "deadlytrail");
 				items[0] = smallDeadlytrailSprite;
 				HUDGame.attachChild(items[0]);
 				items[0].setPosition(nats.getCameraWidth() - 200, 80);
@@ -1240,7 +1240,7 @@ public class GameEnvironment extends Scene {
 			}
 		} else if (usable == finals.bomb()) {
 			if (items[0] == null) {
-				Log.i("Usable", "bomb");
+				//Log.i("Usable", "bomb");
 				items[0] = smallBombSprite;
 				HUDGame.attachChild(items[0]);
 				items[0].setPosition(nats.getCameraWidth() - 200, 80);
@@ -1250,9 +1250,9 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void setUsable2(int usable) {
-		Log.i("Usable", "setUsable2");
+		//Log.i("Usable", "setUsable2");
 		if (usable == -1) {
-			Log.i("Usable", "-1");
+			//Log.i("Usable", "-1");
 			if (items[1] != null) {
 				HUDGame.detachChild(items[1]);
 				HUDGame.unregisterTouchArea(items[1]);
@@ -1261,7 +1261,7 @@ public class GameEnvironment extends Scene {
 			}
 		} else if (usable == finals.stasisfield()) {
 			if (items[1] == null) {
-				Log.i("Usable", "stasisfield");
+				//Log.i("Usable", "stasisfield");
 				items[1] = smallStasisfieldSprite;
 				HUDGame.attachChild(items[1]);
 				items[1].setPosition(nats.getCameraWidth() - 90, 180);
@@ -1269,7 +1269,7 @@ public class GameEnvironment extends Scene {
 			}
 		} else if (usable == finals.turbo()) {
 			if (items[1] == null) {
-				Log.i("Usable", "turbo");
+				//Log.i("Usable", "turbo");
 				items[1] = smallTurboSprite;
 				HUDGame.attachChild(items[1]);
 				items[1].setPosition(nats.getCameraWidth() - 90, 180);
@@ -1277,7 +1277,7 @@ public class GameEnvironment extends Scene {
 			}
 		} else if (usable == finals.deadlytrail()) {
 			if (items[1] == null) {
-				Log.i("Usable", "deadlytrail");
+				//Log.i("Usable", "deadlytrail");
 				items[1] = smallDeadlytrailSprite;
 				HUDGame.attachChild(items[1]);
 				items[1].setPosition(nats.getCameraWidth() - 90, 180);
@@ -1285,7 +1285,7 @@ public class GameEnvironment extends Scene {
 			}
 		} else if (usable == finals.bomb()) {
 			if (items[1] == null) {
-				Log.i("Usable", "bomb");
+				//Log.i("Usable", "bomb");
 				items[1] = smallBombSprite;
 				HUDGame.attachChild(items[1]);
 				items[1].setPosition(nats.getCameraWidth() - 90, 180);

@@ -51,12 +51,12 @@ public class BulletPool {
 	public Bullet onAllocateBullet() {
 		// return null;
 		if (bulletStorage.empty()) {
-			Log.i("Pool", "Create new Bullet");
+			//Log.i("Pool", "Create new Bullet");
 			b = new Bullet(gameEnvironment, player, world, nats, this);
 			// b.activate();
 			return b;
 		} else {
-			Log.i("Pool", "Pop Bullet");
+			//Log.i("Pool", "Pop Bullet");
 			b = bulletStorage.pop();
 			// b.activate();
 			return b;
@@ -66,25 +66,25 @@ public class BulletPool {
 
 	public Bullet onAllocateGunner() {
 		if (gunnerStorage.empty()) {
-			Log.i("NATS", "new Gunner");
+			//Log.i("NATS", "new Gunner");
 			b = new Bullet(gameEnvironment, player, world, nats, this,
 					new Color(1f, 0f, 0f));
 			return b;
 		} else {
-			Log.i("NATS", "Pop Gunner");
+			//Log.i("NATS", "Pop Gunner");
 			b = gunnerStorage.pop();
 			return b;
 		}
 	}
 
 	public Trail onAllocateTrail() {
-		Log.i("Usables", "onAllocateTrail");
+		//Log.i("Usables", "onAllocateTrail");
 		if (trailStorage.empty()) {
-			Log.i("Usables", "onAllocateTrail, empty");
+			//Log.i("Usables", "onAllocateTrail, empty");
 			t = new Trail(gameEnvironment, player, world, nats, this);
 			return t;
 		} else {
-			Log.i("Usables", "onAllocateTrail, pop");
+			//Log.i("Usables", "onAllocateTrail, pop");
 			t = trailStorage.pop();
 			return t;
 		}
@@ -99,7 +99,7 @@ public class BulletPool {
 	}
 
 	public void recycleGunner(final Bullet pBullet) {
-		Log.i("NATS", "Push Gunner");
+		//Log.i("NATS", "Push Gunner");
 		gunnerStorage.push(pBullet);
 	}
 

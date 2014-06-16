@@ -63,6 +63,8 @@ public class EnemyTypeTwoSmall extends PEnemy {
 	}
 
 	public void start(float x, float y) {
+		super.posx = x;
+		super.posy = y;
 		// this.createStartPos(super.game);
 		if (!enemy.hasParent()) {
 			super.game.getEnemyTwoSmallSpriteGroup().attachChild(enemy);
@@ -93,9 +95,6 @@ public class EnemyTypeTwoSmall extends PEnemy {
 		// TODO start fly function | alle 15 msec ausführen
 		// TODO Timehandler
 
-		body.setActive(true);
-		body.setAwake(true);
-
 		if (Math.random() < 0.5f) {
 			super.movex = 0;
 			super.movey = 50;
@@ -103,9 +102,12 @@ public class EnemyTypeTwoSmall extends PEnemy {
 			super.movex = 50;
 			super.movey = 0;
 		}
-		enemy.setVisible(true);
 
-		body.setTransform(x / 32, y / 32, 0f);
+		body.setTransform(super.posx / 32, super.posy / 32, 0f);
+		
+		body.setActive(true);
+		body.setAwake(true);
+		enemy.setVisible(true);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -113,7 +115,6 @@ public class EnemyTypeTwoSmall extends PEnemy {
 
 	@Override
 	public void stop() {
-		this.reset();
 		
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
@@ -125,11 +126,12 @@ public class EnemyTypeTwoSmall extends PEnemy {
 						.detachChild(enemy);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
-				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
+				enemy.setVisible(false);
+				EnemyTypeTwoSmall.this.reset();
 
 				nats.getEngine().registerUpdateHandler(
 						new TimerHandler(1f, new ITimerCallback() {
@@ -227,7 +229,6 @@ public class EnemyTypeTwoSmall extends PEnemy {
 
 	@Override
 	public void deactivate() {
-		this.reset();
 		
 		// TODO Auto-generated method stub
 		nats.getEngine().runOnUpdateThread(new Runnable() {
@@ -236,11 +237,7 @@ public class EnemyTypeTwoSmall extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				// Log.i("NATS", "stop");
-				EnemyTypeTwoSmall.super.game.getEnemyTwoSmallSpriteGroup()
-						.detachChild(enemy);
-				// Log.i("NATS", "stop1");
-				enemy.setVisible(false);
-				
+				nats.getEngine().unregisterUpdateHandler(th);
 				body.setLinearVelocity(0f, 0f);
 				
 				body.setTransform(-500, -340, 0.0f);
@@ -248,13 +245,20 @@ public class EnemyTypeTwoSmall extends PEnemy {
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
+				enemy.setVisible(false);
+				EnemyTypeTwoSmall.super.game.getEnemyTwoSmallSpriteGroup()
+						.detachChild(enemy);
+				// Log.i("NATS", "stop1");
+				
+				
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
 				
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
-				nats.getEngine().unregisterUpdateHandler(th);
+				
+				EnemyTypeTwoSmall.this.reset();
 				// Log.i("NATS", "stop7");
 				enemyPool.recycleEnemyTwoSmall(EnemyTypeTwoSmall.this);
 			}

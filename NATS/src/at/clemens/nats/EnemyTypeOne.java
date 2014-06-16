@@ -92,11 +92,12 @@ public class EnemyTypeOne extends PEnemy {
 		// TODO start fly function | alle 15 msec ausführen
 		// TODO Timehandler
 
+		body.setTransform(super.posx / 32, super.posy / 32, 0f);
+		
 		body.setActive(true);
 		body.setAwake(true);
 
 		enemy.setVisible(true);
-		body.setTransform(super.posx / 32, super.posy / 32, 0f);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -104,7 +105,6 @@ public class EnemyTypeOne extends PEnemy {
 
 	@Override
 	public void stop() {
-		this.reset();
 		
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
@@ -116,11 +116,12 @@ public class EnemyTypeOne extends PEnemy {
 						enemy);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
-				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);	
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
+				enemy.setVisible(false);
+				EnemyTypeOne.this.reset();
 
 				nats.getEngine().registerUpdateHandler(
 						new TimerHandler(1f, new ITimerCallback() {
@@ -211,7 +212,6 @@ public class EnemyTypeOne extends PEnemy {
 
 	@Override
 	public void deactivate() {
-		this.reset();
 		
 		// TODO Auto-generated method stub
 		nats.getEngine().runOnUpdateThread(new Runnable() {
@@ -220,25 +220,28 @@ public class EnemyTypeOne extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				// Log.i("NATS", "stop");
-				EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(
-						enemy);
-				// Log.i("NATS", "stop1");
-				
+				nats.getEngine().unregisterUpdateHandler(th);
+				enemy.setVisible(false);
 				body.setLinearVelocity(0f, 0f);
 				
 				body.setTransform(-500, -340, 0.0f);
-				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
+				EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(
+						enemy);
+				// Log.i("NATS", "stop1");
+				
+				
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
 				
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
-				nats.getEngine().unregisterUpdateHandler(th);
+				
+				EnemyTypeOne.this.reset();
 				// Log.i("NATS", "stop7");
 				enemyPool.recycleEnemyOne(EnemyTypeOne.this);
 			}

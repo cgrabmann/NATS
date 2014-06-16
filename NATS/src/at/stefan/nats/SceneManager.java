@@ -82,6 +82,7 @@ public class SceneManager {
 		}else if(scenes == AllScenes.NEW_GAME) {
 			mEngine.setScene(gameEnvironment.getGameScene());
 			gameEnvironment.startTimer();
+			player.playMusic();
 			gameEnvironment.showGameHUD();
 			currentScene = AllScenes.NEW_GAME;
 		}else if(scenes == AllScenes.HIGHSCORES) {
