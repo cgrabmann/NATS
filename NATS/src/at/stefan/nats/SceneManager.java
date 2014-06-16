@@ -52,7 +52,7 @@ public class SceneManager {
 	public void loadSplashResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("backgrounds/");
 		splashBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 800, 480, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 1920, 1080, TextureOptions.DEFAULT);
 		splashITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(splashBitmapTextureAtlas,
 						nats.getApplicationContext(), "Titelbild.png", 0, 0);

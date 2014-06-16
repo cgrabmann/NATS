@@ -955,13 +955,11 @@ public class GameEnvironment extends Scene {
 	public void leaveGame() {
 		Log.i("NATS", "leaveGame");
 		mainCamera.setHUD(HUDEmpty);
-		player.setPosX(400f);
-		player.setPosY(240f);
 		player.stopMusic();
+		this.resetTimer();
 		this.mainCamera.setCenter(400f, 240f);
 		playerBaseBody.setTransform(player.getPosX() / 32,
 				player.getPosY() / 32, 0.0f);
-		this.resetTimer();
 		th.reset();
 		this.unregisterPauseTouch();
 	}
@@ -1118,6 +1116,7 @@ public class GameEnvironment extends Scene {
 				}
 				listConnector.setUpdatePosition(true);
 				listConnector.setUpdateRotation(true);*/
+		list = world.getPhysicsConnectorManager().listIterator();
 		while (list.hasNext()) {
 			//Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
@@ -1125,6 +1124,8 @@ public class GameEnvironment extends Scene {
 			if (u.getUserObject() instanceof PEnemy) {
 				((PEnemy) u.getUserObject()).setFrozen(false);
 			}
+			listConnector.setUpdatePosition(true);
+			listConnector.setUpdateRotation(true);
 		}/* else {
 			playerPC.setUpdatePosition(true);
 			playerPC.setUpdateRotation(true);
@@ -1176,7 +1177,6 @@ public class GameEnvironment extends Scene {
 
 	private void resetGame() {
 		player.reset();
-		time.reset();
 		upgradeMenu.reset();
 		counterShot = 0;
 		list = null;

@@ -101,7 +101,7 @@ public class Player {
 				nats.getVertexBufferObjectManager());
 
 		flameBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 60, 60, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 55, 90, TextureOptions.DEFAULT);
 		flameITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(flameBitmapTextureAtlas,
 						nats.getApplicationContext(), "Flammen.png", 0, 0);
