@@ -48,13 +48,16 @@ public class EnemyTypeOne extends PEnemy {
 				nats.getVertexBufferObjectManager());
 		enemy.setCullingEnabled(true);
 		// enemy.setColor(new Color(1f, 0f, 0f));
-		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
 		// body = PhysicsFactory.createBoxBody(world, enemy,
 		// BodyType.DynamicBody,
 		// fd);
+		super.game.getEnemyOneSpriteGroup().attachChild(enemy);
 		body = PhysicsFactory.createCircleBody(world, enemy,
 				BodyType.DynamicBody, fd);
+		body.setTransform(-500, -340, 0.0f);
+		enemy.setPosition(-500f, -340f);
+		enemy.setVisible(false);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemytwo", this));
@@ -64,9 +67,9 @@ public class EnemyTypeOne extends PEnemy {
 	@Override
 	public void start() {
 		super.createStartPos();
-		if (!enemy.hasParent()) {
+		/*if (!enemy.hasParent()) {
 			super.game.getEnemyOneSpriteGroup().attachChild(enemy);
-		}
+		}*/
 		pc = new PhysicsConnector(enemy, body, true, true);
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
@@ -91,13 +94,13 @@ public class EnemyTypeOne extends PEnemy {
 
 		// TODO start fly function | alle 15 msec ausführen
 		// TODO Timehandler
+		enemy.setVisible(true);
 
 		body.setTransform(super.posx / 32, super.posy / 32, 0f);
 		
 		body.setActive(true);
 		body.setAwake(true);
 
-		enemy.setVisible(true);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -112,15 +115,15 @@ public class EnemyTypeOne extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				EnemyTypeOne.super.addRessources(resources);
-				EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(
-						enemy);
+				//EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500f, -340f);
+				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);	
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
-				enemy.setVisible(false);
 				EnemyTypeOne.this.reset();
 
 				nats.getEngine().registerUpdateHandler(
@@ -221,16 +224,16 @@ public class EnemyTypeOne extends PEnemy {
 				// TODO Auto-generated method stub
 				// Log.i("NATS", "stop");
 				nats.getEngine().unregisterUpdateHandler(th);
-				enemy.setVisible(false);
 				body.setLinearVelocity(0f, 0f);
 				
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500f, -340f);
+				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
-				EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(
-						enemy);
+				//EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
 				// Log.i("NATS", "stop1");
 				
 				

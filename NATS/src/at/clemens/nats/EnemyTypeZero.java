@@ -59,10 +59,12 @@ public class EnemyTypeZero extends PEnemy {
 				nats.getVertexBufferObjectManager());
 		enemy.setCullingEnabled(true);
 		super.game.getEnemyZeroSpriteGroup().attachChild(enemy);
-		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(5f, 1f, 0f);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody,
 				fd);
+		body.setTransform(-500, -340, 0.0f);
+		enemy.setPosition(-500, -340);
+		enemy.setVisible(false);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemyzero", this));
@@ -92,6 +94,7 @@ public class EnemyTypeZero extends PEnemy {
 		body.setAwake(true);
 		
 		this.createStartPos();
+		enemy.setVisible(true);
 		body.setTransform(super.posx / 32, super.posy / 32, 0f);
 		
 		/*if (enemy.hasParent()) {
@@ -101,7 +104,6 @@ public class EnemyTypeZero extends PEnemy {
 			super.game.getEnemyZeroSpriteGroup().attachChild(enemy);
 		}*/
 
-		enemy.setVisible(true);
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
 	
@@ -131,9 +133,10 @@ public class EnemyTypeZero extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				nats.getEngine().unregisterUpdateHandler(th);
-				enemy.setVisible(false);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500, -340);
+				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
@@ -216,6 +219,8 @@ public class EnemyTypeZero extends PEnemy {
 				// Log.i("NATS", "stop1");
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500, -340);
+				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				
 				body.setActive(false);
@@ -228,7 +233,6 @@ public class EnemyTypeZero extends PEnemy {
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
 				nats.getEngine().unregisterUpdateHandler(th);
-				enemy.setVisible(false);
 				EnemyTypeZero.this.reset();
 				// Log.i("NATS", "stop7");
 				enemyPool.recycleEnemyZero(EnemyTypeZero.this);

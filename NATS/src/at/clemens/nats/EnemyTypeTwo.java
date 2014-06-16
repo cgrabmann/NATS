@@ -50,10 +50,13 @@ public class EnemyTypeTwo extends PEnemy {
 				nats.getVertexBufferObjectManager());
 		enemy.setCullingEnabled(true);
 		// enemy.setColor(new Color(0f, 0f, 1f));
-		enemy.setVisible(false);
 		fd = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
+		super.game.getEnemyTwoSpriteGroup().attachChild(enemy);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody,
 				fd);
+		body.setTransform(-500, -340, 0.0f);
+		enemy.setPosition(-500f, -340f);
+		enemy.setVisible(false);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemytwo", this));
@@ -63,9 +66,9 @@ public class EnemyTypeTwo extends PEnemy {
 	@Override
 	public void start() {
 		super.createStartPos();
-		if (!enemy.hasParent()) {
+		/*if (!enemy.hasParent()) {
 			super.game.getEnemyTwoSpriteGroup().attachChild(enemy);
-		}
+		}*/
 		pc = new PhysicsConnector(enemy, body, true, true);
 		
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
@@ -90,12 +93,13 @@ public class EnemyTypeTwo extends PEnemy {
 
 		// TODO start fly function | alle 15 msec ausführen
 		// TODO Timehandler
+		enemy.setVisible(true);
+		
 		body.setTransform(super.posx / 32, super.posy / 32, 0f);
 		
 		body.setActive(true);
 		body.setAwake(true);
 
-		enemy.setVisible(true);
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -112,15 +116,15 @@ public class EnemyTypeTwo extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				EnemyTypeTwo.super.addRessources(resources);
-				EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(
-						enemy);
+				//EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(enemy);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500, -340);
+				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
-				enemy.setVisible(false);
 				EnemyTypeTwo.this.reset();
 				
 				twoSmall1 = enemyPool.onAllocateEnemytwoS();
@@ -227,16 +231,16 @@ public class EnemyTypeTwo extends PEnemy {
 				// TODO Auto-generated method stub
 				// Log.i("NATS", "stop");
 				nats.getEngine().unregisterUpdateHandler(th);
-				enemy.setVisible(false);
 				body.setLinearVelocity(0f, 0f);
 				
 				body.setTransform(-500, -340, 0.0f);
+				enemy.setPosition(-500, -340);
+				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
-				EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(
-						enemy);
+				//EnemyTypeTwo.super.game.getEnemyTwoSpriteGroup().detachChild(enemy);
 				// Log.i("NATS", "stop1");
 				
 				
