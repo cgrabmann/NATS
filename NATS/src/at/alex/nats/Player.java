@@ -97,16 +97,16 @@ public class Player {
 						nats.getApplicationContext(), "spaceshuttle_middle.png", 0, 0);
 		playerBitmapTextureAtlas.load();
 		playerSprite = new Sprite(playerBaseSprite.getWidth() / 2,
-				playerBaseSprite.getHeight() / 3 * 2, playerITextureRegion,
+				playerBaseSprite.getHeight() / 2, playerITextureRegion,
 				nats.getVertexBufferObjectManager());
 
 		flameBitmapTextureAtlas = new BitmapTextureAtlas(
-				nats.getTextureManager(), 55, 90, TextureOptions.DEFAULT);
+				nats.getTextureManager(), 28, 55, TextureOptions.DEFAULT);
 		flameITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(flameBitmapTextureAtlas,
 						nats.getApplicationContext(), "Flammen.png", 0, 0);
 		flameBitmapTextureAtlas.load();
-		flameSprite = new Sprite(playerSprite.getWidth() / 2, -30,
+		flameSprite = new Sprite(playerSprite.getWidth() / 2, -17,
 				flameITextureRegion, nats.getVertexBufferObjectManager());
 
 		playerSprite.setZIndex(10);

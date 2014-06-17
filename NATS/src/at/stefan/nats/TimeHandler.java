@@ -147,7 +147,7 @@ public class TimeHandler implements ITimerCallback {
 				two.start();
 			}*/
 
-			
+			/*
 			if (waveCounter >= enemymulti * (mins + 1)) {
 				int spawn = spawnResources;
 				while (spawn > 0) {
@@ -161,7 +161,7 @@ public class TimeHandler implements ITimerCallback {
 					Log.i("NATS", "Chance Four: "
 							+ (chanceZero + chanceOne + chanceTwo + chanceFour)
 							/ totalChance);*/
-					if (rand < chanceZero / totalChance) { // Gegner 0 spawnen
+					/*if (rand < chanceZero / totalChance) { // Gegner 0 spawnen
 						zero = enemyPool.onAllocateEnemyZero();
 						zero.start();
 						spawn -= zero.getResources();
@@ -186,7 +186,7 @@ public class TimeHandler implements ITimerCallback {
 				spawnResources += 20;
 			} else {
 				waveCounter++;
-			}
+			}*/
 
 			if (!player.isShieldActivated()) {
 				if (counterShield >= player.getTimeToShield()) {

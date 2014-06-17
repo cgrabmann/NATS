@@ -115,13 +115,14 @@ public class EnemyTypeOne extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				EnemyTypeOne.super.addRessources(resources);
-				//EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
 				body.setLinearVelocity(0f, 0f);
 				body.setTransform(-500, -340, 0.0f);
+				//body.setLinearVelocity(1f, 1f);
 				enemy.setPosition(-500f, -340f);
 				enemy.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);	
+				//EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
 				EnemyTypeOne.this.reset();
@@ -224,9 +225,9 @@ public class EnemyTypeOne extends PEnemy {
 				// TODO Auto-generated method stub
 				// Log.i("NATS", "stop");
 				nats.getEngine().unregisterUpdateHandler(th);
-				body.setLinearVelocity(0f, 0f);
 				
 				body.setTransform(-500, -340, 0.0f);
+				//body.setLinearVelocity(1f, 1f);
 				enemy.setPosition(-500f, -340f);
 				enemy.setVisible(false);
 				// Log.i("NATS", "stop2");
