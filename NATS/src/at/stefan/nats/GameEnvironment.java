@@ -189,7 +189,7 @@ public class GameEnvironment extends Scene {
 		HUDPause = new HUD();
 		HUDUpgrade = new HUD();
 		HUDEmpty = new HUD();
-		contactListener = new Contacts(this, world, nats.getEngine(), player);
+		contactListener = new Contacts(this, world, nats.getEngine(), player, sceneManager);
 
 		this.setTouchAreaBindingOnActionDownEnabled(true);
 	}
@@ -963,7 +963,7 @@ public class GameEnvironment extends Scene {
 		th.reset();
 		this.unregisterPauseTouch();
 	}
-
+	
 	public void showUpgradeMenu() {
 		//Log.i("NATS", "showUpgradeMenu");
 		this.hideGameHUD();
@@ -1019,6 +1019,12 @@ public class GameEnvironment extends Scene {
 			listConnector.setUpdatePosition(true);
 			listConnector.setUpdateRotation(true);
 		}
+	}
+	
+	public void showGameOverMenu() {
+		mainCamera.setHUD(HUDEmpty);
+		this.hideGameHUD();
+		
 	}
 
 	public void registerPauseTouch() {

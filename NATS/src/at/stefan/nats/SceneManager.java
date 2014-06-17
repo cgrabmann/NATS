@@ -24,6 +24,7 @@ public class SceneManager {
 	GameEnvironment gameEnvironment;
 	PauseMenu pauseMenu;
 	UpgradeMenu upgradeMenu;
+	GameOver gameOver;
 
 	Scene splashScene;
 
@@ -36,7 +37,7 @@ public class SceneManager {
 	private AllScenes currentScene = AllScenes.MAIN_MENU;
 
 	public enum AllScenes {
-		MAIN_MENU, NEW_GAME, HIGHSCORES, SETTINGS, EXIT_GAME, PAUSE, UPGRADE
+		MAIN_MENU, NEW_GAME, HIGHSCORES, SETTINGS, EXIT_GAME, PAUSE, UPGRADE, GAME_OVER
 	}
 
 	public SceneManager(nats nats, LimitedFPSEngine mEngine, BoundCamera cam) {
@@ -99,6 +100,10 @@ public class SceneManager {
 		}else if(scenes == AllScenes.UPGRADE) {
 			gameEnvironment.showUpgradeMenu();
 			currentScene = AllScenes.UPGRADE;
+		}else if(scenes == AllScenes.GAME_OVER) {
+			gameEnvironment.showGameOverMenu();
+			mEngine.setScene(gameOver);
+			currentScene = AllScenes.GAME_OVER;
 		}
 	}
 
@@ -110,6 +115,7 @@ public class SceneManager {
 		gameEnvironment = new GameEnvironment(nats, mainCamera, this, player);
 		pauseMenu = new PauseMenu(nats, mainCamera, gameEnvironment, this);
 		upgradeMenu = new UpgradeMenu(nats, mainCamera, gameEnvironment, this, player);
+		gameOver = new GameOver(nats, mainCamera, gameEnvironment, this);
 
 		mainMenu.loadMainMenuResources();
 		highscores.loadHighscoreResources();
@@ -117,6 +123,7 @@ public class SceneManager {
 		gameEnvironment.loadGameResources();
 		pauseMenu.loadPauseResources();
 		upgradeMenu.loadUpgradeResources();
+		gameOver.loadGameOverResources();
 
 		mainMenu.loadMainMenuScene();
 		highscores.loadHighscoreScene();
@@ -124,6 +131,7 @@ public class SceneManager {
 		gameEnvironment.loadGameScene();
 		pauseMenu.loadPauseScene();
 		upgradeMenu.loadUpgradeScene();
+		gameOver.loadGameOverScene();
 	}
 	
 	public GameEnvironment getGameEnvironment() {

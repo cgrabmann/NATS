@@ -7,6 +7,7 @@ import org.andengine.extension.physics.box2d.PhysicsConnector;
 import at.alex.nats.Player;
 import at.clemens.nats.EnemyTypeZero;
 import at.clemens.nats.PEnemy;
+import at.stefan.nats.SceneManager.AllScenes;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -22,13 +23,15 @@ public class Contacts implements ContactListener {
 	LimitedFPSEngine mEngine;
 
 	Player player;
+	SceneManager sceneManager;
 
 	public Contacts(Scene s, MaxStepPhysicsWorld pw, LimitedFPSEngine e,
-			Player player) {
+			Player player, SceneManager sc) {
 		this.scene = s;
 		this.physicsWorld = pw;
 		this.mEngine = e;
 		this.player = player;
+		this.sceneManager = sc;
 	}
 
 	@Override
@@ -154,6 +157,7 @@ public class Contacts implements ContactListener {
 				((PEnemy)a.getUserObject()).stop();
 			}else {
 				// Spieler zerstören
+				sceneManager.switchScene(AllScenes.GAME_OVER);
 			}
 		} else if (b.getUserObject() instanceof PEnemy
 				&& a.getUserString().equals("player")) {
@@ -166,6 +170,7 @@ public class Contacts implements ContactListener {
 				((PEnemy)b.getUserObject()).stop();
 			}else {
 				// Spieler zerstören
+				sceneManager.switchScene(AllScenes.GAME_OVER);
 			}
 		}
 
