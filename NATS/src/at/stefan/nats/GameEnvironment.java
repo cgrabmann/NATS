@@ -1016,6 +1016,8 @@ public class GameEnvironment extends Scene {
 			if (u.getUserObject() instanceof PEnemy) {
 				((PEnemy) u.getUserObject()).setFrozen(false);
 			}
+			listConnector.setUpdatePosition(true);
+			listConnector.setUpdateRotation(true);
 		}
 	}
 
