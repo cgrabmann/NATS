@@ -23,7 +23,7 @@ public class EnemyTypeOne extends PEnemy {
 
 	private final int resources = 15;
 
-	private final float maxMoveSpeed = 250f;
+	private final float maxMoveSpeed = 200f;
 	private final int acceleration = 10;
 
 	private TextureRegion textur;

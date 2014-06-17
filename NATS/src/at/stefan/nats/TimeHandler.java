@@ -18,7 +18,7 @@ public class TimeHandler implements ITimerCallback {
 	
 	private boolean active = false;
 
-	private final int enemymulti = 7;
+	private final int enemymulti = 8;
 	private int spawnResources = 50;
 
 	private int secs = 0;
@@ -148,7 +148,7 @@ public class TimeHandler implements ITimerCallback {
 			}*/
 
 			
-			if (waveCounter >= enemymulti * (mins + 1)) {
+			if (waveCounter >= enemymulti + (mins *3)) {
 				int spawn = spawnResources;
 				while (spawn > 0) {
 					double rand = Math.random();
@@ -183,7 +183,7 @@ public class TimeHandler implements ITimerCallback {
 					}
 				}
 				waveCounter = 0;
-				spawnResources += 20;
+				spawnResources += 10;
 			} else {
 				waveCounter++;
 			}

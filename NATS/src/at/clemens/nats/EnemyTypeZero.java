@@ -30,7 +30,7 @@ public class EnemyTypeZero extends PEnemy {
 	// private float posX = 400f;
 	// private float posY = 240f;
 
-	private final int maxMoveSpeed = 190;
+	private final int maxMoveSpeed = 150;
 	
 	private TextureRegion textur;
 	private Sprite enemy;

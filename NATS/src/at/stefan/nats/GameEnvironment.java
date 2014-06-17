@@ -957,9 +957,9 @@ public class GameEnvironment extends Scene {
 		mainCamera.setHUD(HUDEmpty);
 		player.stopMusic();
 		this.resetTimer();
-		this.mainCamera.setCenter(400f, 240f);
 		playerBaseBody.setTransform(player.getPosX() / 32,
 				player.getPosY() / 32, 0.0f);
+		this.mainCamera.setCenter(400f, 240f);
 		th.reset();
 		this.unregisterPauseTouch();
 	}
