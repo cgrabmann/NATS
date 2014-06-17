@@ -96,7 +96,7 @@ public class Player {
 				.createFromAsset(playerBitmapTextureAtlas,
 						nats.getApplicationContext(), "spaceshuttle_middle.png", 0, 0);
 		playerBitmapTextureAtlas.load();
-		playerSprite = new Sprite(playerBaseSprite.getWidth() / 2,
+		playerSprite = new Sprite(playerBaseSprite.getWidth() / 2 + 2,
 				playerBaseSprite.getHeight() / 2, playerITextureRegion,
 				nats.getVertexBufferObjectManager());
 
