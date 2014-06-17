@@ -74,7 +74,7 @@ public class PauseMenu {
 				nats.getVertexBufferObjectManager());
 		backgroundSprite.setAlpha(0.4f);
 
-		continueSprite = new Sprite(200, 100, continueITextureRegion,
+		continueSprite = new Sprite(280, 100, continueITextureRegion,
 				nats.getVertexBufferObjectManager()) {
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float X,
