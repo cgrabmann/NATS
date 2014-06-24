@@ -1,7 +1,5 @@
 package at.stefan.nats;
 
-import java.util.Iterator;
-
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 
@@ -12,7 +10,6 @@ import at.clemens.nats.EnemyTypeTwo;
 import at.clemens.nats.EnemyTypeZero;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 
 public class TimeHandler implements ITimerCallback {
 	
@@ -57,7 +54,7 @@ public class TimeHandler implements ITimerCallback {
 		// TODO Auto-generated method stub
 		if(this.active) {
 			secs++;
-			if (secs == 60) {
+			if (secs >= 60) {
 				mins++;
 				switch (mins) {
 				case 1:
@@ -199,12 +196,12 @@ public class TimeHandler implements ITimerCallback {
 			}
 
 			if (counterGunner >= player.getTimeToGunner()) {
-				Log.i("NATS", "Gunner");
+				//Log.i("NATS", "Gunner");
 				counterGunner = 0;
 				// Hier den Gegner ausfindig machen, sobald sie
 				// implementiert sind
-				Iterator<Body> allBodies = gameEnvironment.getPhysicsWorld()
-						.getBodies();
+				//Iterator<Body> allBodies = gameEnvironment.getPhysicsWorld()
+				//		.getBodies();
 				Bullet b = gameEnvironment.getBulletPool().onAllocateGunner();
 				b.fireBullet(new Vector2(0f, 1f));
 			} else {
@@ -232,6 +229,12 @@ public class TimeHandler implements ITimerCallback {
 	
 	public void setActive(boolean b) {
 		this.active = b;
+	}
+	
+	public int getHighscore() {
+		Log.i("NATS", "mins: "+mins);
+		Log.i("NATS", "secs: "+secs);
+		return (mins * 60 + secs);
 	}
 
 }

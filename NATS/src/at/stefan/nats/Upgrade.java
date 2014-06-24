@@ -108,9 +108,9 @@ public class Upgrade {
 
 		prices = new int[4];
 		prices[finals.stasisfield()] = 500; // Factor 1.5
-		prices[finals.turbo()] = 750; // Factor 1.6
-		prices[finals.deadlytrail()] = 1000; // Factor 1.7
-		prices[finals.bomb()] = 1500; // Factor 1.8
+		prices[finals.turbo()] = 600; // Factor 1.6
+		prices[finals.deadlytrail()] = 800; // Factor 1.7
+		prices[finals.bomb()] = 1000; // Factor 1.8
 
 		usables = new String[4];
 		usables[finals.stasisfield()] = "discard";
@@ -406,7 +406,7 @@ public class Upgrade {
 			player.setRessources(player.getRessources()
 					- priceUsables(finals.stasisfield()));
 			prices[finals.stasisfield()] = (int) (((int) (prices[finals
-					.stasisfield()] * 1.5 / 100)) * 100 + 100);
+					.stasisfield()] * 1.2 / 100)) * 100 + 100);
 		}
 	}
 
@@ -418,7 +418,7 @@ public class Upgrade {
 			turboText.setText("x" + player.getUsables(finals.turbo()));
 			player.setRessources(player.getRessources()
 					- priceUsables(finals.turbo()));
-			prices[finals.turbo()] = (int) (((int) (prices[finals.turbo()] * 1.6 / 100)) * 100 + 100);
+			prices[finals.turbo()] = (int) (((int) (prices[finals.turbo()] * 1.2 / 100)) * 100 + 100);
 		}
 	}
 
@@ -432,7 +432,7 @@ public class Upgrade {
 			player.setRessources(player.getRessources()
 					- priceUsables(finals.deadlytrail()));
 			prices[finals.deadlytrail()] = (int) (((int) (prices[finals
-					.deadlytrail()] * 1.7 / 100)) * 100 + 100);
+					.deadlytrail()] * 1.3 / 100)) * 100 + 100);
 		}
 	}
 
@@ -444,7 +444,7 @@ public class Upgrade {
 			bombText.setText("x" + player.getUsables(finals.bomb()));
 			player.setRessources(player.getRessources()
 					- priceUsables(finals.bomb()));
-			prices[finals.bomb()] = (int) (((int) (prices[finals.bomb()] * 1.8 / 100)) * 100 + 100);
+			prices[finals.bomb()] = (int) (((int) (prices[finals.bomb()] * 1.4 / 100)) * 100 + 100);
 		}
 	}
 
@@ -498,16 +498,16 @@ public class Upgrade {
 				price = 100;
 				break;
 			case 1:
-				price = 250;
+				price = 200;
 				break;
 			case 2:
-				price = 500;
+				price = 400;
 				break;
 			case 3:
-				price = 1000;
+				price = 800;
 				break;
 			case 4:
-				price = 2000;
+				price = 1500;
 				break;
 			}
 		} else if (permanent == finals.moderate()) {
@@ -516,39 +516,39 @@ public class Upgrade {
 				price = 150;
 				break;
 			case 1:
-				price = 400;
+				price = 300;
 				break;
 			case 2:
-				price = 1000;
+				price = 600;
 				break;
 			case 3:
-				price = 2250;
+				price = 1200;
 				break;
 			case 4:
-				price = 3500;
+				price = 2500;
 				break;
 			}
 		} else if (permanent == finals.expensive()) {
 			switch (level) {
 			case 0:
-				price = 250;
+				price = 200;
 				break;
 			case 1:
-				price = 600;
+				price = 400;
 				break;
 			case 2:
-				price = 1500;
+				price = 800;
 				break;
 			case 3:
-				price = 2750;
+				price = 1600;
 				break;
 			case 4:
-				price = 4500;
+				price = 3500;
 				break;
 			}
 		}
 
-		Log.i("NATS", "Permanent costs " + price);
+		// Log.i("NATS", "Permanent costs " + price);
 
 		return price;
 	}
@@ -570,7 +570,7 @@ public class Upgrade {
 			// prices[finals.bomb()] = (int) (price * 1.8);
 		}
 
-		Log.i("NATS", "Usable costs " + price);
+		// Log.i("NATS", "Usable costs " + price);
 		return price;
 	}
 
@@ -747,16 +747,16 @@ public class Upgrade {
 	public void setUsableEquip(int pos) {
 		usables[pos] = "equip";
 	}
-	
+
 	public void unsetEquipped(int a) {
 		equipped[a] = -1;
 	}
 
 	public void reset() {
 		prices[finals.stasisfield()] = 500; // Factor 1.5
-		prices[finals.turbo()] = 750; // Factor 1.6
-		prices[finals.deadlytrail()] = 1000; // Factor 1.7
-		prices[finals.bomb()] = 1500; // Factor 1.8
+		prices[finals.turbo()] = 600; // Factor 1.6
+		prices[finals.deadlytrail()] = 800; // Factor 1.7
+		prices[finals.bomb()] = 1000; // Factor 1.8
 
 		usables[finals.stasisfield()] = "discard";
 		usables[finals.turbo()] = "discard";

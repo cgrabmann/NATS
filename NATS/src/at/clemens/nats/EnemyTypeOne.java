@@ -55,9 +55,10 @@ public class EnemyTypeOne extends PEnemy {
 		super.game.getEnemyOneSpriteGroup().attachChild(enemy);
 		body = PhysicsFactory.createCircleBody(world, enemy,
 				BodyType.DynamicBody, fd);
-		body.setTransform(-500, -340, 0.0f);
+		body.setTransform(-500/32, -340/32, 0.0f);
 		enemy.setPosition(-500f, -340f);
-		enemy.setVisible(false);
+		enemy.setVisible(true);
+		enemy.setIgnoreUpdate(true);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemytwo", this));
@@ -67,11 +68,12 @@ public class EnemyTypeOne extends PEnemy {
 	@Override
 	public void start() {
 		super.createStartPos();
-		/*if (!enemy.hasParent()) {
-			super.game.getEnemyOneSpriteGroup().attachChild(enemy);
-		}*/
+		/*
+		 * if (!enemy.hasParent()) {
+		 * super.game.getEnemyOneSpriteGroup().attachChild(enemy); }
+		 */
 		pc = new PhysicsConnector(enemy, body, true, true);
-		
+
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
 
 			@Override
@@ -94,13 +96,13 @@ public class EnemyTypeOne extends PEnemy {
 
 		// TODO start fly function | alle 15 msec ausführen
 		// TODO Timehandler
-		enemy.setVisible(true);
 
+		enemy.setPosition(super.posx, super.posy);
 		body.setTransform(super.posx / 32, super.posy / 32, 0f);
-		
+		//enemy.setVisible(true);
+		enemy.setIgnoreUpdate(false);
 		body.setActive(true);
 		body.setAwake(true);
-
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -108,7 +110,7 @@ public class EnemyTypeOne extends PEnemy {
 
 	@Override
 	public void stop() {
-		
+
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
 			@Override
@@ -116,13 +118,14 @@ public class EnemyTypeOne extends PEnemy {
 				// TODO Auto-generated method stub
 				EnemyTypeOne.super.addRessources(resources);
 				body.setLinearVelocity(0f, 0f);
-				body.setTransform(-500, -340, 0.0f);
-				//body.setLinearVelocity(1f, 1f);
+				body.setTransform(-500/32, -340/32, 0.0f);
+				// body.setLinearVelocity(1f, 1f);
 				enemy.setPosition(-500f, -340f);
-				enemy.setVisible(false);
+				//enemy.setVisible(false);
+				enemy.setIgnoreUpdate(true);
 				body.setActive(false);
-				body.setAwake(false);	
-				//EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
+				body.setAwake(false);
+				// EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
 				world.unregisterPhysicsConnector(pc);
 				nats.getEngine().unregisterUpdateHandler(th);
 				EnemyTypeOne.this.reset();
@@ -151,11 +154,11 @@ public class EnemyTypeOne extends PEnemy {
 			super.movex = 0;
 			super.movey = 0;
 			return;
-		}else{
+		} else {
 			super.movex = super.smovex;
 			super.movey = super.smovey;
 		}
-		
+
 		super.posx = enemy.getX();
 		super.posy = enemy.getY();
 
@@ -187,10 +190,10 @@ public class EnemyTypeOne extends PEnemy {
 			super.movey = (super.movey > 0) ? super.movey - acceleration
 					: super.movey + acceleration;
 		}
-		
+
 		super.smovex = super.movex;
 		super.smovey = super.movey;
-		
+
 		return;
 	}
 
@@ -216,7 +219,7 @@ public class EnemyTypeOne extends PEnemy {
 
 	@Override
 	public void deactivate() {
-		
+
 		// TODO Auto-generated method stub
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
@@ -225,35 +228,35 @@ public class EnemyTypeOne extends PEnemy {
 				// TODO Auto-generated method stub
 				// Log.i("NATS", "stop");
 				nats.getEngine().unregisterUpdateHandler(th);
-				
-				body.setTransform(-500, -340, 0.0f);
-				//body.setLinearVelocity(1f, 1f);
+
+				body.setTransform(-500/32, -340/32, 0.0f);
+				// body.setLinearVelocity(1f, 1f);
 				enemy.setPosition(-500f, -340f);
-				enemy.setVisible(false);
+				//enemy.setVisible(false);
+				enemy.setIgnoreUpdate(true);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
-				//EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
+				// EnemyTypeOne.super.game.getEnemyOneSpriteGroup().detachChild(enemy);
 				// Log.i("NATS", "stop1");
-				
-				
+
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
-				
+
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
-				
+
 				EnemyTypeOne.this.reset();
 				// Log.i("NATS", "stop7");
 				enemyPool.recycleEnemyOne(EnemyTypeOne.this);
 			}
 		});
 	}
-	
+
 	@Override
-	protected void reset(){
+	protected void reset() {
 		super.reset();
 		this.pc = null;
 		this.th = null;

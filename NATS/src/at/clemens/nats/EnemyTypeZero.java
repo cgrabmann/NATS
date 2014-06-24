@@ -31,7 +31,7 @@ public class EnemyTypeZero extends PEnemy {
 	// private float posY = 240f;
 
 	private final int maxMoveSpeed = 150;
-	
+
 	private TextureRegion textur;
 	private Sprite enemy;
 	// private Rectangle enemy;
@@ -62,9 +62,10 @@ public class EnemyTypeZero extends PEnemy {
 		fd = PhysicsFactory.createFixtureDef(5f, 1f, 0f);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody,
 				fd);
-		body.setTransform(-500, -340, 0.0f);
+		body.setTransform(-500/32, -340/32, 0.0f);
 		enemy.setPosition(-500, -340);
-		enemy.setVisible(false);
+		enemy.setVisible(true);
+		enemy.setIgnoreUpdate(true);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemyzero", this));
@@ -86,36 +87,35 @@ public class EnemyTypeZero extends PEnemy {
 				// Log.i("NATS", "Move");
 				move();
 				// Log.i("NATS", "MoveX: "+moveX + ", MoveY: "+moveY);
-				body.setLinearVelocity(EnemyTypeZero.super.movex * 0.05f, EnemyTypeZero.super.movey * 0.05f);
+				body.setLinearVelocity(EnemyTypeZero.super.movex * 0.05f,
+						EnemyTypeZero.super.movey * 0.05f);
 			}
 		});
-		
+
 		body.setActive(true);
 		body.setAwake(true);
-		
+
 		this.createStartPos();
-		enemy.setVisible(true);
+		enemy.setPosition(super.posx, super.posy);
 		body.setTransform(super.posx / 32, super.posy / 32, 0f);
-		
-		/*if (enemy.hasParent()) {
-			//Log.i("NATS", "enemy already attached");
-		} else {
-			//Log.i("NATS", "attach enemy");
-			super.game.getEnemyZeroSpriteGroup().attachChild(enemy);
-		}*/
+		// enemy.setVisible(true);
+		enemy.setIgnoreUpdate(false);
+		/*
+		 * if (enemy.hasParent()) { //Log.i("NATS", "enemy already attached"); }
+		 * else { //Log.i("NATS", "attach enemy");
+		 * super.game.getEnemyZeroSpriteGroup().attachChild(enemy); }
+		 */
 
 		world.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
-	
+
 	}
 
 	@Override
 	protected void createStartPos() {
 		super.createStartPos();
-		super.movex = (int)((maxMoveSpeed / 2)
-				+ (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1)));
-		super.movey = (int)((maxMoveSpeed / 2)
-				+ (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1)));
+		super.movex = (int) ((maxMoveSpeed / 2) + (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1)));
+		super.movey = (int) ((maxMoveSpeed / 2) + (Math.random() * ((maxMoveSpeed - (maxMoveSpeed / 2)) + 1)));
 		super.movex = (getRandomBoolean()) ? super.movex : super.movex * (-1);
 		super.movey = (getRandomBoolean()) ? super.movey : super.movey * (-1);
 
@@ -126,7 +126,7 @@ public class EnemyTypeZero extends PEnemy {
 
 	@Override
 	public void stop() {
-		
+
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
 			@Override
@@ -134,26 +134,27 @@ public class EnemyTypeZero extends PEnemy {
 				// TODO Auto-generated method stub
 				nats.getEngine().unregisterUpdateHandler(th);
 				body.setLinearVelocity(0f, 0f);
-				body.setTransform(-500, -340, 0.0f);
+				body.setTransform(-500/32, -340/32, 0.0f);
 				enemy.setPosition(-500, -340);
-				enemy.setVisible(false);
+				// enemy.setVisible(false);
+				enemy.setIgnoreUpdate(true);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
 				EnemyTypeZero.super.addRessources(resources);
 				// Log.i("NATS", "stop");
-				//EnemyTypeZero.super.game.getEnemyZeroSpriteGroup().detachChild(
-				//		enemy);
+				// EnemyTypeZero.super.game.getEnemyZeroSpriteGroup().detachChild(
+				// enemy);
 				// Log.i("NATS", "stop1");
-				
+
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
-				
+
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
-				
+
 				EnemyTypeZero.this.reset();
 				// Log.i("NATS", "stop7");
 				nats.getEngine().registerUpdateHandler(
@@ -206,7 +207,7 @@ public class EnemyTypeZero extends PEnemy {
 
 	@Override
 	public void deactivate() {
-		
+
 		// TODO Auto-generated method stub
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
@@ -214,21 +215,22 @@ public class EnemyTypeZero extends PEnemy {
 			public void run() {
 				// TODO Auto-generated method stub
 				// Log.i("NATS", "stop");
-				//EnemyTypeZero.super.game.getEnemyZeroSpriteGroup().detachChild(
-				//		enemy);
+				// EnemyTypeZero.super.game.getEnemyZeroSpriteGroup().detachChild(
+				// enemy);
 				// Log.i("NATS", "stop1");
 				body.setLinearVelocity(0f, 0f);
-				body.setTransform(-500, -340, 0.0f);
+				body.setTransform(-500/32, -340/32, 0.0f);
 				enemy.setPosition(-500, -340);
-				enemy.setVisible(false);
+				// enemy.setVisible(false);
+				enemy.setIgnoreUpdate(true);
 				// Log.i("NATS", "stop2");
-				
+
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
 				// Log.i("NATS", "stop4");
 				// body.setLinearVelocity(0f, 0f);
-				
+
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
@@ -239,9 +241,9 @@ public class EnemyTypeZero extends PEnemy {
 			}
 		});
 	}
-	
+
 	@Override
-	protected void reset(){
+	protected void reset() {
 		super.reset();
 		this.pc = null;
 		this.th = null;

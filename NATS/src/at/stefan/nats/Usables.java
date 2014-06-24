@@ -106,11 +106,12 @@ public class Usables {
 	}
 
 	public void stasisfield() {
-		// Log.i("Usables", "Stasisfield");
 		this.stasisfield = true;
 		player.setStasisField(true);
 		player.setUsables(player.getUsables(finals.stasisfield()) - 1,
 				finals.stasisfield());
+
+		// wenn alle Usables verbraucht -> von gameHud Sprite entfernen!
 		if (player.getUsables(finals.stasisfield()) == 0) {
 			// Icon wegnehmen
 			if (gameEnvironment.getUsable1().equals(
@@ -162,7 +163,7 @@ public class Usables {
 								list = world.getPhysicsConnectorManager()
 										.listIterator();
 								while (list.hasNext()) {
-									Log.i("NATS", "setUpdateFalse");
+									// Log.i("NATS", "setUpdateFalse");
 									listConnector = list.next();
 									UserData u = (UserData) listConnector
 											.getBody().getUserData();
@@ -231,7 +232,8 @@ public class Usables {
 					public void onTimePassed(TimerHandler pTimerHandler) {
 						// TODO Auto-generated method stub
 						if (!player.isGamePaused()) {
-							body.setLinearVelocity(x * 2500f, y * 2500f);
+							body.setLinearVelocity(x * 2500f * 0.05f,
+									y * 2500f * 0.05f);
 							if (counterTurbo >= 10) {
 								turbo = false;
 								player.setShootingAllowed(true);
@@ -268,20 +270,16 @@ public class Usables {
 		gameEnvironment.getUpgradeMenu().setUsableNumber(finals.deadlytrail());
 
 		nats.getEngine().registerUpdateHandler(
-				new TimerHandler(0.05f, true, new ITimerCallback() {
+				new TimerHandler(0.15f, true, new ITimerCallback() {
 
 					@Override
 					public void onTimePassed(TimerHandler pTimerHandler) {
 						// TODO Auto-generated method stub
 
 						if (!player.isGamePaused()) {
-							Log.i("NATS", "Trail");
+							// Log.i("NATS", "Trail");
 							Trail t = bulletPool.onAllocateTrail();
-							/*
-							 * Log.i("Usables", "set trail; X,Y: " +
-							 * player.getFlamePosX() + "," +
-							 * player.getFlamePosY());
-							 */
+
 							t.set(player.getPosX(), player.getPosY());
 
 							if (counterDeadly >= 40) {
@@ -346,15 +344,9 @@ public class Usables {
 			UserData u = (UserData) iterationBody.getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
 				PEnemy e = (PEnemy) u.getUserObject();
-				e.stop();
+				//e.stop();
+				e.setFrozen(true);
 			}
-			/*
-			 * r.setVisible(false); scene.detachChild(r);
-			 * nats.getEngine().unregisterUpdateHandler(th);
-			 * physicsWorld.unregisterPhysicsConnector(pc); //
-			 * r.setIgnoreUpdate(true); //body.setTransform(-500, -340, 0.0f);
-			 * body.setActive(false); body.setAwake(false);
-			 */
 		}
 
 		bombSprite1.setPosition(400f, 240f);
@@ -382,6 +374,17 @@ public class Usables {
 															TimerHandler pTimerHandler) {
 														// TODO Auto-generated
 														// method stub
+														final Iterator<Body> allBodies = world.getBodies();
+														while (allBodies.hasNext()) {
+															iterationBody = allBodies.next();
+															UserData u = (UserData) iterationBody.getUserData();
+															if (u.getUserObject() instanceof PEnemy) {
+																PEnemy e = (PEnemy) u.getUserObject();
+																//e.stop();
+																e.stop();
+															}
+														}
+														
 														nats.getEngine()
 																.unregisterUpdateHandler(
 																		pTimerHandler);

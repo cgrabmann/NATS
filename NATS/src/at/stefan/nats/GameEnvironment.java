@@ -189,7 +189,8 @@ public class GameEnvironment extends Scene {
 		HUDPause = new HUD();
 		HUDUpgrade = new HUD();
 		HUDEmpty = new HUD();
-		contactListener = new Contacts(this, world, nats.getEngine(), player, sceneManager);
+		contactListener = new Contacts(this, world, nats.getEngine(), player,
+				sceneManager);
 
 		this.setTouchAreaBindingOnActionDownEnabled(true);
 	}
@@ -204,15 +205,6 @@ public class GameEnvironment extends Scene {
 		playerBaseSprite = player.getPlayerBase();
 
 		FixtureDef fd = PhysicsFactory.createFixtureDef(25.0f, 0.0f, 0.0f);
-
-		/*
-		 * ArrayList<Vector2> triangle = new ArrayList<Vector2>(); final float
-		 * halfWidth = playerSprite.getWidth() * 0.5f / 32; final float
-		 * halfHeight = playerSprite.getHeight() * 0.5f / 32; triangle.add(new
-		 * Vector2(-halfWidth, -halfHeight)); triangle.add(new
-		 * Vector2(halfWidth, -halfHeight)); triangle.add(new Vector2(0,
-		 * halfHeight));
-		 */
 
 		playerBaseBody = PhysicsFactory.createCircleBody(world,
 				playerBaseSprite, BodyType.DynamicBody, fd);
@@ -409,7 +401,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			//Log.i("NATS", "fireballbitmap not working");
+			// Log.i("NATS", "fireballbitmap not working");
 		}
 
 		fireBallSpriteGroup = new SpriteGroup(0, 0, fireBallBitmapTextureAtlas,
@@ -430,7 +422,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			//Log.i("NATS", "enemyzerobitmap not working");
+			// Log.i("NATS", "enemyzerobitmap not working");
 		}
 
 		enemyZeroSpriteGroup = new SpriteGroup(0, 0,
@@ -451,7 +443,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			//Log.i("NATS", "enemyOnebitmap not working");
+			// Log.i("NATS", "enemyOnebitmap not working");
 		}
 
 		enemyOneSpriteGroup = new SpriteGroup(0, 0, enemyOneBitmapTextureAtlas,
@@ -471,7 +463,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			//Log.i("NATS", "enemyTwobitmap not working");
+			// Log.i("NATS", "enemyTwobitmap not working");
 		}
 
 		enemyTwoSpriteGroup = new SpriteGroup(0, 0, enemyTwoBitmapTextureAtlas,
@@ -491,11 +483,11 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			//Log.i("NATS", "enemyTwoSmallbitmap not working");
+			// Log.i("NATS", "enemyTwoSmallbitmap not working");
 		}
 
 		enemyTwoSmallSpriteGroup = new SpriteGroup(0, 0,
-				enemyTwoSmallBitmapTextureAtlas, 75,
+				enemyTwoSmallBitmapTextureAtlas, 120,
 				nats.getVertexBufferObjectManager());
 
 		enemyBlackHoleBitmapTextureAtlas = new BuildableBitmapTextureAtlas(
@@ -512,7 +504,7 @@ public class GameEnvironment extends Scene {
 		} catch (TextureAtlasBuilderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			//Log.i("NATS", "enemyBlackHolebitmap not working");
+			// Log.i("NATS", "enemyBlackHolebitmap not working");
 		}
 
 		bulletPool = new BulletPool(player, this, world, nats);
@@ -939,10 +931,10 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void hidePauseMenu() {
-		Log.i("NATS", "hidePauseMenu");
+		// Log.i("NATS", "hidePauseMenu");
 		// mainCamera.getHUD().detachSelf();
 		this.showGameHUD();
-		//this.startTimer();
+		// this.startTimer();
 		player.resumeMusic();
 		// this.setCameraChasing();
 		// this.getChildByIndex(PAUSE_LAYER).setVisible(false);
@@ -953,19 +945,23 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void leaveGame() {
-		Log.i("NATS", "leaveGame");
+		// Log.i("NATS", "leaveGame");
 		mainCamera.setHUD(HUDEmpty);
-		player.stopMusic();
+		player.pauseMusic();
+		player.resetMusic();
 		this.resetTimer();
-		playerBaseBody.setTransform(player.getPosX() / 32,
-				player.getPosY() / 32, 0.0f);
+		// playerBaseBody.setTransform(player.getPosX() / 32,
+		// player.getPosY() / 32, 0.0f);
+		playerBaseBody.setTransform(400f / 32, 240f / 32, 0f);
+		mainCamera.setChaseEntity(null);
 		this.mainCamera.setCenter(400f, 240f);
 		th.reset();
 		this.unregisterPauseTouch();
+		sceneManager.getGameOver().reset();
 	}
-	
+
 	public void showUpgradeMenu() {
-		//Log.i("NATS", "showUpgradeMenu");
+		// Log.i("NATS", "showUpgradeMenu");
 		this.hideGameHUD();
 		mainCamera.setHUD(HUDUpgrade);
 		// this.getChildByIndex(UPGRADE_LAYER).setVisible(true);
@@ -975,7 +971,7 @@ public class GameEnvironment extends Scene {
 		time.setActive(false);
 		list = world.getPhysicsConnectorManager().listIterator();
 		while (list.hasNext()) {
-			//Log.i("NATS", "setUpdateFalse");
+			// Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
@@ -987,7 +983,7 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void hideUpgradeMenu() {
-		//Log.i("NATS", "hideUpgradeMenu");
+		// Log.i("NATS", "hideUpgradeMenu");
 		// mainCamera.getHUD().detachSelf();
 		resources.setText(player.getRessourcesForDisplay());
 		this.showGameHUD();
@@ -997,20 +993,20 @@ public class GameEnvironment extends Scene {
 		HUDGame.registerTouchArea(pauseSprite);
 		HUDGame.registerTouchArea(updateSprite);
 		time.setActive(true);
-		/*if (!player.isStasisFieldActivated()) {
-			list = world.getPhysicsConnectorManager().listIterator();
-			while (list.hasNext()) {
-				Log.i("NATS", "setUpdateFalse");
-				listConnector = list.next();
-				UserData u = (UserData) listConnector.getBody().getUserData();
-				if (u.getUserObject() instanceof PEnemy) {
-					((PEnemy) u.getUserObject()).setFrozen(false);
-				}
-				listConnector.setUpdatePosition(true);
-				listConnector.setUpdateRotation(true);*/
+		player.setPause(false);
+		/*
+		 * if (!player.isStasisFieldActivated()) { list =
+		 * world.getPhysicsConnectorManager().listIterator(); while
+		 * (list.hasNext()) { Log.i("NATS", "setUpdateFalse"); listConnector =
+		 * list.next(); UserData u = (UserData)
+		 * listConnector.getBody().getUserData(); if (u.getUserObject()
+		 * instanceof PEnemy) { ((PEnemy) u.getUserObject()).setFrozen(false); }
+		 * listConnector.setUpdatePosition(true);
+		 * listConnector.setUpdateRotation(true);
+		 */
 		list = world.getPhysicsConnectorManager().listIterator();
 		while (list.hasNext()) {
-			//Log.i("NATS", "setUpdateFalse");
+			// Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
@@ -1020,11 +1016,25 @@ public class GameEnvironment extends Scene {
 			listConnector.setUpdateRotation(true);
 		}
 	}
-	
+
 	public void showGameOverMenu() {
+		player.reset();
 		mainCamera.setHUD(HUDEmpty);
+		player.pauseMusic();
+		// this.resetTimer();
+		// playerBaseBody.setTransform(player.getPosX() / 32,
+		// player.getPosY() / 32, 0.0f);
+		playerBaseBody.setTransform(400f / 32, 240f / 32, 0f);
+		mainCamera.setChaseEntity(null);
+		this.mainCamera.setCenter(400f, 240f);
+		// th.reset();
+		this.unregisterPauseTouch();
+		sceneManager.getGameOver().reset();
 		this.hideGameHUD();
-		
+		int highscore = time.getHighscore();
+		String s = "Score: " + ((int) highscore / 60) + ":"
+				+ ((int) highscore % 60);
+		sceneManager.getGameOver().actualizeGameOver(s, highscore);
 	}
 
 	public void registerPauseTouch() {
@@ -1107,50 +1117,63 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void startTimer() {
-		// nats.getEngine().registerUpdateHandler(th);
 		time.setActive(true);
 		player.setPause(false);
 
-
-		/*if (!player.isStasisFieldActivated()) {
+		// wenn Stasisfield nicht aktiviert ist, alles wieder aktivieren!
+		if (!player.isStasisFieldActivated()) {
 			list = world.getPhysicsConnectorManager().listIterator();
 
 			while (list.hasNext()) {
-				Log.i("NATS", "setUpdateFalse");
+				// Log.i("NATS", "setUpdateFalse");
 				listConnector = list.next();
 				UserData u = (UserData) listConnector.getBody().getUserData();
 				if (u.getUserObject() instanceof PEnemy) {
 					((PEnemy) u.getUserObject()).setFrozen(false);
 				}
 				listConnector.setUpdatePosition(true);
-				listConnector.setUpdateRotation(true);*/
-		list = world.getPhysicsConnectorManager().listIterator();
-		while (list.hasNext()) {
-			//Log.i("NATS", "setUpdateFalse");
-			listConnector = list.next();
-			UserData u = (UserData) listConnector.getBody().getUserData();
-			if (u.getUserObject() instanceof PEnemy) {
-				((PEnemy) u.getUserObject()).setFrozen(false);
+				listConnector.setUpdateRotation(true);
 			}
-			listConnector.setUpdatePosition(true);
-			listConnector.setUpdateRotation(true);
-		}/* else {
-			playerPC.setUpdatePosition(true);
-			playerPC.setUpdateRotation(true);
-		}*/
+		} else {
+			list = world.getPhysicsConnectorManager().listIterator();
+
+			while (list.hasNext()) {
+				// Log.i("NATS", "setUpdateFalse");
+				listConnector = list.next();
+				UserData u = (UserData) listConnector.getBody().getUserData();
+				if (!(u.getUserObject() instanceof PEnemy)) {
+					listConnector.setUpdatePosition(true);
+					listConnector.setUpdateRotation(true);
+				}
+			}
+		}
+
+		/*
+		 * list = world.getPhysicsConnectorManager().listIterator(); while
+		 * (list.hasNext()) { // Log.i("NATS", "setUpdateFalse"); listConnector
+		 * = list.next(); UserData u = (UserData)
+		 * listConnector.getBody().getUserData(); if (u.getUserObject()
+		 * instanceof PEnemy) { ((PEnemy) u.getUserObject()).setFrozen(false); }
+		 * listConnector.setUpdatePosition(true);
+		 * listConnector.setUpdateRotation(true); }
+		 */
+		/*
+		 * else { playerPC.setUpdatePosition(true);
+		 * playerPC.setUpdateRotation(true); }
+		 */
 	}
 
 	public void pauseTimer() {
 		// nats.getEngine().unregisterUpdateHandler(th);
 		time.setActive(false);
 		player.setPause(true);
-		
+
 		// pause all Objects on the field
 		// nats.getEngine().stop();
 		// if(!player.isStasisFieldActivated()) {
 		list = world.getPhysicsConnectorManager().listIterator();
 		while (list.hasNext()) {
-			//Log.i("NATS", "setUpdateFalse");
+			// Log.i("NATS", "setUpdateFalse");
 			listConnector = list.next();
 			UserData u = (UserData) listConnector.getBody().getUserData();
 			if (u.getUserObject() instanceof PEnemy) {
@@ -1165,7 +1188,7 @@ public class GameEnvironment extends Scene {
 	public void resetTimer() {
 		time.reset();
 		highscore.setText("00:00");
-		player.setRessources(2000);
+		player.setRessources(2500);
 		resources.setText("0000" + player.getRessources());
 		final Iterator<Body> allBodies = world.getBodies();
 		while (allBodies.hasNext()) {
@@ -1239,7 +1262,7 @@ public class GameEnvironment extends Scene {
 	}
 
 	public void setUsable1(int usable) {
-		//Log.i("Usable", "setUsable1");
+		// Log.i("Usable", "setUsable1");
 		if (usable == -1) {
 			if (items[0] != null) {
 				items[0].setPosition(-500f, -400f);
@@ -1401,6 +1424,10 @@ public class GameEnvironment extends Scene {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public TimeHandler getTimeHandler() {
+		return time;
 	}
 
 }

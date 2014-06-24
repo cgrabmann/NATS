@@ -12,7 +12,6 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import android.view.KeyEvent;
 import at.stefan.nats.SceneManager.AllScenes;
 
 public class nats extends BaseGameActivity {
@@ -20,44 +19,44 @@ public class nats extends BaseGameActivity {
 	BoundCamera mainCamera;
 	public static final int CAMERA_WIDTH = 800;
 	public static final int CAMERA_HEIGHT = 480;
-	
+
 	LimitedFPSEngine mEngine;
 
 	SceneManager sceneManager;
 
 	Finals finals;
-	
-	
+
 	@Override
 	public LimitedFPSEngine onCreateEngine(final EngineOptions pEngineOptions) {
 		mEngine = new LimitedFPSEngine(pEngineOptions, 30);
+		mEngine.enableVibrator(this);
 		return mEngine;
 	}
-	
+
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		// TODO Auto-generated method stub
 		mainCamera = new BoundCamera(0, 0, 800, 480) {
-			
+
 			@Override
 			public void setCenter(float pCenterX, float pCenterY) {
 				super.setCenter(pCenterX, pCenterY);
 			}
 		};
-		//mainCamera.onUpdate(10f);
-		
+		// mainCamera.onUpdate(10f);
+
 		EngineOptions options = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_SENSOR, new FillResolutionPolicy(),
 				mainCamera);
 		options.getRenderOptions().setDithering(true);
 		options.getTouchOptions().setNeedsMultiTouch(true);
 		options.getAudioOptions().setNeedsMusic(true);
-		//options.getRenderOptions()
-		//options.getUpdateThread().
+		
+		// options.getRenderOptions()
+		// options.getUpdateThread().
 
 		return options;
 	}
-	
 
 	@Override
 	public void onCreateResources(
@@ -100,55 +99,48 @@ public class nats extends BaseGameActivity {
 
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
-	
+
 	@Override
 	public void onBackPressed() {
-		if(sceneManager.getCurrentScene() == AllScenes.NEW_GAME) {
+		if (sceneManager.getCurrentScene() == AllScenes.NEW_GAME) {
 			sceneManager.switchScene(AllScenes.PAUSE);
-			//sceneManager.getGameEnvironment().sho
-		}else if (sceneManager.getCurrentScene() != AllScenes.MAIN_MENU) {
+			// sceneManager.getGameEnvironment().sho
+		} else if (sceneManager.getCurrentScene() != AllScenes.MAIN_MENU) {
 			if (sceneManager.getCurrentScene() == AllScenes.UPGRADE) {
 				sceneManager.switchScene(AllScenes.NEW_GAME);
-			} else if(sceneManager.getCurrentScene() == AllScenes.PAUSE) {
+			} else if (sceneManager.getCurrentScene() == AllScenes.PAUSE
+					|| sceneManager.getCurrentScene() == AllScenes.GAME_OVER) {
 				// Nichts
+			} else if (sceneManager.getCurrentScene() == AllScenes.HIGHSCORES
+					&& !sceneManager.getHighscores().isReturnable()) {
+				
 			} else {
 				sceneManager.switchScene(AllScenes.MAIN_MENU);
 			}
-			//sceneManager.switchScene(AllScenes.MAIN_MENU);
+			// sceneManager.switchScene(AllScenes.MAIN_MENU);
 		} else {
 			nats.this.finish();
 		}
 	}
-	
 
-	/*@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if(sceneManager.getCurrentScene() == AllScenes.NEW_GAME) {
-				sceneManager.switchScene(AllScenes.PAUSE);
-				//sceneManager.getGameEnvironment().sho
-			}else if (sceneManager.getCurrentScene() != AllScenes.MAIN_MENU) {
-				if (sceneManager.getCurrentScene() == AllScenes.UPGRADE) {
-					sceneManager.switchScene(AllScenes.NEW_GAME);
-				} else if(sceneManager.getCurrentScene() == AllScenes.PAUSE) {
-					// Nichts
-				} else {
-					sceneManager.switchScene(AllScenes.MAIN_MENU);
-				}
-				/*
-				 * if(sceneManager.getCurrentScene() == AllScenes.HIGHSCORES) {
-				 * // unload }else if(sceneManager.getCurrentScene() ==
-				 * AllScenes.SETTINGS) { // unload }else
-				 * if(sceneManager.getCurrentScene() == AllScenes.NEW_GAME) { //
-				 * unload }
-				 *
-				sceneManager.switchScene(AllScenes.MAIN_MENU);
-			} else {
-				nats.this.finish();
-			}
-		}
-		return false;
-	}*/
+	/*
+	 * @Override public boolean onKeyDown(int keyCode, KeyEvent event) { if
+	 * (keyCode == KeyEvent.KEYCODE_BACK) { if(sceneManager.getCurrentScene() ==
+	 * AllScenes.NEW_GAME) { sceneManager.switchScene(AllScenes.PAUSE);
+	 * //sceneManager.getGameEnvironment().sho }else if
+	 * (sceneManager.getCurrentScene() != AllScenes.MAIN_MENU) { if
+	 * (sceneManager.getCurrentScene() == AllScenes.UPGRADE) {
+	 * sceneManager.switchScene(AllScenes.NEW_GAME); } else
+	 * if(sceneManager.getCurrentScene() == AllScenes.PAUSE) { // Nichts } else
+	 * { sceneManager.switchScene(AllScenes.MAIN_MENU); } /*
+	 * if(sceneManager.getCurrentScene() == AllScenes.HIGHSCORES) { // unload
+	 * }else if(sceneManager.getCurrentScene() == AllScenes.SETTINGS) { //
+	 * unload }else if(sceneManager.getCurrentScene() == AllScenes.NEW_GAME) {
+	 * // unload }
+	 * 
+	 * sceneManager.switchScene(AllScenes.MAIN_MENU); } else {
+	 * nats.this.finish(); } } return false; }
+	 */
 
 	@Override
 	protected void onDestroy() {
@@ -166,7 +158,7 @@ public class nats extends BaseGameActivity {
 	public int getCameraHeight() {
 		return CAMERA_HEIGHT;
 	}
-	
+
 	public LimitedFPSEngine getEngine() {
 		return this.mEngine;
 	}

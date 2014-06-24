@@ -9,6 +9,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
+import android.content.Context;
+import android.os.Vibrator;
 import at.alex.nats.Player;
 
 public class SceneManager {
@@ -16,6 +18,8 @@ public class SceneManager {
 	nats nats;
 	LimitedFPSEngine mEngine;
 	BoundCamera mainCamera;
+
+	Vibrator vibrator;
 
 	MainMenu mainMenu;
 	Highscores highscores;
@@ -48,8 +52,6 @@ public class SceneManager {
 		finals = new Finals();
 	}
 
-
-
 	public void loadSplashResources() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("backgrounds/");
 		splashBitmapTextureAtlas = new BitmapTextureAtlas(
@@ -62,8 +64,9 @@ public class SceneManager {
 
 	public void initSplashScene() {
 		splashScene = new Scene();
-		splashSprite = new Sprite(nats.getCameraWidth() / 2, nats.getCameraHeight() / 2,
-				splashITextureRegion, nats.getVertexBufferObjectManager());
+		splashSprite = new Sprite(nats.getCameraWidth() / 2,
+				nats.getCameraHeight() / 2, splashITextureRegion,
+				nats.getVertexBufferObjectManager());
 		splashScene.attachChild(splashSprite);
 	}
 
@@ -76,31 +79,33 @@ public class SceneManager {
 	}
 
 	public void switchScene(AllScenes scenes) {
-		if(scenes == AllScenes.MAIN_MENU) {
+		if (scenes == AllScenes.MAIN_MENU) {
 			mEngine.setScene(mainMenu.getMainMenuScene());
-			//pauseMenu.unregisterTouch();
+			// pauseMenu.unregisterTouch();
 			currentScene = AllScenes.MAIN_MENU;
-		}else if(scenes == AllScenes.NEW_GAME) {
+		} else if (scenes == AllScenes.NEW_GAME) {
 			mEngine.setScene(gameEnvironment.getGameScene());
 			gameEnvironment.startTimer();
 			player.playMusic();
 			gameEnvironment.showGameHUD();
+			mainCamera.setChaseEntity(player.getPlayerBase());
 			currentScene = AllScenes.NEW_GAME;
-		}else if(scenes == AllScenes.HIGHSCORES) {
+		} else if (scenes == AllScenes.HIGHSCORES) {
 			mEngine.setScene(highscores.getHighscoreScene());
+			// highscores.centerCamera();
 			currentScene = AllScenes.HIGHSCORES;
-		}else if(scenes == AllScenes.SETTINGS) {
+		} else if (scenes == AllScenes.SETTINGS) {
 			mEngine.setScene(settings.getSettingsScene());
 			currentScene = AllScenes.SETTINGS;
-		}else if(scenes == AllScenes.PAUSE) {
+		} else if (scenes == AllScenes.PAUSE) {
 			gameEnvironment.showPauseMenu();
 			gameEnvironment.pauseTimer();
-			//pauseMenu.registerTouch();
+			// pauseMenu.registerTouch();
 			currentScene = AllScenes.PAUSE;
-		}else if(scenes == AllScenes.UPGRADE) {
+		} else if (scenes == AllScenes.UPGRADE) {
 			gameEnvironment.showUpgradeMenu();
 			currentScene = AllScenes.UPGRADE;
-		}else if(scenes == AllScenes.GAME_OVER) {
+		} else if (scenes == AllScenes.GAME_OVER) {
 			gameEnvironment.showGameOverMenu();
 			mEngine.setScene(gameOver);
 			currentScene = AllScenes.GAME_OVER;
@@ -110,12 +115,15 @@ public class SceneManager {
 	public void loadAllResources() {
 		mainMenu = new MainMenu(nats, mainCamera, this);
 		highscores = new Highscores(nats, mainCamera);
-		settings = new Settings(nats, mainCamera);
-		player = new Player(nats);
+		settings = new Settings(nats, mainCamera, this);
+		player = new Player(nats, this);
 		gameEnvironment = new GameEnvironment(nats, mainCamera, this, player);
 		pauseMenu = new PauseMenu(nats, mainCamera, gameEnvironment, this);
-		upgradeMenu = new UpgradeMenu(nats, mainCamera, gameEnvironment, this, player);
+		upgradeMenu = new UpgradeMenu(nats, mainCamera, gameEnvironment, this,
+				player);
 		gameOver = new GameOver(nats, mainCamera, gameEnvironment, this);
+
+		vibrator = (Vibrator) nats.getSystemService(Context.VIBRATOR_SERVICE);
 
 		mainMenu.loadMainMenuResources();
 		highscores.loadHighscoreResources();
@@ -133,9 +141,29 @@ public class SceneManager {
 		upgradeMenu.loadUpgradeScene();
 		gameOver.loadGameOverScene();
 	}
-	
+
 	public GameEnvironment getGameEnvironment() {
 		return this.gameEnvironment;
+	}
+
+	public GameOver getGameOver() {
+		return this.gameOver;
+	}
+
+	public Highscores getHighscores() {
+		return this.highscores;
+	}
+
+	public Player getPlayer() {
+		return this.player;
+	}
+
+	public Settings getSettings() {
+		return this.settings;
+	}
+	
+	public Vibrator getVibrator() {
+		return this.vibrator;
 	}
 
 }

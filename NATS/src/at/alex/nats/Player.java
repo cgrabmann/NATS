@@ -4,19 +4,22 @@ import java.io.IOException;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
-import org.andengine.audio.sound.SoundFactory;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import at.stefan.nats.Finals;
+import at.stefan.nats.SceneManager;
 import at.stefan.nats.nats;
 
 public class Player {
 
 	// private long time;
-	private int ressources = 500000;
+	private int ressources = 2500;
 	private int permanents[] = new int[5];
 	private int usables[] = new int[4];
 
@@ -24,7 +27,7 @@ public class Player {
 	// private float velX, velY;
 
 	private boolean shooting = true;
-	
+
 	private boolean gamePaused = false;
 
 	// Upgrades
@@ -34,13 +37,17 @@ public class Player {
 	private int timeToShield = 45;
 	private int shotspreading = 0;
 	private int timeToGunner = 20;
-	
+
 	private boolean stasisField = false;
 	private boolean turbo = false;
 	private boolean deadlyTrail = false;
 	private boolean bomb = false;
 
 	nats nats;
+	SceneManager sceneManager;
+	Finals finals;
+	SharedPreferences share;
+	SharedPreferences.Editor editor;
 
 	Music music;
 
@@ -56,8 +63,9 @@ public class Player {
 	ITextureRegion flameITextureRegion;
 	Sprite flameSprite;
 
-	public Player(nats nats) {
+	public Player(nats nats, SceneManager sc) {
 		this.nats = nats;
+		this.sceneManager = sc;
 
 		this.posX = 400;
 		this.posY = 240;
@@ -70,14 +78,7 @@ public class Player {
 		this.usables[0] = 2;
 		this.usables[1] = 1;
 
-		try {
-			music = MusicFactory.createMusicFromAsset(nats.getMusicManager(),
-					nats.getApplicationContext(), "sfx/Spiel.ogg");
-			music.setLooping(true);
-			music.setVolume(0.5f, 0.5f);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		finals = new Finals();
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
@@ -94,7 +95,8 @@ public class Player {
 				nats.getTextureManager(), 55, 90, TextureOptions.DEFAULT);
 		playerITextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(playerBitmapTextureAtlas,
-						nats.getApplicationContext(), "spaceshuttle_middle.png", 0, 0);
+						nats.getApplicationContext(),
+						"spaceshuttle_middle.png", 0, 0);
 		playerBitmapTextureAtlas.load();
 		playerSprite = new Sprite(playerBaseSprite.getWidth() / 2 + 2,
 				playerBaseSprite.getHeight() / 2, playerITextureRegion,
@@ -114,6 +116,20 @@ public class Player {
 		playerBaseSprite.setAlpha(0f);
 		playerSprite.attachChild(flameSprite);
 		playerBaseSprite.attachChild(playerSprite);
+
+		share = nats.getSharedPreferences(finals.PREFS_SETTINGS,
+				Context.MODE_PRIVATE);
+		editor = share.edit();
+
+		try {
+			music = MusicFactory.createMusicFromAsset(nats.getMusicManager(),
+					nats.getApplicationContext(), "sfx/Spiel.ogg");
+			music.setLooping(true);
+			music.setVolume(share.getFloat(finals.SETTINGS_VOLUME_NAME, 0.75f));
+			//sceneManager.getPlayer(); Hier mThumb positionieren!!!
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public int getPermanents(int pos) {
@@ -151,11 +167,11 @@ public class Player {
 	public void setPosY(float posY) {
 		this.posY = posY;
 	}
-	
+
 	public float getFlamePosX() {
 		return flameSprite.getX();
 	}
-	
+
 	public float getFlamePosY() {
 		return flameSprite.getY();
 	}
@@ -164,7 +180,7 @@ public class Player {
 		// Log.i("NATS", "setRessources to " + ressources);
 		this.ressources = ressources;
 	}
-	
+
 	public void addRessources(int i) {
 		this.ressources += i;
 	}
@@ -221,14 +237,14 @@ public class Player {
 	public void increaseShotFrequence() {
 		this.shotfrequence--;
 	}
-	
+
 	public void activateShield() {
 		this.shield = true;
 	}
 
 	public void removeShield() {
 		this.shield = false;
-	} 
+	}
 
 	public void increaseShield() {
 		this.timeToShield -= 5;
@@ -265,81 +281,97 @@ public class Player {
 	public void setShootingAllowed(boolean b) {
 		this.shooting = b;
 	}
-	
+
 	public void setStasisField(boolean b) {
 		this.stasisField = b;
 	}
-	
+
 	public boolean isStasisFieldActivated() {
 		return this.stasisField;
 	}
-	
+
 	public void activateTurbo() {
 		this.turbo = true;
 	}
-	
+
 	public void deactivateTurbo() {
 		this.turbo = false;
 	}
-	
+
 	public boolean isTurboActivated() {
 		return this.turbo;
 	}
-	
+
 	public void setDeadlyTrail(boolean b) {
 		this.deadlyTrail = b;
 	}
-	
+
 	public boolean isDeadlyTrailActivated() {
 		return this.deadlyTrail;
 	}
-	
+
 	public void setBomb(boolean b) {
 		this.bomb = b;
 	}
-	
+
 	public boolean isBombActivated() {
 		return this.bomb;
 	}
-	
+
 	public void setPause(boolean b) {
 		this.gamePaused = b;
 	}
-	
+
 	public boolean isGamePaused() {
 		return gamePaused;
 	}
-	
+
 	public void playMusic() {
-		if(music != null && !music.isPlaying()) {
+		if (music != null && !music.isPlaying()) {
 			this.music.play();
 		}
 	}
-	
+
 	public void pauseMusic() {
-		if(music != null && music.isPlaying()) {
+		if (music != null && music.isPlaying()) {
 			this.music.pause();
 		}
 	}
-	
+
 	public void resumeMusic() {
-		if(music != null && !music.isPlaying()) {
+		if (music != null && !music.isPlaying()) {
 			this.music.resume();
 		}
 	}
-	
+
 	public void stopMusic() {
-		if(music != null && music.isPlaying()){
+		if (music != null && music.isPlaying()) {
 			this.music.stop();
 		}
 	}
+
+	public void setVolume(float f) {
+		this.music.setVolume(f);
+		editor.putFloat(finals.SETTINGS_VOLUME_NAME, f);
+		editor.commit();
+	}
 	
+	public float getVolume() {
+		return this.music.getVolume();
+	}
+
+	public void resetMusic() {
+		this.music.seekTo(1);
+	}
+
+	// public void
+
 	public void reset() {
-		ressources = 2000;
+		ressources = 2500;
 		shooting = true;
-		
+
 		gamePaused = false;
-		
+
 		stasisField = false;
 		turbo = false;
 		deadlyTrail = false;
@@ -352,10 +384,10 @@ public class Player {
 		timeToShield = 45;
 		shotspreading = 0;
 		timeToGunner = 20;
-		
+
 		this.posX = 400;
 		this.posY = 240;
-		
+
 		for (int i = 0; i <= 3; i++) {
 			this.usables[i] = 0;
 			this.permanents[i] = 0;
@@ -363,5 +395,8 @@ public class Player {
 		this.permanents[4] = 0;
 		this.usables[0] = 2;
 		this.usables[1] = 1;
+
+		// playerSprite.setPosition(0, 240);
+		playerBaseSprite.setPosition(400, 240);
 	}
 }

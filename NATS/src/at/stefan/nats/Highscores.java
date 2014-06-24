@@ -1,6 +1,7 @@
 package at.stefan.nats;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
@@ -16,9 +17,14 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.util.Log;
 
-public class Highscores {
+public class Highscores extends Scene {
+
+	private boolean isReturnable = true;
 
 	nats nats;
 	Camera mainCamera;
@@ -30,14 +36,26 @@ public class Highscores {
 	BitmapTextureAtlas titleBitmapTextureAtlas;
 	ITextureRegion titleITextureRegion;
 	Sprite titleSprite;
-	Scene highscores;
 	String[][] scoreArray = new String[10][2];
 	Font ScoreFont;
+
+	SharedPreferences share;
+
+	String scoreNames;
+	String scoreTimes;
+	Text scoreTextNames;
+	Text scoreTextTimes;
+
+	Rectangle center;
 
 	public Highscores(nats nats, Camera cam) {
 		this.nats = nats;
 		this.mainCamera = cam;
 		finals = new Finals();
+		center = new Rectangle(400, 240, 2, 2,
+				nats.getVertexBufferObjectManager());
+		center.setVisible(false);
+
 	}
 
 	public void loadHighscoreResources() {
@@ -63,90 +81,121 @@ public class Highscores {
 						0);
 
 		titleBitmapTextureAtlas.load();
+
+		share = nats.getSharedPreferences(finals.PREFS_HIGHSCORE,
+				Context.MODE_PRIVATE);
 	}
 
 	public void loadHighscoreScene() {
-		highscores = new Scene();
 		highscoresSprite = new Sprite(nats.getCameraWidth() / 2,
 				nats.getCameraHeight() / 2, highscoresITextureRegion,
 				nats.getVertexBufferObjectManager());
 
-		highscores.attachChild(highscoresSprite);
-		//highscores.setBackground(new Background(0, 0, 255));
+		this.attachChild(highscoresSprite);
+		// highscores.setBackground(new Background(0, 0, 255));
 		titleSprite = new Sprite(nats.getCameraWidth() / 2,
-				nats.getCameraHeight() - titleBitmapTextureAtlas.getHeight()/ 2, titleITextureRegion,
+				nats.getCameraHeight() - titleBitmapTextureAtlas.getHeight()
+						/ 2, titleITextureRegion,
 				nats.getVertexBufferObjectManager());
 
-		highscores.attachChild(titleSprite);
+		this.attachChild(titleSprite);
 
-		scoreArray [0][0] = "A";
-        scoreArray [0][1] = "20";
-        scoreArray [1][0] = "A";
-        scoreArray [1][1] = "30";
-        scoreArray [2][0] = "ft";
-        scoreArray [2][1] = "121";
-        scoreArray [3][0] = "A";
-        scoreArray [3][1] = "0";
-        scoreArray [4][0] = "HI";
-        scoreArray [4][1] = "120";
-        scoreArray [5][0] = "DEFAULT";
-        scoreArray [5][1] = "0";
-        scoreArray [6][0] = "BC";
-        scoreArray [6][1] = "15";
-        scoreArray [7][0] = "WWWWWWWWWW";
-        scoreArray [7][1] = "3599";
-        scoreArray [8][0] = "Q";
-        scoreArray [8][1] = "5";
-        scoreArray [9][0] = "WMMMMMMMMM";
-        scoreArray [9][1] = "671";
+		scoreArray[0][0] = "AAAAAAAAAAA";
+		scoreArray[0][1] = "11111";
+		scoreArray[1][0] = "AAAAAAAAAAA";
+		scoreArray[1][1] = "11111";
+		scoreArray[2][0] = "AAAAAAAAAAA";
+		scoreArray[2][1] = "11111";
+		scoreArray[3][0] = "AAAAAAAAAAA";
+		scoreArray[3][1] = "11111";
+		scoreArray[4][0] = "AAAAAAAAAAA";
+		scoreArray[4][1] = "11111";
+		scoreArray[5][0] = "AAAAAAAAAAA";
+		scoreArray[5][1] = "11111";
+		scoreArray[6][0] = "AAAAAAAAAAA";
+		scoreArray[6][1] = "11111";
+		scoreArray[7][0] = "AAAAAAAAAAA";
+		scoreArray[7][1] = "11111";
+		scoreArray[8][0] = "AAAAAAAAAAA";
+		scoreArray[8][1] = "11111";
+		scoreArray[9][0] = "AAAAAAAAAAA";
+		scoreArray[9][1] = "11111";
 
-        scoreArray = sortScores(scoreArray);
-        String scoreNames = getScoreName(scoreArray);
-		String scoreTimes = getScoreTime(scoreArray);
-        
-        ScoreFont = FontFactory.create(nats.getFontManager(),
+		scoreArray = sortScores(scoreArray);
+		scoreNames = getScoreName(scoreArray);
+		scoreTimes = getScoreTime(scoreArray);
 
-				nats.getTextureManager(), 256, 256,
+		ScoreFont = FontFactory.create(nats.getFontManager(),
+
+		nats.getTextureManager(), 256, 256,
 				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 28,
 				Color.WHITE.hashCode());
 		ScoreFont.load();
-		
-		Text scoreTextNames = new Text((nats.getCameraWidth() / 4) + 80,
+
+		scoreTextNames = new Text((nats.getCameraWidth() / 4) + 80,
 				nats.getCameraHeight() - 300, ScoreFont, scoreNames,
 				new TextOptions(HorizontalAlign.LEFT),
 				nats.getVertexBufferObjectManager());
 
-		Text scoreTextTimes = new Text(nats.getCameraWidth() - nats.getCameraWidth() / 4,
-				nats.getCameraHeight() - 300, ScoreFont, scoreTimes,
+		scoreTextTimes = new Text(nats.getCameraWidth() - nats.getCameraWidth()
+				/ 4, nats.getCameraHeight() - 300, ScoreFont, scoreTimes,
 				new TextOptions(HorizontalAlign.LEFT),
 				nats.getVertexBufferObjectManager());
-        
-		highscores.attachChild(scoreTextNames);
-		highscores.attachChild(scoreTextTimes);
-		
-		//Input field
-		/*
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("titles/");
-		BuildableBitmapTextureAtlas mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(nats.getTextureManager(), 512, 256, TextureOptions.NEAREST);
-		ITiledTextureRegion myTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, nats, "HighscoresTitle.png", 1, 1);
-		
-		mBitmapTextureAtlas.load();
-		
-		InputText name = new InputText(400, 240, "Name", "Enter Name", myTiledTextureRegion, ScoreFont, 17, 19, nats.getVertexBufferObjectManager(), nats);
-		highscores.attachChild(name);
-		highscores.registerTouchArea(name);
-		*/
-		
+
+		scoreArray[0][0] = share.getString(finals.HIGHSCORE_FIRST_NAME,
+				"NO SCORE");
+		scoreArray[0][1] = share.getString(finals.HIGHSCORE_FIRST_TIME, "0");
+		scoreArray[1][0] = share.getString(finals.HIGHSCORE_SECOND_NAME,
+				"NO SCORE");
+		scoreArray[1][1] = share.getString(finals.HIGHSCORE_SECOND_TIME, "0");
+		scoreArray[2][0] = share.getString(finals.HIGHSCORE_THIRD_NAME,
+				"NO SCORE");
+		scoreArray[2][1] = share.getString(finals.HIGHSCORE_THIRD_TIME, "0");
+		scoreArray[3][0] = share.getString(finals.HIGHSCORE_FOURTH_NAME,
+				"NO SCORE");
+		scoreArray[3][1] = share.getString(finals.HIGHSCORE_FOURTH_TIME, "0");
+		scoreArray[4][0] = share.getString(finals.HIGHSCORE_FIFTH_NAME,
+				"NO SCORE");
+		scoreArray[4][1] = share.getString(finals.HIGHSCORE_FIFTH_TIME, "0");
+		scoreArray[5][0] = share.getString(finals.HIGHSCORE_SIXTH_NAME,
+				"NO SCORE");
+		scoreArray[5][1] = share.getString(finals.HIGHSCORE_SIXTH_TIME, "0");
+		scoreArray[6][0] = share.getString(finals.HIGHSCORE_SEVENTH_NAME,
+				"NO SCORE");
+		scoreArray[6][1] = share.getString(finals.HIGHSCORE_SEVENTH_TIME, "0");
+		scoreArray[7][0] = share.getString(finals.HIGHSCORE_EIGHTH_NAME,
+				"NO SCORE");
+		scoreArray[7][1] = share.getString(finals.HIGHSCORE_EIGHTH_TIME, "0");
+		scoreArray[8][0] = share.getString(finals.HIGHSCORE_NINETH_NAME,
+				"NO SCORE");
+		scoreArray[8][1] = share.getString(finals.HIGHSCORE_NINETH_TIME, "0");
+		scoreArray[9][0] = share.getString(finals.HIGHSCORE_TENTH_NAME,
+				"NO SCORE");
+		scoreArray[9][1] = share.getString(finals.HIGHSCORE_TENTH_TIME, "0");
+
+		scoreNames = getScoreName(scoreArray);
+		scoreTimes = getScoreTime(scoreArray);
+		scoreTextNames.setText(scoreNames);
+		scoreTextTimes.setText(scoreTimes);
+
+		this.attachChild(scoreTextNames);
+		this.attachChild(scoreTextTimes);
+
+		this.attachChild(center);
 	}
-	
+
 	public void removeHighscoreScene() {
 
 		// remove
 	}
 
 	public Scene getHighscoreScene() {
-		return highscores;
+		return this;
 	}
+
+	/*
+	 * public void centerCamera() { mainCamera.setChaseEntity(center); }
+	 */
 
 	public String[][] sortScores(String[][] scoreList) {
 		int temp;
@@ -196,10 +245,67 @@ public class Highscores {
 		}
 		return scoreString;
 	}
-	
-	public int getLastHighScore(){
+
+	public void setNewScore(String s, int i) {
+		Log.i("NATS", "integer: " + i);
+		scoreArray[0][0] = s;
+		scoreArray[0][1] = Integer.toString(i);
+		Log.i("NATS", "Integer after toString: " + scoreArray[0][1]);
+		sortScores(scoreArray);
+		scoreTextNames.setText(getScoreName(scoreArray));
+		scoreTextTimes.setText(getScoreTime(scoreArray));
+
+		SharedPreferences.Editor editor = share.edit();
+		
+		editor.putString(finals.HIGHSCORE_FIRST_NAME, scoreArray[0][0]);
+		editor.putString(finals.HIGHSCORE_FIRST_TIME, scoreArray[0][1]);
+		
+		editor.putString(finals.HIGHSCORE_SECOND_NAME, scoreArray[1][0]);
+		editor.putString(finals.HIGHSCORE_SECOND_TIME, scoreArray[1][1]);
+		
+		editor.putString(finals.HIGHSCORE_THIRD_NAME, scoreArray[2][0]);
+		editor.putString(finals.HIGHSCORE_THIRD_TIME, scoreArray[2][1]);
+		
+		editor.putString(finals.HIGHSCORE_FOURTH_NAME, scoreArray[3][0]);
+		editor.putString(finals.HIGHSCORE_FOURTH_TIME, scoreArray[3][1]);
+		
+		editor.putString(finals.HIGHSCORE_FIFTH_NAME, scoreArray[4][0]);
+		editor.putString(finals.HIGHSCORE_FIFTH_TIME, scoreArray[4][1]);
+		
+		editor.putString(finals.HIGHSCORE_SIXTH_NAME, scoreArray[5][0]);
+		editor.putString(finals.HIGHSCORE_SIXTH_TIME, scoreArray[5][1]);
+		
+		editor.putString(finals.HIGHSCORE_SEVENTH_NAME, scoreArray[6][0]);
+		editor.putString(finals.HIGHSCORE_SEVENTH_TIME, scoreArray[6][1]);
+		
+		editor.putString(finals.HIGHSCORE_EIGHTH_NAME, scoreArray[7][0]);
+		editor.putString(finals.HIGHSCORE_EIGHTH_TIME, scoreArray[7][1]);
+		
+		editor.putString(finals.HIGHSCORE_NINETH_NAME, scoreArray[8][0]);
+		editor.putString(finals.HIGHSCORE_NINETH_TIME, scoreArray[8][1]);
+		
+		editor.putString(finals.HIGHSCORE_TENTH_NAME, scoreArray[9][0]);
+		editor.putString(finals.HIGHSCORE_TENTH_TIME, scoreArray[9][1]);
+
+		editor.commit();
+	}
+
+	public int getLastHighScore() {
 		scoreArray = sortScores(scoreArray);
 		return Integer.parseInt(scoreArray[0][1]);
+	}
+
+	public int getFirstHighScore() {
+		scoreArray = sortScores(scoreArray);
+		return Integer.parseInt(scoreArray[9][1]);
+	}
+
+	public void setReturnable(boolean b) {
+		this.isReturnable = b;
+	}
+
+	public boolean isReturnable() {
+		return this.isReturnable;
 	}
 
 }

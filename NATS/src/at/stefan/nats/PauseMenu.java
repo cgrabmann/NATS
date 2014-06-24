@@ -9,7 +9,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
-import at.alex.nats.Map;
 import at.stefan.nats.SceneManager.AllScenes;
 
 public class PauseMenu {
@@ -33,14 +32,19 @@ public class PauseMenu {
 	ITextureRegion quitITextureRegion;
 	Sprite quitSprite;
 
-	public PauseMenu(nats nats, BoundCamera cam, GameEnvironment ge, SceneManager s) {
+	BitmapTextureAtlas titleBitmapTextureAtlas;
+	ITextureRegion titleITextureRegion;
+	Sprite titleSprite;
+
+	public PauseMenu(nats nats, BoundCamera cam, GameEnvironment ge,
+			SceneManager s) {
 		this.nats = nats;
 		this.mainCamera = cam;
 		this.gameEnvironment = ge;
 		this.sceneManager = s;
 
 		// this.setBackground(new Background(0.5f, 0.5f, 0.5f, 0.5f));
-		//this.setBackgroundEnabled(false);
+		// this.setBackgroundEnabled(false);
 	}
 
 	public void loadPauseResources() {
@@ -66,11 +70,18 @@ public class PauseMenu {
 				.createFromAsset(quitBitmapTextureAtlas,
 						nats.getApplicationContext(), "Quit.png", 0, 0);
 		quitBitmapTextureAtlas.load();
+
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("titles/");
+		titleBitmapTextureAtlas = new BitmapTextureAtlas(
+				nats.getTextureManager(), 560, 120, TextureOptions.DEFAULT);
+		titleITextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(titleBitmapTextureAtlas,
+						nats.getApplicationContext(), "PauseTitle.png", 0, 0);
+		titleBitmapTextureAtlas.load();
 	}
 
 	public void loadPauseScene() {
-		backgroundSprite = new Sprite(400,
-				240, backgroundITextureRegion,
+		backgroundSprite = new Sprite(400, 240, backgroundITextureRegion,
 				nats.getVertexBufferObjectManager());
 		backgroundSprite.setAlpha(0.4f);
 
@@ -108,22 +119,26 @@ public class PauseMenu {
 			};
 		};
 
-		//this.attachChild(backgroundSprite);
-		//this.attachChild(continueSprite);
-		//this.attachChild(quitSprite);
+		titleSprite = new Sprite(400, 380, titleITextureRegion,
+				nats.getVertexBufferObjectManager());
+
+		// this.attachChild(backgroundSprite);
+		// this.attachChild(continueSprite);
+		// this.attachChild(quitSprite);
 
 		// map.registerTouchArea(continueSprite);
 		// this.registerTouchArea(quitSprite);
 		gameEnvironment.attachToHUDPause(backgroundSprite);
 		gameEnvironment.attachToHUDPause(continueSprite);
 		gameEnvironment.attachToHUDPause(quitSprite);
+		gameEnvironment.attachToHUDPause(titleSprite);
 		gameEnvironment.setPauseReference(continueSprite, quitSprite);
 
 	}
 
 	/*
-	 * public void registerTouch() { map.registerPauseTouch();
-	 * this.touch = true; }
+	 * public void registerTouch() { map.registerPauseTouch(); this.touch =
+	 * true; }
 	 * 
 	 * public void unregisterTouch() { if(this.touch == true) {
 	 * map.unregisterPauseTouch(); this.touch = false; } }

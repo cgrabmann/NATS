@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Bullet {
-	
+
 	private int bulletType = 0;
 
 	BulletPool bulletPool;
@@ -42,10 +42,10 @@ public class Bullet {
 		this.player = p;
 		this.physicsWorld = pw;
 		this.nats = nats;
-		
+
 		bulletType = 1;
 
-		//shotfrequence = player.getShotFrequence();
+		// shotfrequence = player.getShotFrequence();
 
 		r = new Rectangle(0, 0, 10, 10, nats.getVertexBufferObjectManager());
 		r.setColor(new Color(1f, 1f, 1f));
@@ -61,7 +61,7 @@ public class Bullet {
 
 		pc = new PhysicsConnector(r, body, true, false);
 	}
-	
+
 	public Bullet(Scene s, Player p, MaxStepPhysicsWorld pw, nats nats,
 			BulletPool bulletPool, Color c) {
 		this.scene = s;
@@ -69,7 +69,7 @@ public class Bullet {
 		this.player = p;
 		this.physicsWorld = pw;
 		this.nats = nats;
-		
+
 		bulletType = 2;
 
 		r = new Rectangle(0, 0, 10, 10, nats.getVertexBufferObjectManager());
@@ -83,13 +83,13 @@ public class Bullet {
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("bullet", this));
-
-		pc = new PhysicsConnector(r, body, true, false);
 	}
 
 	public void fireBullet(Vector2 direction) {
-		//Log.i("Bullet", "Fire Bullet");
+		// Log.i("Bullet", "Fire Bullet");
 		// Einheitsvektor berechnen
+		pc = new PhysicsConnector(r, body, true, false);
+
 		float betrag = (float) Math.sqrt(Math.pow(direction.x, 2)
 				+ Math.pow(direction.y, 2));
 		einheitsVector = new Vector2(direction.x / betrag, direction.y / betrag);
@@ -111,12 +111,12 @@ public class Bullet {
 
 	public void sendBulletToPool() {
 		this.deactivate();
-		if(bulletType == 1) {
+		if (bulletType == 1) {
 			bulletPool.recycleBullet(this);
-		}else if(bulletType == 2) {
+		} else if (bulletType == 2) {
 			bulletPool.recycleGunner(this);
 		}
-		
+
 	}
 
 	public void setVisible(boolean b) {
@@ -142,22 +142,23 @@ public class Bullet {
 
 	public void activate(Vector2 v) {
 		// TODO Auto-generated method stub
-		if(!r.hasParent()) {
+
+		if (!r.hasParent()) {
 			scene.attachChild(r);
 		}
-		//Log.i("Bullet", "Activate Bullet");
+
+		// Log.i("Bullet", "Activate Bullet");
 		body.setActive(true);
 		body.setAwake(true);
-		r.setVisible(true);
-		
+
+		r.setPosition(player.getPosX(), player.getPosY());
 		body.setTransform(player.getPosX() / 32, player.getPosY() / 32,
 				(float) Math.PI / 2);
+		r.setVisible(true);
 
-		
-		//body.setTransform((player.getPosX() + v.x * 45) / 32,
-		//		(player.getPosY() + v.y * 45) / 32, (float) Math.PI / 2);
+		// body.setTransform((player.getPosX() + v.x * 45) / 32,
+		// (player.getPosY() + v.y * 45) / 32, (float) Math.PI / 2);
 		// r.setIgnoreUpdate(false);
-		
 
 		physicsWorld.registerPhysicsConnector(pc);
 		nats.getEngine().registerUpdateHandler(th);
@@ -166,11 +167,12 @@ public class Bullet {
 
 	public void deactivate() {
 		nats.getEngine().runOnUpdateThread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				body.setTransform(-500, -340, 0.0f);
+				r.setPosition(-500f, -340f);
+				body.setTransform(-500f / 32f, -340f / 32f, 0.0f);
 				r.setVisible(false);
 				body.setActive(false);
 				body.setAwake(false);
@@ -180,10 +182,10 @@ public class Bullet {
 				// r.setIgnoreUpdate(true);
 			}
 		});
-		//Log.i("Bullet", "Deactivate Bullet");
-		
+		// Log.i("Bullet", "Deactivate Bullet");
+
 	}
-	
+
 	public Rectangle getSprite() {
 		return this.r;
 	}

@@ -37,7 +37,17 @@ public class Contacts implements ContactListener {
 	@Override
 	public void beginContact(Contact contact) {
 		// TODO Auto-generated method stub
+		/*Body A = contact.getFixtureA().getBody();
+		Body B = contact.getFixtureB().getBody();
 
+		UserData a = (UserData) A.getUserData();
+		UserData b = (UserData) B.getUserData();
+		
+		if(a.getUserString().equals("player") && b.getUserObject() instanceof PEnemy) {
+			sceneManager.switchScene(AllScenes.GAME_OVER);
+		}else if(b.getUserString().equals("player") && a.getUserObject() instanceof PEnemy) {
+			sceneManager.switchScene(AllScenes.GAME_OVER);
+		}*/
 	}
 
 	@Override
@@ -152,12 +162,13 @@ public class Contacts implements ContactListener {
 				contact.setEnabled(false);
 				((PEnemy)a.getUserObject()).stop();
 			}else if(player.isShieldActivated()) {
+				contact.setEnabled(false);
 				player.getPlayerBase().setAlpha(0f);
 				player.removeShield();
 				((PEnemy)a.getUserObject()).stop();
 			}else {
 				// Spieler zerstören
-				sceneManager.switchScene(AllScenes.GAME_OVER);
+				//sceneManager.switchScene(AllScenes.GAME_OVER);
 			}
 		} else if (b.getUserObject() instanceof PEnemy
 				&& a.getUserString().equals("player")) {
@@ -165,12 +176,13 @@ public class Contacts implements ContactListener {
 				contact.setEnabled(false);
 				((PEnemy)b.getUserObject()).stop();
 			}else if(player.isShieldActivated()) {
+				contact.setEnabled(false);
 				player.getPlayerBase().setAlpha(0f);
 				player.removeShield();
 				((PEnemy)b.getUserObject()).stop();
 			}else {
 				// Spieler zerstören
-				sceneManager.switchScene(AllScenes.GAME_OVER);
+				//sceneManager.switchScene(AllScenes.GAME_OVER);
 			}
 		}
 

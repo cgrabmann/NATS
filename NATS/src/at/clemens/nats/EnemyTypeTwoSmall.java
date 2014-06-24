@@ -55,9 +55,10 @@ public class EnemyTypeTwoSmall extends PEnemy {
 		super.game.getEnemyTwoSmallSpriteGroup().attachChild(enemy);
 		body = PhysicsFactory.createBoxBody(world, enemy, BodyType.DynamicBody,
 				fd);
-		body.setTransform(-500, -340, 0.0f);
+		body.setTransform(-500/32, -340/32, 0.0f);
 		enemy.setPosition(-500, -340);
-		enemy.setVisible(false);
+		enemy.setVisible(true);
+		enemy.setIgnoreUpdate(true);
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("enemytwo", this));
@@ -69,11 +70,12 @@ public class EnemyTypeTwoSmall extends PEnemy {
 		super.posx = x;
 		super.posy = y;
 		// this.createStartPos(super.game);
-		/*if (!enemy.hasParent()) {
-			super.game.getEnemyTwoSmallSpriteGroup().attachChild(enemy);
-		}*/
+		/*
+		 * if (!enemy.hasParent()) {
+		 * super.game.getEnemyTwoSmallSpriteGroup().attachChild(enemy); }
+		 */
 		pc = new PhysicsConnector(enemy, body, true, true);
-		
+
 		th = new TimerHandler(0.050f, true, new ITimerCallback() {
 
 			@Override
@@ -105,11 +107,11 @@ public class EnemyTypeTwoSmall extends PEnemy {
 			super.movex = 50;
 			super.movey = 0;
 		}
-		
-		enemy.setVisible(true);
 
+		enemy.setPosition(super.posx, super.posy);
 		body.setTransform(super.posx / 32, super.posy / 32, 0f);
-		
+		//enemy.setVisible(true);
+		enemy.setIgnoreUpdate(false);
 		body.setActive(true);
 		body.setAwake(true);
 
@@ -119,18 +121,19 @@ public class EnemyTypeTwoSmall extends PEnemy {
 
 	@Override
 	public void stop() {
-		
+
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				EnemyTypeTwoSmall.super.addRessources(resources);
-				//EnemyTypeTwoSmall.super.game.getEnemyTwoSmallSpriteGroup().detachChild(enemy);
+				// EnemyTypeTwoSmall.super.game.getEnemyTwoSmallSpriteGroup().detachChild(enemy);
 				body.setLinearVelocity(0f, 0f);
-				body.setTransform(-500, -340, 0.0f);
+				body.setTransform(-500/32, -340/32, 0.0f);
 				enemy.setPosition(-500, -340);
-				enemy.setVisible(false);
+				//enemy.setVisible(false);
+				enemy.setIgnoreUpdate(true);
 				body.setActive(false);
 				body.setAwake(false);
 				world.unregisterPhysicsConnector(pc);
@@ -165,7 +168,7 @@ public class EnemyTypeTwoSmall extends PEnemy {
 			super.movex = 0;
 			super.movey = 0;
 			return;
-		}else{
+		} else {
 			super.movex = super.smovex;
 			super.movey = super.smovey;
 		}
@@ -198,7 +201,7 @@ public class EnemyTypeTwoSmall extends PEnemy {
 			super.movey = (super.movey > 0) ? super.movey - acceleration
 					: super.movey + acceleration;
 		}
-		
+
 		super.smovex = super.movex;
 		super.smovey = super.movey;
 
@@ -233,7 +236,7 @@ public class EnemyTypeTwoSmall extends PEnemy {
 
 	@Override
 	public void deactivate() {
-		
+
 		// TODO Auto-generated method stub
 		nats.getEngine().runOnUpdateThread(new Runnable() {
 
@@ -243,33 +246,33 @@ public class EnemyTypeTwoSmall extends PEnemy {
 				// Log.i("NATS", "stop");
 				nats.getEngine().unregisterUpdateHandler(th);
 				body.setLinearVelocity(0f, 0f);
-				
-				body.setTransform(-500, -340, 0.0f);
+
+				body.setTransform(-500/32, -340/32, 0.0f);
 				enemy.setPosition(-500, -340);
-				enemy.setVisible(false);
+				//enemy.setVisible(false);
+				enemy.setIgnoreUpdate(true);
 				// Log.i("NATS", "stop2");
 				body.setActive(false);
 				// Log.i("NATS", "stop3");
 				body.setAwake(false);
-				//EnemyTypeTwoSmall.super.game.getEnemyTwoSmallSpriteGroup().detachChild(enemy);
+				// EnemyTypeTwoSmall.super.game.getEnemyTwoSmallSpriteGroup().detachChild(enemy);
 				// Log.i("NATS", "stop1");
-				
+
 				// Log.i("NATS", "stop5");
 				world.unregisterPhysicsConnector(pc);
 				// Log.i("NATS", "stop6");
-				
+
 				EnemyTypeTwoSmall.this.reset();
 				// Log.i("NATS", "stop7");
 				enemyPool.recycleEnemyTwoSmall(EnemyTypeTwoSmall.this);
 			}
 		});
 	}
-	
+
 	@Override
-	protected void reset(){
+	protected void reset() {
 		super.reset();
 		this.pc = null;
 		this.th = null;
 	}
 }
-

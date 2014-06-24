@@ -8,7 +8,6 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
-import android.util.Log;
 import at.alex.nats.Player;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -16,6 +15,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Trail {
+	
+	private float timer = 0f;
 
 	GameEnvironment gameEnvironment;
 	Player player;
@@ -57,11 +58,11 @@ public class Trail {
 		body.setActive(false);
 		body.setAwake(false);
 		body.setUserData(new UserData("trail", this));
-
-		pc = new PhysicsConnector(sprite, body, true, true);
 	}
 
 	public void set(float x, float y) {
+		
+		pc = new PhysicsConnector(sprite, body, true, true);
 
 		float radians = gameEnvironment.getPlayerBody().getAngle();
 
@@ -71,12 +72,14 @@ public class Trail {
 		x += (b * 40);
 		y += (a * 40);
 
-		body.setTransform(x / 32, y / 32, 0f);
-		Log.i("Usables", "X, Y: " + x + ", " + y);
-		body.setFixedRotation(true);
+		
+		//Log.i("Usables", "X, Y: " + x + ", " + y);
+		//body.setFixedRotation(true);
 
 		body.setActive(true);
 		body.setAwake(true);
+		
+		body.setTransform(x / 32, y / 32, 0f);
 
 		gameEnvironment.getFireBallSpriteGroup().attachChild(sprite);
 		// gameEnvironment.attachChild(sprite);
@@ -85,17 +88,23 @@ public class Trail {
 		world.registerPhysicsConnector(pc);
 
 		nats.getEngine().registerUpdateHandler(
-				new TimerHandler(7f, new ITimerCallback() {
+				new TimerHandler(0.05f, true, new ITimerCallback() {
 
 					@Override
 					public void onTimePassed(TimerHandler pTimerHandler) {
 						// TODO Auto-generated method stub
-						sprite.setVisible(false);
-						gameEnvironment.getFireBallSpriteGroup().detachChild(sprite);
-						nats.getEngine().unregisterUpdateHandler(pTimerHandler);
-						world.unregisterPhysicsConnector(pc);
-						body.setActive(false);
-						body.setAwake(false);
+						if(!player.isGamePaused()) {
+							if(timer >= 7f) {
+								sprite.setVisible(false);
+								gameEnvironment.getFireBallSpriteGroup().detachChild(sprite);
+								nats.getEngine().unregisterUpdateHandler(pTimerHandler);
+								world.unregisterPhysicsConnector(pc);
+								body.setActive(false);
+								body.setAwake(false);
+							}else {
+								timer += 0.05f;
+							}
+						}
 					}
 				}));
 	}
