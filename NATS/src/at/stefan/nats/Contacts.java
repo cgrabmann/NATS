@@ -37,7 +37,7 @@ public class Contacts implements ContactListener {
 	@Override
 	public void beginContact(Contact contact) {
 		// TODO Auto-generated method stub
-		/*Body A = contact.getFixtureA().getBody();
+		Body A = contact.getFixtureA().getBody();
 		Body B = contact.getFixtureB().getBody();
 
 		UserData a = (UserData) A.getUserData();
@@ -47,7 +47,7 @@ public class Contacts implements ContactListener {
 			sceneManager.switchScene(AllScenes.GAME_OVER);
 		}else if(b.getUserString().equals("player") && a.getUserObject() instanceof PEnemy) {
 			sceneManager.switchScene(AllScenes.GAME_OVER);
-		}*/
+		}
 	}
 
 	@Override
